@@ -1,1 +1,1 @@
-vim.symlink/plugged/**/*
+./vim.symlink/plugged/**/*
