@@ -1,0 +1,97 @@
+## Jure Glasovic's .zshrc <https://github.com/jglasovic>
+
+## Reset PATH
+export PATH=$(env -i bash --login --norc -c 'echo $PATH')
+
+export ZSH="$HOME/.oh-my-zsh"
+export PGDATA="/usr/local/var/postgres"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+
+export ANDROID_TOOLS_PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+export POSTGRES_PATH="/Applications/Postgres.app/Contents/Versions/latest/bin/"
+export SBIN_PATH="/usr/local/sbin"
+export CORE_UTILS_PATH="/usr/local/opt/coreutils/libexec/gnubin"
+export MYSQL_PATH="/usr/local/mysql/bin"
+export DENO_PATH="$HOME/.deno/bin"
+export PYENV_PATH="$HOME/.pyenv/bin"
+export POETRY_PATH="$HOME/.poetry/bin"
+export PATH=$PYENV_PATH:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$POETRY_PATH:$PATH
+
+source "$HOME/.cargo/env"
+
+ZSH_THEME="agnoster"
+LC_ALL="en_US.UTF-8"
+ENABLE_CORRECTION="true"
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+
+plugins=(
+  git
+)
+source $ZSH/oh-my-zsh.sh
+DEFAULT_USER=$USER
+
+## brew
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
+## nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+## load aliases 
+. ~/.zsh/aliases.zsh
+## load functions 
+. ~/.zsh/functions.zsh
+
+
+autoload -U add-zsh-hook
+## add and apply hooks
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+add-zsh-hook chpwd load-dev-cli
+load-dev-cli
+
+##  pyenv 
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+fi
+eval "$(pyenv virtualenv-init -)"
+
+## editor
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR=vim
+  export VISUAL=vim
+else
+  export EDITOR=nvim
+  export VISUAL=nvim
+fi
+
+# CASE_SENSITIVE="true"
+# HYPHEN_INSENSITIVE="true"
+# DISABLE_AUTO_UPDATE="true"
+# export UPDATE_ZSH_DAYS=13
+# DISABLE_LS_COLORS="true"
+# DISABLE_AUTO_TITLE="true"
+# export MANPATH="/usr/local/man:$MANPATH"
+# export LANG=en_US.UTF-8
+# export ARCHFLAGS="-arch x86_64"
+
+## ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# XXX: short circuit tabtab completion auto installation
+# tabtab source for serverless package
+# tabtab source for sls packageu
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+
+
