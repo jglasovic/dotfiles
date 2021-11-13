@@ -40,3 +40,8 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
+augroup dynamic_smartcase
+    autocmd!
+    autocmd CmdLineEnter : set smartcase
+    autocmd CmdLineLeave : set nosmartcase
+augroup END

@@ -1,4 +1,26 @@
-""NerdTree
+"OS-Specific {{{
+
+"Fallback for detecting the OS
+if !exists('g:os')
+  if has('win32') || has('win16')
+    let g:os = 'Windows'
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
+"if g:os == 'Darwin'
+"endif
+
+"if g:os == 'Linux'
+"endif
+
+"if g:os == 'Windows'
+"endif
+
+"}}}
+
+"NerdTree
 nnoremap <leader>] :NERDTreeToggle<CR>
 ""Reload Vim configuration
 nnoremap <leader>. :source $MYVIMRC<CR>
@@ -7,12 +29,14 @@ nnoremap <leader>l :set list!<CR>
 "Toggle line numbers
 nnoremap <leader>n :call ToggleLineNumbers()<CR>
 "Close
-nnoremap <leader>q :close<CR>
+nnoremap <C-q> :close<CR>
 ""Exit insert mode
 inoremap ;; <Esc>
 "Mapping for saving
 nnoremap <C-s> :w<CR>
-
+inoremap <C-s> <Esc>:w<CR>
+"Redo
+nnoremap r <C-r>
 ""Mappings for opening new splits
 ""Window
 nnoremap <leader>sw<left>  :topleft  vnew<CR>
@@ -33,10 +57,10 @@ nnoremap <leader>st<up>     :leftabove   new \| :term<CR>
 nnoremap <leader>st<down>   :rightbelow  new \| :term<CR>
 
 ""Manipulating window focus
-nnoremap <leader><left>  <c-w>h<CR>
-nnoremap <leader><down>  <c-w>j<CR>
-nnoremap <leader><up>    <c-w>k<CR>
-nnoremap <leader><right> <c-w>l<CR>
+nnoremap <leader><left> <C-w>h<CR>
+nnoremap <leader><down>  <C-w>j<CR>
+nnoremap <leader><up>    <C-w>k<CR>
+nnoremap <leader><right> <C-w>l<CR>
 
 ""Resize view
 nnoremap <leader>v<left> :vertical resize -10<CR>
@@ -53,22 +77,18 @@ nnoremap <S-down> G
 inoremap <S-left> <C-o>0
 inoremap <S-right> <C-o>$
 inoremap <S-up> <C-o>gg
-inoremap <S-down> <C-o>0
-
+inoremap <S-down> <C-o>G
+"sdjknfsdlnv asdfvav avaevea aevaev/aevaev avasve
 vnoremap <S-left> 0
 vnoremap <S-right> $
 vnoremap <S-up> gg
 vnoremap <S-down> G
 
-"tnoremap <S-right> 0
-"tnoremap <S-left> $
-"tnoremap <C>
-"
 ""Mappings for switching
 nnoremap <C-i> :tabnext<CR>
 "Terminal exit insert mode
 tnoremap <Esc> <C-\><C-n>
-tnoremap <S> <D>
+tnoremap <C-k> <C-l>
 ""Mapping to select the last-changed text
 "noremap gV `[v`]
 "
