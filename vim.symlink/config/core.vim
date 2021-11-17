@@ -20,7 +20,6 @@ set wildignorecase
 " allow mouse jumps
 set ttyfast
 set mouse=a
-"set ttymouse=xterm2
 
 " Line numbers
 set number relativenumber
@@ -35,13 +34,7 @@ function ToggleLineNumbers()
 endfunction
 
 if executable('rg')
-  "< https://github.com/BurntSushi/ripgrep/issues/425#issuecomment-702244167 >
   set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-augroup dynamic_smartcase
-    autocmd!
-    autocmd CmdLineEnter : set smartcase
-    autocmd CmdLineLeave : set nosmartcase
-augroup END

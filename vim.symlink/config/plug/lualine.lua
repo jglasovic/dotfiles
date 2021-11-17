@@ -1,20 +1,23 @@
 require('lualine').setup({
     options = {
       icons_enabled = true,
-      theme = 'tokyonight',
+      theme = 'powerline_dark',
       component_separators = { '', ' ' },
       section_separators = { '', '' },
     },
     sections = {
       lualine_a = { 'mode' },
-      lualine_b = { 'branch' },
+      lualine_b = { 'FugitiveHead' },
       lualine_c = { 'filename' },
       lualine_x = {
         {
           'diagnostics',
-          sources = { 'nvim_lsp' },
+          sources = { 'coc' },
           symbols = {
-            hint = '  ',
+            error = ' E ',
+            warn = ' W ',
+            info = ' I ',
+            hint = '   ',
           },
           sections = { 'error', 'warn', 'info', 'hint' },
         },

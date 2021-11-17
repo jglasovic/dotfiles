@@ -1,13 +1,16 @@
 call plug#begin('~/.vim/plugged')
 	Plug 'preservim/nerdtree'
-	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+	Plug 'Xuyuanp/nerdtree-git-plugin'
 	Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
 	Plug 'junegunn/fzf.vim'
 	Plug 'hoob3rt/lualine.nvim'
 	Plug 'tpope/vim-fugitive'
+"	Plug 'airblade/vim-gitgutter'
+	Plug 'mhinz/vim-signify'
 	Plug 'sheerun/vim-polyglot'
-	"Plug 'neoclide/coc.nvim', {'branch': 'release'}  switched to nvim-lsp below
-	Plug 'neovim/nvim-lspconfig'	
-	Plug 'williamboman/nvim-lsp-installer'
+	Plug 'whatyouhide/vim-gotham'
+	Plug 'christoomey/vim-tmux-navigator'
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	Plug 'petobens/poet-v'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
