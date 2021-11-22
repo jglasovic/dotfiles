@@ -1,0 +1,13 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  "coc.preferences.formatOnType": true,
+  // eslint
+  "eslint.autoFixOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  // ts
+  "tsserver.formatOnType": true,
+  // python
+  "python.formatting.provider": "black",
+  "python.linting.lintOnSave": true,
+  "python.linting.pylintEnabled": true
+}
