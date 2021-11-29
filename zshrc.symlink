@@ -13,9 +13,9 @@ export SBIN_PATH="/usr/local/sbin"
 export CORE_UTILS_PATH="/usr/local/opt/coreutils/libexec/gnubin"
 export MYSQL_PATH="/usr/local/mysql/bin"
 export DENO_PATH="$HOME/.deno/bin"
-export PYENV_PATH="$HOME/.pyenv/bin"
-export POETRY_PATH="$HOME/.poetry/bin"
-export PATH=$PYENV_PATH:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$POETRY_PATH:$PATH
+export PYENV_ROOT="$HOME/.pyenv"
+export POETRY_ROOT="$HOME/.poetry"
+export PATH=$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$PATH
 
 source "$HOME/.cargo/env"
 
@@ -60,9 +60,10 @@ add-zsh-hook chpwd load-dev-cli
 load-dev-cli
 
 ##  pyenv 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-fi
+#if command -v pyenv 1>/dev/null 2>&1; then
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+#fi
 eval "$(pyenv virtualenv-init -)"
 
 ## editor

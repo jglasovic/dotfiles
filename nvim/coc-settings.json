@@ -9,5 +9,6 @@
   // python
   "python.formatting.provider": "black",
   "python.linting.lintOnSave": true,
-  "python.linting.pylintEnabled": true
+  "python.linting.pylintEnabled": true,
+  "pyright.organizeimports.provider": "isort"
 }

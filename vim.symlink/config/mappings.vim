@@ -48,6 +48,17 @@ vnoremap <S-down> G
 ""Mappings for tabs
 nnoremap <leader><right> :tabprev<CR>
 nnoremap <leader><left> :tabnext<CR>
+
+"System clipboard
+xnoremap <leader>y "+y
+xnoremap <leader>d "+d
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+xnoremap <leader>p "+p
+xnoremap <leader>P "+P
+
+
+
 "Terminal exit insert mode
 tnoremap <Esc> <C-\><C-n>
 "NerdTree
@@ -59,7 +70,7 @@ nmap <leader>l :set list!<CR>
 "Toggle line numbers
 nnoremap <leader>n :call ToggleLineNumbers()<CR>
 "Close
-nnoremap q :close<CR>
+nnoremap<leader>q :close<CR>
 ""Exit insert mode
 inoremap ;; <Esc>
 "Mapping for saving
