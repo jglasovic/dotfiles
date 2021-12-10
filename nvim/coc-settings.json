@@ -8,7 +8,17 @@
   "tsserver.formatOnType": true,
   // python
   "python.formatting.provider": "black",
+  "python.analysis.diagnosticMode": "workspace",
   "python.linting.lintOnSave": true,
   "python.linting.pylintEnabled": true,
-  "pyright.organizeimports.provider": "isort"
+  "python.linting.pylintArgs": ["--rcfile", "${workspaceFolder}/.pylintrc"],
+  "python.formatting.blackArgs": [
+    "--config",
+    "${workspaceFolder}/pyproject.toml"
+  ],
+  "pyright.organizeimports.provider": "isort",
+  "python.sortImports.args": [
+    "--settings-path",
+    "${workspaceFolder}/pyproject.toml"
+  ]
 }

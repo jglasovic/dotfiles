@@ -58,7 +58,6 @@ xnoremap <leader>p "+p
 xnoremap <leader>P "+P
 
 
-
 "Terminal exit insert mode
 tnoremap <Esc> <C-\><C-n>
 "NerdTree
@@ -78,5 +77,4 @@ nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>
 "Redo
 nmap r <C-r>
-
 
