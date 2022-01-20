@@ -16,6 +16,13 @@ set wildmode=longest:full,full
 set wildmenu
 set wildignore=*.o,*~
 set wildignorecase
+set nobackup
+set nowritebackup
+set cmdheight=2
+set shortmess+=c
+set signcolumn=yes:1
+set updatetime=100
+set spelllang=en_us
 
 " allow mouse jumps
 set ttyfast
@@ -24,14 +31,9 @@ set mouse=a
 " Line numbers
 set number relativenumber
 augroup relnum_focus
-	autocmd! FocusLost,InsertEnter * if &number | setl norelativenumber | else | echom "Line numbers hidden" | endif
-	autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echom "Line numbers hidden" | endif
+  autocmd! FocusLost,InsertEnter * if &number | setl norelativenumber | else | echom "Line numbers hidden" | endif
+  autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echom "Line numbers hidden" | endif
 augroup END
-
-function ToggleLineNumbers()
-	set number!
-	set relativenumber!
-endfunction
 
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case

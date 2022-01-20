@@ -5,17 +5,14 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'tpope/vim-fugitive'
+  Plug 'pgr0ss/vim-github-url'
   Plug 'mhinz/vim-signify'
   Plug 'sheerun/vim-polyglot'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)  
-"  Plug 'neovim/nvim-lspconfig'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)
+"  Plug 'neovim/nvim-lspconfig
 "  Plug 'williamboman/nvim-lsp-installer'
   Plug 'petobens/poet-v'
-
-"colorscheme
-  Plug 'joshdick/onedark.vim'
-  Plug 'whatyouhide/vim-gotham'
-  Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+  Plug 'puremourning/vimspector'
 call plug#end()

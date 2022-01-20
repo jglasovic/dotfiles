@@ -22,10 +22,6 @@ bind left previous-window
 
 bind q killp
 
-#### Pane borders
-# set -g pane-active-border-style fg=colour10
-# set -g pane-border-style fg=colour15
-
 #### Easy reload of tmux configuration
 bind R source ~/.tmux.conf \; display-message "tmux.conf reloaded."
 
@@ -41,17 +37,17 @@ set -g set-titles-string '#S:#I.#P #W'
 setw -g mode-keys vi
 
 # # Copy mode
-# unbind [
-# bind Escape copy-mode
-# unbind ]
-# bind -Tcopy-mode-vi v send -X begin-selection
-# bind -Tcopy-mode-vi y send -X copy-selection
-# unbind -Tcopy-mode-vi Enter
-# bind -Tcopy-mode-vi Enter send -X copy-selection
-# bind -Tcopy-mode-vi C-v send -X rectangle-toggle
-# # In copy mode, use [prefix]+V to select the entire line
-# # Found at < http://superuser.com/a/743904/64392 >
-# bind V send-keys "0v\$"
+unbind [
+bind Escape copy-mode
+unbind ]
+bind -Tcopy-mode-vi v send -X begin-selection
+bind -Tcopy-mode-vi y send -X copy-selection
+unbind -Tcopy-mode-vi Enter
+bind -Tcopy-mode-vi Enter send -X copy-selection
+bind -Tcopy-mode-vi C-v send -X rectangle-toggle
+# In copy mode, use [prefix]+V to select the entire line
+# Found at < http://superuser.com/a/743904/64392 >
+bind V send-keys "0v\$"
 
 # Buffer pasting
 bind C-v paste-buffer

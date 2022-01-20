@@ -23,7 +23,7 @@ noremap <C-down>  <C-w>j<CR>
 noremap <C-up>    <C-w>k<CR>
 noremap <C-right> <C-w>l<CR>
 
-""Resize view
+"Resize view
 nmap <leader>v<left> :vertical resize -10<CR>
 nmap <leader>v<right> :vertical resize +10<CR>
 nmap <leader>v<up> :resize +10<CR>
@@ -45,23 +45,22 @@ vnoremap <S-right> $
 vnoremap <S-up> gg
 vnoremap <S-down> G
 
-""Mappings for tabs
-nnoremap <leader><right> :tabprev<CR>
-nnoremap <leader><left> :tabnext<CR>
+"Mappings for tabs
+nnoremap <leader><right> :tabnext<CR>
+nnoremap <leader><left> :tabprev<CR>
 
 "System clipboard
-xnoremap <leader>y "+y
-xnoremap <leader>d "+d
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-xnoremap <leader>p "+p
-xnoremap <leader>P "+P
+xnoremap y "+y
+xnoremap x "+x
+xnoremap d "+d
+xnoremap p "+p
+xnoremap P "+P
+nnoremap p "+p
+nnoremap P "+P
 
 
 "Terminal exit insert mode
 tnoremap <Esc> <C-\><C-n>
-"NerdTree
-nmap <leader>] :NERDTreeToggle<CR>
 ""Reload Vim configuration
 nmap <leader>. :source $MYVIMRC<CR>
 ""Toggle 'set list' (toggles invisible characters)
@@ -77,4 +76,9 @@ nnoremap <C-s> :w<CR>
 inoremap <C-s> <Esc>:w<CR>
 "Redo
 nmap r <C-r>
+
+nmap <leader>s :call ToggleSpellchecking()<CR>
+
+nmap ff :FZF<CR>
+nmap fc :Rg<CR>
 

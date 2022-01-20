@@ -1,6 +1,7 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["*"],
   "coc.preferences.formatOnType": true,
+  "coc.preferences.jumpCommand": "tab drop",
   // eslint
   "eslint.autoFixOnSave": true,
   "eslint.alwaysShowStatus": true,

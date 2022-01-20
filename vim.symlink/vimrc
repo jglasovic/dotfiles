@@ -3,7 +3,8 @@ runtime! config/plug_base.vim "Adding plugins via junegunnvim-plug
 runtime! config/core.vim
 
 "Settings
-runtime! config/colorscheme.vim  "Colors
+runtime! config/helpers.vim
+runtime! config/colorscheme.vim
 runtime! config/plug/*.vim "plugin settings - .vim files
 runtime! config/plug/*.lua "plugin settings - .lua files
 
