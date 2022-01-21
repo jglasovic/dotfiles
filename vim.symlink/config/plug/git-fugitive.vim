@@ -1,24 +1,26 @@
 function! s:ToggleDiff()
-  let bufnr = CloseBuf('fugitive:')
-  if (&diff == 0 || getbufvar('#', '&diff') == 0) && bufnr == 0
+  let closed_buf_len = CloseBuffers('fugitive:')
+  if closed_buf_len == 0
     exec "Gvdiffsplit!"
   endif
 endfunction
 
 function! s:ToggleBlame()
-  let bufnr = CloseBuf('fugitiveblame')
-  if bufnr == 0
+  let closed_buf_len = CloseBuffers('fugitiveblame')
+  if closed_buf_len == 0
       exec "G blame"
   endif
 endfunction
 
 function! s:ToggleG()
-  let bufnr = CloseBuf('.git/index')
-  if bufnr == 0
+  let closed_buf_len = CloseBuffers('.git/index')
+  if closed_buf_len == 0
       exec "G"
   endif
 endfunction
 
-nnoremap <leader>g :call <SID>ToggleG()<CR>
-nnoremap <leader>b :call <SID>ToggleBlame()<CR>
-nnoremap <leader>d :call <SID>ToggleDiff()<CR>
+nnoremap <leader>gs :call <SID>ToggleG()<CR>
+nnoremap <leader>gb :call <SID>ToggleBlame()<CR>
+nnoremap <leader>gd :call <SID>ToggleDiff()<CR>
+nnoremap <leader>g<left> :diffget //2<CR>
+nnoremap <leader>g<right> :diffget //3<CR>
