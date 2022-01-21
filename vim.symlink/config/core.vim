@@ -23,7 +23,7 @@ set shortmess+=c
 set signcolumn=yes:1
 set updatetime=100
 set spelllang=en_us
-
+set noshowmode
 " allow mouse jumps
 set ttyfast
 set mouse=a
