@@ -1,7 +1,7 @@
 
 ## Aliases
 
-alias vim='nvim'
+alias vim="nvim"
 alias zshrc="vim ~/.zshrc"
 alias xcode="open -a Xcode"
 alias exit="exit 0"

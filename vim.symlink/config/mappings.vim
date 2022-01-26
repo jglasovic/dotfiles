@@ -11,23 +11,11 @@ nmap <leader>sb<right>  :rightbelow vnew<CR>
 nmap <leader>sb<up>     :leftabove  new<CR>
 nmap <leader>sb<down>   :rightbelow new<CR>
 
-"Terminal //not tmux
-nmap <leader>st<left>   :leftabove  vnew \| :term <CR>
-nmap <leader>st<right>  :rightbelow vnew \| :term<CR>
-nmap <leader>st<up>     :leftabove   new \| :term<CR>
-nmap <leader>st<down>   :rightbelow  new \| :term<CR>
-
 ""Manipulating window focus
 noremap <C-left>  <C-w>h<CR>
 noremap <C-down>  <C-w>j<CR>
 noremap <C-up>    <C-w>k<CR>
 noremap <C-right> <C-w>l<CR>
-
-"Resize view
-nmap <leader>v<left> :vertical resize -10<CR>
-nmap <leader>v<right> :vertical resize +10<CR>
-nmap <leader>v<up> :resize +10<CR>
-nmap <leader>v<down> :resize -10<CR>
 
 ""Cursor jumps
 nnoremap <S-left> 0
@@ -45,22 +33,14 @@ vnoremap <S-right> $
 vnoremap <S-up> gg
 vnoremap <S-down> G
 
-"Mappings for tabs
-nnoremap <leader><right> :tabnext<CR>
-nnoremap <leader><left> :tabprev<CR>
+"Resize view
+nmap <leader>v<left> :vertical resize -10<CR>
+nmap <leader>v<right> :vertical resize +10<CR>
+nmap <leader>v<up> :resize +10<CR>
+nmap <leader>v<down> :resize -10<CR>
 
-"System clipboard
-xnoremap y "+y
-xnoremap x "+x
-xnoremap d "+d
-xnoremap p "+p
-xnoremap P "+P
-nnoremap p "+p
-nnoremap P "+P
-
-
-"Terminal exit insert mode
-tnoremap <Esc> <C-\><C-n>
+"Terminal exit insert mode, closing specific buffer if exists
+tnoremap <Esc> <C-\><C-n> :call ExitFZF()<CR>
 ""Reload Vim configuration
 nmap <leader>. :source $MYVIMRC<CR>
 ""Toggle 'set list' (toggles invisible characters)
@@ -79,6 +59,6 @@ nmap r <C-r>
 
 nmap <leader>s :call ToggleSpellchecking()<CR>
 
-nmap ff :FZF<CR>
-nmap fc :Rg<CR>
+nmap <space><space> :Files<CR>
+nmap <space>f :Rg<CR>
 

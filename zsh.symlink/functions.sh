@@ -3,7 +3,7 @@ function check-file-exists(){
   [ -f "$1" ]
 }
 
-function print-c(){
+function print-red(){
   echo "\e[95m$1\e[0m"
 }
 
@@ -28,21 +28,21 @@ function cheat() {
 # set node version based on .nvmrc
 function load-nvmrc() {
   if command_exists nvm ; then
-	  local node_version="$(nvm version)"
-	  local nvmrc_path="$(nvm_find_nvmrc)"
+    local node_version="$(nvm version)"
+    local nvmrc_path="$(nvm_find_nvmrc)"
 
-	  if [ -n "$nvmrc_path" ]; then
-	    local nvmrc_node_version=$(nvm version "$(/bin/cat "${nvmrc_path}")")
+    if [ -n "$nvmrc_path" ]; then
+      local nvmrc_node_version=$(nvm version "$(/bin/cat "${nvmrc_path}")")
 
-	    if [ "$nvmrc_node_version" = "N/A" ]; then
-	      nvm install
-	    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-	      nvm use
-	    fi
-	  elif [ "$node_version" != "$(nvm version default)" ]; then
-	    echo "Reverting to nvm default version"
-	    nvm use default
-	  fi
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$node_version" ]; then
+        nvm use
+      fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+      echo "Reverting to nvm default version"
+      nvm use default
+    fi
   else
     exit "Missing nvm command"
   fi
@@ -52,27 +52,27 @@ function load-nvmrc() {
 function get-aws-ceredentials-expiration(){
   local aws_credentials_path=~/.aws/credentials
   if check-file-exists $aws_credentials_path ; then
-	  local x_security_token_expires=$1
-	  while IFS=' = ' read key value
-	  do
-	    if [[ $key == \[*] ]]; then
-		section=$key
-	    elif [[ $value ]] && [[ $section == '[default]' ]]; then
-		if [[ $key == 'x_security_token_expires' ]]; then
-		   eval $x_security_token_expires=$value
-		fi
-	    fi
-	  done < $aws_credentials_path
+    local x_security_token_expires=$1
+    while IFS=' = ' read key value
+    do
+      if [[ $key == \[*] ]]; then
+        section=$key
+      elif [[ $value ]] && [[ $section == '[default]' ]]; then
+        if [[ $key == 'x_security_token_expires' ]]; then
+          eval $x_security_token_expires=$value
+        fi
+      fi
+    done < $aws_credentials_path
   else
-	  exit "Missing $aws_credentials_path"
+    exit "Missing $aws_credentials_path"
   fi
 }
 
  # VPN check connection
  # requires VPN_CLIENT_APP and MY_VPN_IP
 function check-vpn-connection(){
-  print-c $VPN_CLIENT_APP
-  print-c $MY_VPN_IP
+  print-red $VPN_CLIENT_APP
+  print-red $MY_VPN_IP
   if [ ! variable_exists $VPN_CLIENT_APP ]  || [ ! variable_exists $MY_VPN_IP ]; then
     echo "VPN_CLIENT_APP and MY_VPN_IP are required!"
   else
@@ -106,12 +106,11 @@ function load-dev-cli() {
         saml2aws login
         dev-cli configure --code-artifact
       else
-         print-c "AWS - credentials are not expired, skipping!"
+         print-red "AWS - credentials are not expired, skipping!"
       fi
     fi
   done
 }
-
 
 function use-npm-registry(){
   local npmrc_copy=~/.npmrc_copy
@@ -122,16 +121,16 @@ function use-npm-registry(){
   local yarnrcyml=~/.yarnrc.yml
 
   check-file-exists $npmrc && \
-  { print-c "Removing .npmrc"; rm -rf $npmrc }
-  print-c "Adding .npmrc with npm registry"
+  { print-red "Removing .npmrc"; rm -rf $npmrc }
+  print-red "Adding .npmrc with npm registry"
   cp $npmrc_copy $npmrc
 
   check-file-exists $yarnrc && \
-  { print-c "Removing .yarnrc"; rm -rf $yarnrc }
+  { print-red "Removing .yarnrc"; rm -rf $yarnrc }
   check-file-exists $yarnrcyml && \
-  { print-c "Removing .yarnrc.yml"; rm -rf $yarnrcyml }
+  { print-red "Removing .yarnrc.yml"; rm -rf $yarnrcyml }
 
-  print-c "Adding .yarnrc with yarnpkg registry"
+  print-red "Adding .yarnrc with yarnpkg registry"
   cp $yarnrc_copy $yarnrc
 
 }

@@ -33,3 +33,10 @@ function! ToggleLineNumbers()
   set number!
   set relativenumber!
 endfunction
+
+function! ExitFZF()
+  let fzfbufs = FindBuffers('#FZF')
+  if len(fzfbufs) > 0
+    close
+  endif
+endfunction

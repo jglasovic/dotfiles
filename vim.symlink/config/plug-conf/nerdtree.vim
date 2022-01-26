@@ -61,6 +61,8 @@ let upDirKeyMap = {
   \ }
 
 
-autocmd VimEnter * call NERDTreeAddKeyMap(dirKeyMap) | call NERDTreeAddKeyMap(nodeKeyMap) | call NERDTreeAddKeyMap(upDirKeyMap)
+autocmd VimEnter * call NERDTreeAddKeyMap(dirKeyMap)
+  \ | call NERDTreeAddKeyMap(nodeKeyMap)
+  \ | call NERDTreeAddKeyMap(upDirKeyMap)
 
 nmap <silent> <leader>] :call <SID>ToggleNerdTreeFind()<CR>

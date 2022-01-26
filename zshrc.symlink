@@ -3,10 +3,28 @@
 ## Reset PATH
 export PATH=$(env -i bash --login --norc -c 'echo $PATH')
 
+LC_ALL="en_US.UTF-8"
+ENABLE_CORRECTION="true"
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+DEFAULT_USER=$USER
+
+## editor
+export EDITOR=nvim
+export VISUAL=nvim
+
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+
+export FZF_DEFAULT_COMMAND='rg --smart-case --files --follow --no-ignore-vcs --hidden --glob "!{node_modules/*,.git/*}"'
+
+## ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
 export ZSH="$HOME/.oh-my-zsh"
 export PGDATA="/usr/local/var/postgres"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
-
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 export POSTGRES_PATH="/Applications/Postgres.app/Contents/Versions/latest/bin/"
 export SBIN_PATH="/usr/local/sbin"
@@ -15,22 +33,14 @@ export MYSQL_PATH="/usr/local/mysql/bin"
 export DENO_PATH="$HOME/.deno/bin"
 export PYENV_ROOT="$HOME/.pyenv"
 export POETRY_ROOT="$HOME/.poetry"
+export NVM_DIR="$HOME/.nvm"
+
+## export path
 export PATH=$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$PATH
 
-source "$HOME/.cargo/env"
-
-ZSH_THEME="simple-complex"
-LC_ALL="en_US.UTF-8"
-ENABLE_CORRECTION="true"
-HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
-
-plugins=(
-  git
-)
-source $ZSH/oh-my-zsh.sh
-DEFAULT_USER=$USER
+## nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 ## brew
 if type brew &>/dev/null; then
@@ -38,61 +48,31 @@ if type brew &>/dev/null; then
 
   autoload -Uz compinit
   compinit
-
 fi
 
-## nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+##  pyenv
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
-## load aliases 
-. ~/.zsh/aliases.zsh
-## load functions 
-. ~/.zsh/functions.zsh
+source $ZSH/oh-my-zsh.sh
+## rust cargo
+source "$HOME/.cargo/env"
+## my custom theme
+source ~/.zsh/my-prompt-theme.sh
+## load aliases
+source ~/.zsh/aliases.sh
+## load functions
+source ~/.zsh/functions.sh
 
-
-autoload -U add-zsh-hook
 ## add and apply hooks
+autoload -U add-zsh-hook
+
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 add-zsh-hook chpwd load-dev-cli
 load-dev-cli
-
-##  pyenv 
-#if command -v pyenv 1>/dev/null 2>&1; then
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-#fi
-eval "$(pyenv virtualenv-init -)"
-
-## editor
-
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR=vim
-  export VISUAL=vim
-else
-  export EDITOR=nvim
-  export VISUAL=nvim
-fi
-
-
-export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
-
-# CASE_SENSITIVE="true"
-# HYPHEN_INSENSITIVE="true"
-# DISABLE_AUTO_UPDATE="true"
-# export UPDATE_ZSH_DAYS=13
-# DISABLE_LS_COLORS="true"
-# DISABLE_AUTO_TITLE="true"
-# export MANPATH="/usr/local/man:$MANPATH"
-# export LANG=en_US.UTF-8
-# export ARCHFLAGS="-arch x86_64"
-
-## ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # XXX: short circuit tabtab completion auto installation
 # tabtab source for serverless package

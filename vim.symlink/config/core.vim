@@ -27,6 +27,8 @@ set noshowmode
 " allow mouse jumps
 set ttyfast
 set mouse=a
+" clipboard
+set clipboard+=unnamedplus
 
 " Line numbers
 set number relativenumber
