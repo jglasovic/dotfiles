@@ -17,22 +17,6 @@ noremap <C-down>  <C-w>j<CR>
 noremap <C-up>    <C-w>k<CR>
 noremap <C-right> <C-w>l<CR>
 
-""Cursor jumps
-nnoremap <S-left> 0
-nnoremap <S-right> $
-nnoremap <S-up> gg
-nnoremap <S-down> G
-
-inoremap <S-left> <C-o>0
-inoremap <S-right> <C-o>$
-inoremap <S-up> <C-o>gg
-inoremap <S-down> <C-o>G
-
-vnoremap <S-left> 0
-vnoremap <S-right> $
-vnoremap <S-up> gg
-vnoremap <S-down> G
-
 "Resize view
 nmap <leader>v<left> :vertical resize -10<CR>
 nmap <leader>v<right> :vertical resize +10<CR>
