@@ -1,3 +1,14 @@
+function! HasBuffer(pattern)
+  let blist = getbufinfo()
+  for buffer in blist
+    if(match(buffer.name, a:pattern) > -1)
+      return 1
+    endif
+  endfor
+  return 0
+endfunction
+
+
 function! FindBuffers(pattern)
   let blist = getbufinfo()
   let filtered = []
@@ -35,8 +46,7 @@ function! ToggleLineNumbers()
 endfunction
 
 function! ExitFZF()
-  let fzfbufs = FindBuffers('#FZF')
-  if len(fzfbufs) > 0
+  if HasBuffer('#FZF')
     close
   endif
 endfunction

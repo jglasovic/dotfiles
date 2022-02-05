@@ -1,13 +1,24 @@
-"Basic/core settings for Vim itself
-runtime! config/plug-list.vim "Adding plugins via junegunnvim-plug
-runtime! config/core.vim
+let s:plugged_dir_path = '~/.vim/plugged'
+let s:autoload_plug_path = '~/.vim/autoload/plug.vim'
+
+
+" load plugins
+if empty(glob(s:autoload_plug_path))
+  silent exec "!curl -fLo ".s:autoload_plug_path." --create-dirs "
+    \ ."https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+endif
+
+" check for plugged dir
+if empty(glob(s:plugged_dir_path))
+  silent exec "!mkdir ".s:plugged_dir_path
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+"Plugins
+runtime! plug-list.vim
 
 "Settings
-runtime! config/functions.vim
-runtime! config/colorscheme.vim
-runtime! config/plug-conf/*.vim "plugin settings - .vim files
-runtime! config/plug-conf/*.lua "plugin settings - .lua files
+runtime! settings/*
 
-"Mappings
-runtime! config/mappings.vim
-
+"Plug-configs
+runtime! plug-configs/*
