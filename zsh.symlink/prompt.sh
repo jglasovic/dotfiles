@@ -1,3 +1,6 @@
+
+source ~/.zsh/utils.sh
+
 prompt_segment() {
   local fg
   [[ -n $1 ]] && fg="%F{$1}" || fg="%f"

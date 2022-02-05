@@ -1,3 +1,5 @@
+#/bin/zsh
+
 ## Jure Glasovic's .zshrc <https://github.com/jglasovic>
 
 ## Reset PATH
@@ -5,7 +7,7 @@ export PATH=$(env -i bash --login --norc -c 'echo $PATH')
 
 LC_ALL="en_US.UTF-8"
 ENABLE_CORRECTION="true"
-HISTFILE=~/.zsh_history
+HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 DEFAULT_USER=$USER
@@ -58,12 +60,11 @@ eval "$(pyenv virtualenv-init -)"
 source $ZSH/oh-my-zsh.sh
 ## rust cargo
 source "$HOME/.cargo/env"
-## my custom theme
-source ~/.zsh/my-prompt-theme.sh
-## load aliases
-source ~/.zsh/aliases.sh
-## load functions
-source ~/.zsh/functions.sh
+
+# source scripts
+for script in `find $HOME/.zsh/ -type f -maxdepth 1 -mindepth 1`; do
+  source $script
+done
 
 ## add and apply hooks
 autoload -U add-zsh-hook

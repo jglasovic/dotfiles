@@ -1,1 +1,3 @@
-vim.symlink/autoload/*
+vim.symlink/autoload
+vim.symlink/plugged
+zshenv.symlink
