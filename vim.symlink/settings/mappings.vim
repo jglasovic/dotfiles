@@ -1,4 +1,5 @@
-let mapleader = ","
+"Mapping <space> to <leader> for Normal, Visual, Select and Operator-pending modes
+map <space> <leader>
 
 ""Mappings for opening new splits
 " Window
@@ -13,52 +14,49 @@ nmap <leader>wbl :rightbelow vnew<CR>
 nmap <leader>wbk :leftabove  new<CR>
 nmap <leader>wbj :rightbelow new<CR>
 
-" Resize view
-nmap <leader>vh :vertical resize -10<CR>
-nmap <leader>vl :vertical resize +10<CR>
-nmap <leader>vk :resize +10<CR>
-nmap <leader>vj :resize -10<CR>
-
 " Exit
 inoremap ;; <Esc>
 
-" Terminal exit insert mode, closing FZF buffer if exists
-tnoremap ;; <C-\><C-n> :call ExitFZF()<CR>
+" Terminal exit insert mode
+tnoremap ;; <C-\><C-n>
 
 " Reload Vim configuration
 nmap <leader>. :source $MYVIMRC<CR>
 
 " Toggle 'set list' (toggles invisible characters)
-nmap <leader>l :set list!<CR>
+nmap <leader>li :set list!<CR>
 
 " Toggle line numbers
-nnoremap <leader>n :call ToggleLineNumbers()<CR>
+nnoremap <leader>nu :call ToggleLineNumbers()<CR>
 
 " Close
-nnoremap<leader>q :close<CR>
+nnoremap<C-q> :close<CR>
 
 " Mapping for saving
 noremap <C-s> :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
-nmap <leader>s :call ToggleSpellchecking()<CR>
-nmap <space><space> :Files<CR>
-nmap <space>f :Rg<CR>
+nmap <leader>sp :call ToggleSpellchecking()<CR>
+nmap <silent> <leader>p :Files<CR>
+nmap <silent> <leader>P :Rg<CR>
 
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
 
 " No arrow keys
-nnoremap <up> <nop>
-nnoremap <down> <nop>
+nnoremap <up> :echo "No!"<CR>
+nnoremap <down> :echo "No!"<CR>
 
 " Left and right for tabs
 nnoremap <left> :tabprev<CR>
 nnoremap <right> :tabnext<CR>
 
-" Toggles between buffers
-nnoremap <leader><leader> <c-^>
+" Resize view
+nnoremap <C-left> :vertical resize -10<CR>
+nnoremap <C-right> :vertical resize +10<CR>
+nnoremap <C-up> :resize +10<CR>
+nnoremap <C-down> :resize -10<CR>
 
-" Remove whitespace
-command! KillWhitespace :normal :%s/ *$//g<cr><c-o><cr>
+" Toggles between buffers
+nnoremap <space><space> <c-^>

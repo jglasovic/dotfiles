@@ -7,7 +7,9 @@ require'nvim-treesitter.configs'.setup {
     "json",
     "python",
     "typescript",
-    "yaml"
+    "yaml",
+		"lua",
+		"tsx"
   },
   highlight = {
     enable = true

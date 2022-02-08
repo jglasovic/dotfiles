@@ -45,8 +45,3 @@ function! ToggleLineNumbers()
   set relativenumber!
 endfunction
 
-function! ExitFZF()
-  if HasBuffer('#FZF')
-    close
-  endif
-endfunction

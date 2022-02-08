@@ -4,7 +4,9 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-eslint',
   \ 'coc-prettier',
-  \ 'coc-pyright'
+  \ 'coc-pyright',
+  \ 'coc-vimlsp',
+  \ '@yaegassy/coc-intelephense'
   \ ]
 
 

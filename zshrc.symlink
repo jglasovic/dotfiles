@@ -36,9 +36,9 @@ export DENO_PATH="$HOME/.deno/bin"
 export PYENV_ROOT="$HOME/.pyenv"
 export POETRY_ROOT="$HOME/.poetry"
 export NVM_DIR="$HOME/.nvm"
-
+export PHP_ROOT="/usr/local/Cellar/php/8.1.2"
 ## export path
-export PATH=$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$PATH
+export PATH=$PHP_ROOT/bin:$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_PATH:$MYSQL_PATH:$CORE_UTILS_PATH:$SBIN_PATH:$POSTGRES_PATH:$ANDROID_TOOLS_PATH:$PATH
 
 ## nvm
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

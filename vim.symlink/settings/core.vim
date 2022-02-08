@@ -7,7 +7,7 @@ set nowrap
 set softtabstop=2
 set tabstop=2
 set shiftwidth=2
-set backspace=2 
+set backspace=2
 set cursorline
 set hidden "Allow more than one unsaved buffer
 set list "Show invisible characters by default
@@ -48,23 +48,23 @@ let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
 
 "OS-Specific {{{
 
-"Fallback for detecting the OS
-if !exists('g:os')
-  if has('win32') || has('win16')
-    let g:os = 'Windows'
-  else
-    let g:os = substitute(system('uname'), '\n', '', '')
-  endif
-endif
-
-"if g:os == 'Darwin'
+""Fallback for detecting the OS
+"if !exists('g:os')
+"  if has('win32') || has('win16')
+"    let g:os = 'Windows'
+"  else
+"    let g:os = substitute(system('uname'), '\n', '', '')
+"  endif
 "endif
 
-"if g:os == 'Linux'
-"endif
+""if g:os == 'Darwin'
+""endif
 
-"if g:os == 'Windows'
-"endif
+""if g:os == 'Linux'
+""endif
 
-"}}}
+""if g:os == 'Windows'
+""endif
+
+""}}}
 

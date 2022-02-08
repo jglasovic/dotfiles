@@ -3,8 +3,7 @@ let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_install_gadgets = [ 'debugpy', 'debugger-for-chrome' ]
 
 function GetExecName()
-  let ft = &filetype
-  let l:mapper = {
+  let s:mapper = {
         \ 'python': 'python',
         \ 'javascript': 'node',
         \ 'typescript': 'node',
@@ -12,7 +11,7 @@ function GetExecName()
         \ 'typescriptreact': 'node'
         \ }
 
-  return get(l:mapper, ft, '')
+  return get(s:mapper, &filetype, '')
 endfunction
 
 

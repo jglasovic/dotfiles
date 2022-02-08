@@ -6,7 +6,7 @@ local colors = {
   black        = '#202020',
   neon         = '#DFFF00',
   white        = '#FFFFFF',
-  green        = '#0DBD15',
+  green        = '#008700',
   seagreen     = '#5FFF87',
   purple       = '#5F005F',
   blue         = '#00DFFF',
@@ -30,7 +30,7 @@ local colors = {
 
 local theme = {
   normal = {
-    a = { bg = colors.green, fg = colors.black, gui="bold" },
+    a = { bg = colors.neon, fg = colors.black, gui="bold" },
     b = { bg = colors.gray, fg = colors.white },
     c = { bg = colors.darknavyblue, fg = colors.seagreen},
     y = { bg = colors.gray, fg = colors.green },
@@ -52,7 +52,7 @@ local theme = {
     c = { bg = colors.navyblue, fg = colors.white },
   },
   command = {
-    a = { bg = colors.neon, fg = colors.black, gui="bold" },
+    a = { bg = colors.green, fg = colors.black, gui="bold" },
     b = { bg = colors.darkgray, fg = colors.white },
     c = { bg = colors.darknavyblue, fg = colors.brightgreen },
   },

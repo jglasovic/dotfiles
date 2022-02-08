@@ -7,7 +7,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'pgr0ss/vim-github-url'
   Plug 'mhinz/vim-signify'
-  Plug 'sheerun/vim-polyglot'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'tpope/vim-commentary'

@@ -1,6 +1,6 @@
 #!/bin/sh
-source ~/.zsh/utils.sh
-source ~/.zsh/vpn-connection-check.sh
+source $HOME/.zsh/utils.sh
+source $HOME/.zsh/vpn-connection-check.sh
 
 # aws credentials expiration
 function get-aws-ceredentials-expiration(){
