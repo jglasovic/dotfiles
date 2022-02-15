@@ -1,6 +1,4 @@
 call plug#begin('~/.vim/plugged')
-  Plug 'preservim/nerdtree'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
   Plug 'hoob3rt/lualine.nvim'

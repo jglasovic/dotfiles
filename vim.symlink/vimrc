@@ -1,7 +1,6 @@
 let s:plugged_dir_path = '~/.vim/plugged'
 let s:autoload_plug_path = '~/.vim/autoload/plug.vim'
 
-
 " load plugins
 if empty(glob(s:autoload_plug_path))
   silent exec "!curl -fLo ".s:autoload_plug_path." --create-dirs "

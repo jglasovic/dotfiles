@@ -24,21 +24,28 @@ tnoremap ;; <C-\><C-n>
 nmap <leader>. :source $MYVIMRC<CR>
 
 " Toggle 'set list' (toggles invisible characters)
-nmap <leader>li :set list!<CR>
+nmap <leader>i :set list!<CR>
 
 " Toggle line numbers
-nnoremap <leader>nu :call ToggleLineNumbers()<CR>
+nnoremap <leader>n :call ToggleLineNumbers()<CR>
 
 " Close
-nnoremap<C-q> :close<CR>
+nnoremap <leader>q :close<CR>
 
 " Mapping for saving
 noremap <C-s> :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
-nmap <leader>sp :call ToggleSpellchecking()<CR>
+" Spell check
+nmap <leader>S :call ToggleSpellchecking()<CR>
+
+" Find
 nmap <silent> <leader>p :Files<CR>
 nmap <silent> <leader>P :Rg<CR>
+nmap <silent> <leader>s :Buffers<CR>
+
+" Search hi
+nnoremap <silent><expr> <Leader>f (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
 " Jump to start and end of line using the home row keys
 map H ^
@@ -48,15 +55,15 @@ map L $
 nnoremap <up> :echo "No!"<CR>
 nnoremap <down> :echo "No!"<CR>
 
-" Left and right for tabs
-nnoremap <left> :tabprev<CR>
-nnoremap <right> :tabnext<CR>
+" Toggles between buffers
+nnoremap <space><space> <c-^>
+
+" Left and right for buffers
+nnoremap <left> :bp<CR>
+nnoremap <right> :bn<CR>
 
 " Resize view
 nnoremap <C-left> :vertical resize -10<CR>
 nnoremap <C-right> :vertical resize +10<CR>
 nnoremap <C-up> :resize +10<CR>
 nnoremap <C-down> :resize -10<CR>
-
-" Toggles between buffers
-nnoremap <space><space> <c-^>
