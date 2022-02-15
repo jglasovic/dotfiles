@@ -13,8 +13,8 @@ nnoremap <leader>t :Lexplore %:p:h<CR>
 nnoremap <Leader>T :Lexplore<CR>
 
 
-function! OpenFileOrDir()
-	exec "normal l"
+function! s:OpenFileAndCloseNetrwOrExtendDir()
+	exec "normal \<plug>NetrwLocalBrowseCheck"
 	if getline(".") !~ "/"
 		Lexplore
 	endif
@@ -41,10 +41,10 @@ function! NetrwMapping()
 	"if vim opened in directory, use current
 	if len(getbufinfo({'buflisted':1})) == 1
 		let g:netrw_browse_split = 0
-		nmap <buffer> <CR> l
+		nmap <buffer> <CR> <plug>NetrwLocalBrowseCheck
 	else
 		let g:netrw_browse_split = 4
-		nmap <buffer> <CR> :call OpenFileOrDir()<CR>
+		nmap <buffer> <CR> :call <SID>OpenFileAndCloseNetrwOrExtendDir()<CR>
 	endif
 
 
