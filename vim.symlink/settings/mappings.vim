@@ -29,8 +29,8 @@ nmap <leader>i :set list!<CR>
 " Toggle line numbers
 nnoremap <leader>n :call ToggleLineNumbers()<CR>
 
-" Close
-nnoremap <leader>q :close<CR>
+" Close buffer
+nnoremap <leader>q :bd<CR>
 
 " Mapping for saving
 noremap <C-s> :w<CR>

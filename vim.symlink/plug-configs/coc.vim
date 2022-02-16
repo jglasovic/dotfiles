@@ -6,7 +6,8 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-pyright',
   \ 'coc-vimlsp',
-  \ '@yaegassy/coc-intelephense'
+  \ '@yaegassy/coc-intelephense',
+  \ 'coc-lua'
   \ ]
 
 

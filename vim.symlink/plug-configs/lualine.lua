@@ -32,8 +32,8 @@ local theme = {
   normal = {
     a = { bg = colors.neon, fg = colors.black, gui="bold" },
     b = { bg = colors.gray, fg = colors.white },
-    c = { bg = colors.darknavyblue, fg = colors.seagreen},
-    y = { bg = colors.gray, fg = colors.green },
+    -- c = { bg = colors.darknavyblue, fg = colors.seagreen},
+    y = { bg = colors.gray, fg = colors.seagreen, gui="bold" },
 
   },
   insert = {
@@ -57,7 +57,7 @@ local theme = {
     c = { bg = colors.darknavyblue, fg = colors.brightgreen },
   },
   inactive = {
-    c = { bg = colors.darknavyblue, fg = colors.seagreen },
+    -- c = { bg = colors.darknavyblue, fg = colors.seagreen },
   },
 }
 
@@ -82,6 +82,8 @@ local display_exec = function()
   return vim.api.nvim_exec(vim_file_exec_info, true)
 end
 
+local separators = { left = '', right = '' }
+
 local diagnostics = {
   'diagnostics',
   sources = { 'coc' },
@@ -98,7 +100,7 @@ local diagnostics = {
     warn  = { fg = colors.yellow },
     info  = { fg = colors.green },
     hint  = { fg = colors.cyan }
-  }
+  },
 }
 
 local diff = {
@@ -107,31 +109,66 @@ local diff = {
     added = { fg = colors.green },
     modified = { fg = colors.yellow },
     removed = { fg = colors.red },
-  }
+  },
+}
+
+local buffers = {
+  'buffers',
+  show_filename_only = true,
+  show_modified_status = true,
+  mode = 0,
+
+  filetype_names = {
+    fzf = 'FZF',
+    netrw = 'Netrw',
+    term = 'Term'
+  },
+
+  buffers_color = {
+    active = 'lualine_a_command',
+  },
+
+}
+
+local tabs = {
+  'tabs',
+  tabs_color = {
+    active = 'lualine_a_command',
+  },
 }
 
 
 lualine.setup({
-  extensions = {'nerdtree','fugitive', 'fzf'},
+  extensions = {'fugitive', 'fzf'},
   options = {
     icons_enabled = true,
     theme = theme,
-    component_separators = {},
-    section_separators = {}
+    section_separators = separators,
+    component_separators = separators,
+  },
+  tabline = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { buffers },
+    lualine_x = { tabs },
+    lualine_y = {},
+    lualine_z = {}
   },
   sections = {
     lualine_a = { 'mode' },
     lualine_b = { 'branch' },
-    lualine_c = { diff, 'filename' },
+    lualine_c = { diff, 'filename'},
     lualine_x = {
-      diagnostics,
       'progress',
+      diagnostics,
     },
     lualine_y = { 'filetype', { display_exec } },
-    lualine_z = { 'location' }
+    lualine_z = {'location' }
   },
   inactive_sections = {
     lualine_c = { 'filename' },
     lualine_x = { 'location' },
   },
 })
+
+

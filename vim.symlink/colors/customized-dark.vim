@@ -76,8 +76,8 @@ let s:colors256 = [
             \ ["ModeMsg",       "bold", "226",  "18",   "",         ""   ],
             \ ["MoreMsg",       "bold", "16",   "154",  "",         ""   ],
             \ ["Question",      "bold", "70",   "",     "",         ""   ],
-            \ ["StatusLine",    "",     "184",  "17",   "",         ""   ],
-            \ ["StatusLineNC",  "",     "84",   "17",   "",         ""   ],
+            \ ["StatusLine",    "",     "84",     "17",     "",         ""   ],
+            \ ["StatusLineNC",  "",     "84",     "17",     "",         ""   ],
             \ ["User1",         "bold", "28",   "",     "",         ""   ],
             \ ["User2",         "bold", "39",   "",     "",         ""   ],
             \ ["VertSplit",     "",     "2",      "",   "",         ""   ],
@@ -123,9 +123,9 @@ let s:colorvim7 = [
             \ ["SpellLocal",    "",     "227",  "234",  "",         ""   ],
             \ ["SpellCap",      "",     "46",   "236",  "",         ""   ],
             \ ["MatchParen",    "bold", "15",   "22",   "",         ""   ],
-            \ ["TabLine",       "",     "253",  "16",   "",         ""   ],
-            \ ["TabLineSel",    "bold", "16",   "28",     "",         ""   ],
-            \ ["TabLineFill",   "",     "247",  "16",   "",         ""   ]]
+            \ ["TabLine",       "",       "",     "",   "",         ""   ],
+            \ ["TabLineSel",    "bold",   "",     "",   "",         ""   ],
+            \ ["TabLineFill",   "",       "",     "",   "",         ""   ]]
 
 "============================================================
 "        * NO NEED * to edit below (unless bugfixing)

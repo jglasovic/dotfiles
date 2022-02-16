@@ -24,8 +24,7 @@ set signcolumn=yes:1
 set updatetime=100
 set spelllang=en_us
 set noshowmode
-
-set clipboard^=unnamed,unnamedplus
+set clipboard=unnamed
 
 " allow mouse jumps
 set ttyfast
