@@ -8,9 +8,9 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 hi! link netrwMarkFile Search
 
 "open directory of the current file
-nnoremap <leader>t :Lexplore %:p:h<CR>
+nnoremap <leader>T :Lexplore %:p:h<CR>
 "open current working directory
-nnoremap <Leader>T :Lexplore<CR>
+nnoremap <Leader>t :Lexplore<CR>
 
 
 function! s:OpenFileAndCloseNetrwOrExtendDir()

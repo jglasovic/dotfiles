@@ -98,7 +98,7 @@ local diagnostics = {
   diagnostics_color = {
     error = { fg = colors.red },
     warn  = { fg = colors.yellow },
-    info  = { fg = colors.green },
+    info  = { fg = colors.brightgreen },
     hint  = { fg = colors.cyan }
   },
 }
@@ -106,7 +106,7 @@ local diagnostics = {
 local diff = {
   'diff',
   diff_color = {
-    added = { fg = colors.green },
+    added = { fg = colors.brightgreen },
     modified = { fg = colors.yellow },
     removed = { fg = colors.red },
   },

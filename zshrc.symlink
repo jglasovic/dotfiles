@@ -75,6 +75,8 @@ load-nvmrc
 add-zsh-hook chpwd load-dev-cli
 load-dev-cli
 
+bindkey "˙" backward-word
+bindkey "¬" forward-word
 # XXX: short circuit tabtab completion auto installation
 # tabtab source for serverless package
 # tabtab source for sls packageu

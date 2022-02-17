@@ -40,11 +40,11 @@ setw -g mode-keys vi
 unbind [
 bind Escape copy-mode
 unbind ]
-bind -Tcopy-mode-vi v send -X begin-selection
-bind -Tcopy-mode-vi y send -X copy-selection
-unbind -Tcopy-mode-vi Enter
-bind -Tcopy-mode-vi Enter send -X copy-selection
-bind -Tcopy-mode-vi C-v send -X rectangle-toggle
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi y send -X copy-selection
+unbind -T copy-mode-vi Enter
+bind -T copy-mode-vi Enter send -X copy-selection
+bind -T copy-mode-vi C-v send -X rectangle-toggle
 # In copy mode, use [prefix]+V to select the entire line
 # Found at < http://superuser.com/a/743904/64392 >
 bind V send-keys "0v\$"

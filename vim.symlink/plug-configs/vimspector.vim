@@ -15,7 +15,10 @@ function GetExecName()
 endfunction
 
 
-
+" This is not the best solution but it's working
+" Searching for .vscode dir and launch.json file
+" Parsing json file and attaching to the debug process defined in it
+"
 function! CustomAttachDebugger()
   let workspaces = get(g:, 'WorkspaceFolders', [])
   let file_location = expand('%:p')
