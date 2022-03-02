@@ -103,18 +103,16 @@ set-option -g status-keys vi
 set-option -g status-position bottom
 set-option -g status-style fg=colour136,bg=colour235
 set-option -g status-left-length 50
-set-option -g status-left-style default
 set-option -g status-left "#[fg=green]#H #[fg=green]• #[fg=green]#(uname)-#(uname -r)#[default]"
+set-option -ag status-left "#[fg=yellow]  session: #[fg=yellow,bold]#S #[default]"
 set-option -g status-right-length 300
-set-option -g status-right-style default
-set-option -g status-right "#[fg=green,bg=default]#(~/.tmux/plugins/tmux-mem-cpu-load/tmux-mem-cpu-load --interval 5)#[default] "
-set-option -ag status-right "#[fg=red,dim,bright,bg=default]#(uptime | cut -f 4-6 -d ' ' | cut -f 1 -d ',')"
-set-option -ag status-right " #[fg=white,bg=default]%a %l:%M:%S %p#[default] #[fg=blue,bright]%Y-%m-%d"
+set-option -g status-right "#[fg=green,bg=default]#(~/.tmux/plugins/tmux-mem-cpu-load/tmux-mem-cpu-load --averages-count 0) #[default]"
+set-option -ag status-right "#[fg=green,bold]#(pmset -g batt | tail -1 | awk '{print $3}' | tr -d ';') #[default]"
+set-option -ag status-right "#[fg=red,dim,bright,bg=default]#(uptime | cut -f 4-6 -d ' ' | cut -f 1 -d ',') "
+set-option -ag status-right " #[fg=white,bg=default]%a%l:%M:%S %p#[default] #[fg=blue,bright]%Y-%m-%d"
 set-window-option -g window-status-style fg=colour244
-set-window-option -g window-status-style bg=default
-set-window-option -g window-status-current-style fg=colour166
-set-window-option -g window-status-current-style bg=default
-
+set-window-option -g window-status-current-style fg=colour166,bold
+set-window-option -ga window-status-activity-style bg=colour255,fg=colour235
 # Plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'

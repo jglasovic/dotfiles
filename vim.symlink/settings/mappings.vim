@@ -13,9 +13,8 @@ nmap <leader>wbl :rightbelow vnew<CR>
 nmap <leader>wbk :leftabove  new<CR>
 nmap <leader>wbj :rightbelow new<CR>
 
-" Exit
+" Exit insert mode
 inoremap ;; <Esc>
-
 " Terminal exit insert mode
 tnoremap ;; <C-\><C-n>
 
@@ -29,7 +28,10 @@ nmap <leader>i :set list!<CR>
 nnoremap <leader>n :call ToggleLineNumbers()<CR>
 
 " Close buffer
-nnoremap <leader>q :bd<CR>
+nnoremap <C-w> :bd<CR>
+
+" Exit vim
+nnoremap <C-q> :q<CR>
 
 " Mapping for saving
 noremap <C-s> :w<CR>
@@ -51,10 +53,8 @@ map H ^
 map L $
 
 " change buffers
-" <A-l> == ¬
-" <A-h> == ˙`
-nnoremap ¬ :bn<CR>
-nnoremap ˙ :bp<CR>
+nnoremap <leader>l :bn<CR>
+nnoremap <leader>h :bp<CR>
 
 " Toggles between buffers
 nnoremap <leader><leader> <c-^>

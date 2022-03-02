@@ -7,7 +7,8 @@ let g:coc_global_extensions = [
   \ 'coc-pyright',
   \ 'coc-vimlsp',
   \ '@yaegassy/coc-intelephense',
-  \ 'coc-lua'
+  \ 'coc-lua',
+  \ 'coc-rust-analyzer'
   \ ]
 
 
@@ -44,7 +45,6 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 """ Pyright
 autocmd FileType python let b:coc_root_patterns = ['.git', '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json']
 
-
 """ Coc -  Mappings  {{{
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -65,4 +65,5 @@ nmap <leader>X  <Plug>(coc-fix-current)
 nmap <leader>x  <Plug>(coc-codeaction-cursor)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nnoremap <leader>[ :CocRestart<CR>
+nnoremap <silent><expr> <leader>, CloseBuffers('Location List', 1) ? ":echom 'aaaaa' \<CR>" : ":CocDiagnostics \<CR>"
 "}}}

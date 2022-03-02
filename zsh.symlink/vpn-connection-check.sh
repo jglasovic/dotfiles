@@ -21,7 +21,7 @@ function check-vpn-connection(){
       echo '\033[1;31mNot connected to the VPN! Please connect using your VPN Client App! \033[0m'
       read confirm"?Connected now? (Y/N): "
       if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
-        publicIP=`curl ifconfi.me/ip`
+        publicIP=`curl ifconfig.me/ip`
       fi
     done
     echo "\033[1;32mUsing VPN \033[0m"
