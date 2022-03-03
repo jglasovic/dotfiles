@@ -8,7 +8,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'mhinz/vim-signify'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'hoob3rt/lualine.nvim'
+  Plug 'hoob3rt/lualine.nvim', {'commit': '016a207'}
   Plug 'petobens/poet-v'
   Plug 'puremourning/vimspector'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)
