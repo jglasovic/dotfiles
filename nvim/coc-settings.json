@@ -20,5 +20,6 @@
   "python.sortImports.args": [
     "--settings-path",
     "${workspaceFolder}/pyproject.toml"
-  ]
+  ],
+  "Lua.diagnostics.globals": ["vim"]
 }

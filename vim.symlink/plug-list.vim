@@ -1,17 +1,23 @@
 call plug#begin('~/.vim/plugged')
+  Plug 'christoomey/vim-tmux-navigator'
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
+
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'lewis6991/gitsigns.nvim'
+
+	Plug 'ojroques/nvim-hardline'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
+
   Plug 'pgr0ss/vim-github-url'
-  Plug 'mhinz/vim-signify'
-  Plug 'christoomey/vim-tmux-navigator'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'hoob3rt/lualine.nvim', {'commit': '016a207'}
+  " Plug 'hoob3rt/lualine.nvim'
   Plug 'petobens/poet-v'
   Plug 'puremourning/vimspector'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)
 "  Plug 'neovim/nvim-lspconfig
 "  Plug 'williamboman/nvim-lsp-installer'
+  Plug 'joshdick/onedark.vim'
 call plug#end()
