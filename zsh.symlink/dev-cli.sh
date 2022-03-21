@@ -31,11 +31,14 @@ function load-dev-cli() {
   for dir in $(find $PROJECT_DIR -mindepth 1 -maxdepth 1 -type d); do
     if [[ "$PWD" == "$dir" ]]; then
       get-aws-ceredentials-expiration aws_expiration_date
+      if ! is_app_running docker ; then
+        open -a docker
+      fi
       local aws_expiration_date_formated=$(date -d $aws_expiration_date +%s)
       local date_now_formated=$(date +%s)
 
       if [[ $aws_expiration_date_formated -lt $date_now_formated ]]; then
-        check-vpn-connection
+        check_vpn_connection
         saml2aws login
         dev-cli configure --code-artifact
       else

@@ -8,7 +8,7 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 set backspace=2
-" set cursorline
+set cursorline
 set hidden
 set list
 set switchbuf=usetab,newtab "If a bffer is already open in a window in any tab, switch to that tab/window < https://stackoverflow.com/a/3476411/278810 >
@@ -24,7 +24,7 @@ set signcolumn=yes:1
 set updatetime=100
 set spelllang=en_us
 set noshowmode
-set clipboard=unnamed
+set clipboard=unnamedplus
 set noswapfile
 
 " allow mouse jumps

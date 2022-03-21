@@ -56,11 +56,7 @@ local function set_hlgroups()
   M.hl_groups = hl_groups
 end
 
-
-
 ----------- BUFFERLINE -------------
-
-
 local function is_excluded(bufnr)
   local excluded = true
   excluded = excluded and vim.fn.buflisted(bufnr) == 0

@@ -1,15 +1,16 @@
 local fmt = string.format
+local match = string.match
+
+-- small and fast my custom statusline written in lua
+-- oneday going to extract this into a separate repo as plugin
 local statusline = require('custom-statusline')
 
 -- transparent background
 vim.g['onedark_color_overrides'] = {
   background = { gui = "NONE", cterm = "NONE", cterm16 = "NONE" }
 }
-vim.cmd([[
-set termguicolors
-colorscheme onedark
-]])
-
+vim.opt.termguicolors = true
+vim.cmd'colorscheme onedark'
 -- Get colors defined in colorscheme
 local onedark_colors = vim.fn['onedark#GetColors']()
 -- map colors from theme
@@ -27,111 +28,60 @@ local colors = {
   yellow = onedark_colors.yellow
 }
 
-local bg_contrast_low = {
-  guibg = colors.comment_grey.gui,
-  ctermbg = colors.comment_grey.cterm,
-}
+vim.cmd('hi CursorLineNr ctermfg='..colors.purple.cterm..' guifg='..colors.purple.gui)
 
-local bg_contrast_high = {
-  guibg = colors.cursor_grey.gui,
-  ctermbg = colors.cursor_grey.cterm,
-}
-
-local bg_contrast_med = {
-  guibg = colors.menu_grey.gui,
-  ctermbg = colors.menu_grey.cterm,
-}
-
-local mode_mapping = {
-  normal = {
-    guifg = colors.black.gui,
-    guibg = colors.green.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.green.cterm,
-  },
-  insert = {
-    guifg = colors.black.gui,
-    guibg = colors.blue.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.blue.cterm,
-  },
-  replace = {
-    guifg = colors.black.gui,
-    guibg = colors.cyan.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.cyan.cterm,
-  },
-  visual = {
-    guifg = colors.black.gui,
-    guibg = colors.purple.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.purple.cterm,
-  },
-  command = {
-    guifg = colors.black.gui,
-    guibg = colors.red.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.red.cterm,
-  },
-}
-
-local bufferline_mapping = {
-  active = {
-    guifg = colors.black.gui,
-    guibg = colors.green.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.green.cterm,
-  },
-  active_modified = {
-    guifg = colors.black.gui,
-    guibg = colors.blue.gui,
-    ctermfg = colors.black.cterm,
-    ctermbg = colors.blue.cterm,
-  },
-  inactive = {
-    guifg = colors.green.gui,
-    guibg = colors.black.gui,
-    ctermfg = colors.green.cterm,
-    ctermbg = colors.black.cterm,
-  },
-  inactive_modified = {
-    guifg = colors.blue.gui,
-    guibg = colors.black.gui,
-    ctermfg = colors.blue.cterm,
-    ctermbg = colors.black.cterm,
-  },
-}
-
-local mix_contrast_color = function(contrast, color)
+local function mix_color(fgcolor, bgcolor)
   local mix = {}
-  for k,v in pairs(contrast) do mix[k] = v end
-  mix.guifg = color.gui
-  mix.ctermfg = color.cterm
+  mix.guibg = bgcolor.gui
+  mix.ctermbg = bgcolor.cterm
+  mix.guifg = fgcolor.gui
+  mix.ctermfg = fgcolor.cterm
   return mix
 end
 
+local mode_mapping = {
+  normal = mix_color(colors.black, colors.green),
+  insert = mix_color(colors.black, colors.blue),
+  replace = mix_color(colors.black, colors.cyan),
+  visual = mix_color(colors.black, colors.purple),
+  command = mix_color(colors.black, colors.red)
+ }
+
+local bufferline_mapping = {
+  active = mix_color(colors.black, colors.green),
+  active_modified = mix_color(colors.black, colors.blue),
+  inactive = mix_color(colors.green, colors.cursor_grey),
+  inactive_modified = mix_color(colors.blue, colors.cursor_grey)
+ }
+
 ---------- SECTION
 local display_filetype_exec = function()
-  local vim_file_exec_info = [[
-    let js_filetypes = [
-      \ 'javascript',
-      \ 'typescript',
-      \ 'javascriptreact',
-      \ 'typescriptreact'
-      \ ]
-
-    if &filetype == 'python'
-      let py_venv = poetv#statusline()
-      echo py_venv != '' ? 'venv: ' . py_venv : ''
-    elseif index(js_filetypes, &filetype) >= 0
-      let node_v_str = matchstr($NVM_BIN, 'node\/.*v[0-9\.]*')
-      echo substitute(node_v_str, '/', ': ', '')
-    endif
-  ]]
-  local exec = vim.api.nvim_exec(vim_file_exec_info, true)
-  if exec and exec ~= '' then
-    return vim.bo.filetype..' '..exec
+  local js_types = {
+    javascript=true,
+    typescript=true,
+    javascriptreact=true,
+    typescriptreact=true
+  }
+  local ft = vim.bo.filetype
+  local content = ''
+  if ft == 'python' then
+    local pyenv = vim.fn['poetv#statusline']()
+    if pyenv and pyenv ~= '' then
+      content = M.get_colored_section('green', 'venv: '..pyenv)
+    end
+  elseif js_types[ft] then
+    local node_v_str = match(os.getenv('NVM_BIN'), 'node/.*v[0-9].*[0-9]')
+    if node_v_str and node_v_str ~= '' then
+      content = M.get_colored_section('green', string.gsub(node_v_str, '/', ':', 1))
+    end
   end
+  if content ~= '' then
+    return ' '..content..' '
+  end
+  return content
+end
+
+local function display_filetype()
   return vim.bo.filetype
 end
 
@@ -198,7 +148,6 @@ local function display_location()
 end
 
 local function display_filename()
-  print(vim.g.coc_status)
   local modified = ''
   if vim.bo.modified then
     modified = '[+]'
@@ -223,14 +172,14 @@ local hlgroups_table = {
   mode = mode_mapping,
   bufferline = bufferline_mapping,
   sections = {
-    s1=mix_contrast_color(bg_contrast_high, colors.white),
-    s2=mix_contrast_color(bg_contrast_med, colors.white),
-    s3=mix_contrast_color(bg_contrast_low, colors.white),
-    inactive = mix_contrast_color(bg_contrast_med, colors.white),
-    red = mix_contrast_color(bg_contrast_high, colors.red),
-    green = mix_contrast_color(bg_contrast_high, colors.green),
-    blue = mix_contrast_color(bg_contrast_high, colors.blue),
-    yellow = mix_contrast_color(bg_contrast_high, colors.yellow)
+    s1=mix_color(colors.white, colors.cursor_grey),
+    s2=mix_color(colors.white, colors.menu_grey),
+    s3=mix_color(colors.white, colors.comment_grey),
+    inactive = mix_color(colors.white,colors.comment_grey),
+    red = mix_color(colors.red, colors.cursor_grey),
+    green = mix_color(colors.green, colors.cursor_grey),
+    blue = mix_color(colors.blue, colors.cursor_grey),
+    yellow = mix_color(colors.yellow, colors.cursor_grey)
   }
 }
 
@@ -242,7 +191,8 @@ local statusline_active_sections = {
   '%<',
   {s1 = '%='},
   {s1 = display_diagnostics },
-  {s2 = display_filetype_exec },
+  display_filetype_exec(),
+  {s2 = display_filetype },
   {mode = display_location },
 }
 

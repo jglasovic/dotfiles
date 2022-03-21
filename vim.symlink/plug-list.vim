@@ -6,14 +6,12 @@ call plug#begin('~/.vim/plugged')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'lewis6991/gitsigns.nvim'
 
-	Plug 'ojroques/nvim-hardline'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
 
   Plug 'pgr0ss/vim-github-url'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  " Plug 'hoob3rt/lualine.nvim'
   Plug 'petobens/poet-v'
   Plug 'puremourning/vimspector'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)

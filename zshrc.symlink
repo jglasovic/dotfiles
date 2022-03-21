@@ -18,8 +18,8 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 ## ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
-export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib -L/usr/local/opt/openssl@3/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include -I/usr/local/opt/openssl@3/include"
 export FZF_DEFAULT_COMMAND='rg --smart-case --files --follow --no-ignore-vcs --hidden --glob "!{node_modules/*,.git/*}"'
 export PGDATA="/usr/local/var/postgres"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
@@ -34,8 +34,9 @@ export DENO_ROOT="$HOME/.deno"
 export PYENV_ROOT="$HOME/.pyenv"
 export POETRY_ROOT="$HOME/.poetry"
 export PHP_ROOT="/usr/local/Cellar/php/8.1.2"
+export OPENSSL_ROOT="/usr/local/opt/openssl@3"
 ## export path
-export PATH=$ANDROID_TOOLS_PATH:$SBIN_PATH:$CORE_UTILS_PATH:$PHP_ROOT/bin:$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_ROOT/bin:$MYSQL_ROOT/bin:$POSTGRES_ROOT/bin:$PATH
+export PATH=$OPENSSL_ROOT/bin:$ANDROID_TOOLS_PATH:$SBIN_PATH:$CORE_UTILS_PATH:$PHP_ROOT/bin:$PYENV_ROOT/bin:$POETRY_ROOT/bin:$DENO_ROOT/bin:$MYSQL_ROOT/bin:$POSTGRES_ROOT/bin:$PATH
 
 # oh-my-zsh
 source $ZSH/oh-my-zsh.sh

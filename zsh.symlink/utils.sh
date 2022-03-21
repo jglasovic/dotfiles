@@ -25,3 +25,8 @@ function error(){
 function cheat() {
   curl "https://cht.sh/$1"
 }
+
+function is_app_running(){
+  pgrep -xq "$1"; 
+  [[ $? == 0 ]]
+}

@@ -8,7 +8,8 @@ let g:coc_global_extensions = [
   \ 'coc-vimlsp',
   \ '@yaegassy/coc-intelephense',
   \ 'coc-lua',
-  \ 'coc-rust-analyzer'
+  \ 'coc-rust-analyzer',
+  \ 'coc-go'
   \ ]
 
 

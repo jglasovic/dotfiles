@@ -1,25 +1,14 @@
-let g:netrw_liststyle = 3
-let g:netrw_winsize = 25
-let g:netrw_banner = 0
+let g:netrw_liststyle = 1
 let g:netrw_localcopydircmd = 'cp -r'
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-
 
 hi! link netrwMarkFile Search
+autocmd FileType netrw setl bufhidden=wipe
+
 
 "open directory of the current file
-nnoremap <leader>T :Lexplore %:p:h<CR>
+nnoremap <leader>T :Explore <CR>
 "open current working directory
-nnoremap <Leader>t :Lexplore<CR>
-
-
-function! s:OpenFileAndCloseNetrwOrExtendDir()
-  exec "normal \<plug>NetrwLocalBrowseCheck"
-    if getline(".") !~ "/"
-      Lexplore
-  endif
-endfunction
-
+nnoremap <Leader>t :Explore $PWD<CR>
 
 function! NetrwRemoveRecursive()
   if &filetype ==# 'netrw'
@@ -38,16 +27,8 @@ function! NetrwRemoveRecursive()
 endfunction
 
 function! NetrwMapping()
-  "if vim opened in directory, use current
-  if len(getbufinfo({'buflisted':1})) == 1
-    let g:netrw_browse_split = 0
-    nmap <buffer> <CR> <plug>NetrwLocalBrowseCheck
-  else
-    let g:netrw_browse_split = 4
-    nmap <buffer> <CR> :call <SID>OpenFileAndCloseNetrwOrExtendDir()<CR>
-  endif
-
-
+  "close
+  nmap <buffer><Esc> :bd<CR>
   "refresh
   nmap <leader>R <plug>NetrwRefresh
   "go back in history
@@ -55,14 +36,11 @@ function! NetrwMapping()
   "go up in directory
   nmap <buffer> h -^
   "open a directory or a file
-  nmap <buffer> l <plug>NetrwLocalBrowseCheck
+  nmap <buffer> l <CR>
   "toggle the dotfiles
   nmap <buffer> . gh
   "close the preview window
-  nmap <buffer> P <C-w>z
-  "close
-  nmap <buffer> <leader>t :Lexplore<CR>
-
+  nmap <buffer> <leader>t <C-w>
   "toggles the mark on a file or directory
   nmap <buffer> <TAB> mf
   "unmark all the files in the current buffer

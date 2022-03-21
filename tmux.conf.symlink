@@ -105,8 +105,10 @@ set-option -g status-style fg=colour136,bg=colour235
 set-option -g status-left-length 50
 set-option -g status-left "#[fg=green]#H #[fg=green]• #[fg=green]#(uname)-#(uname -r)#[default]"
 set-option -ag status-left "#[fg=yellow]  session: #[fg=yellow,bold]#S #[default]"
-set-option -g status-right-length 300
-set-option -g status-right "#[fg=green,bg=default]#(~/.tmux/plugins/tmux-mem-cpu-load/tmux-mem-cpu-load --averages-count 0) #[default]"
+set-option -g status-right-length 500
+set-option -g status-right "Docker:#(pgrep -xq docker; [[ $? == 0 ]] && echo 'on' || echo 'off') "
+set-option -ag status-right "VPN:#([[ $MY_VPN_IP == $(curl ifconfig.me/ip) ]] && echo 'on' || echo 'off') "
+set-option -ag status-right "#[fg=green,bg=default]#(~/.tmux/plugins/tmux-mem-cpu-load/tmux-mem-cpu-load --averages-count 0) #[default]"
 set-option -ag status-right "#[fg=green,bold]#(pmset -g batt | tail -1 | awk '{print $3}' | tr -d ';') #[default]"
 set-option -ag status-right "#[fg=red,dim,bright,bg=default]#(uptime | cut -f 4-6 -d ' ' | cut -f 1 -d ',') "
 set-option -ag status-right " #[fg=white,bg=default]%a%l:%M:%S %p#[default] #[fg=blue,bright]%Y-%m-%d"

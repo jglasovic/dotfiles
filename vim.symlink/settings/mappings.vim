@@ -69,7 +69,7 @@ nnoremap <right> :echo "No!"<CR>
 nnoremap <C-right> :vertical resize +10<CR>
 nnoremap <C-left> :vertical resize -10<CR>
 nnoremap <C-up> :resize +10<CR>
-nnoremap <C-down> :resize -10<CR
+nnoremap <C-down> :resize -10<CR>
 
 " content move
 "<A-k> == ˚
