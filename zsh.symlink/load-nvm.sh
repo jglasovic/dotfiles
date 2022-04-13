@@ -1,7 +1,4 @@
 #!/bin/sh
-
-source ~/.zsh/utils.sh
-
 # set node version based on .nvmrc
 function load-nvmrc() {
   if command_exists nvm ; then

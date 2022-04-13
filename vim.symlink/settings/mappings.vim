@@ -60,10 +60,13 @@ nnoremap <leader>h :bp<CR>
 nnoremap <leader><leader> <c-^>
 
 " No arrow keys
-nnoremap <up> :echo "No!"<CR>
-nnoremap <down> :echo "No!"<CR>
-nnoremap <left> :echo "No!"<CR>
-nnoremap <right> :echo "No!"<CR>
+map <up> :echo "No!"<CR>
+map <down> :echo "No!"<CR>
+map <left> :echo "No!"<CR>
+map <right> :echo "No!"<CR>
+
+"paste
+xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>
 
 " Resize view
 nnoremap <C-right> :vertical resize +10<CR>

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-source ~/.zsh/utils.sh
-
 # restoring default npm registry from backup files, dev-cli overwrites them
 function restore-npmrc(){
   local npmrc_copy=~/.npmrc_copy

@@ -1,6 +1,54 @@
 #!/bin/sh
-source $HOME/.zsh/utils.sh
-source $HOME/.zsh/vpn-connection-check.sh
+
+function is_vpn_connected(){
+  local publicIP=`curl -s ifconfig.me/ip`
+  [[ $MY_VPN_IP == $publicIP ]]
+}
+
+function vpn_check(){
+  if is_vpn_connected; then
+    echo "\033[1;32mUsing VPN! \033[0m"
+  else
+    print-red "Not connected to VPN!"
+  fi
+}
+
+function vpn_connect(){
+  if ! variable_exists $MY_VPN_IP; then
+    echo "MY_VPN_IP required!"
+    return 1
+  fi
+
+  if is_vpn_connected; then
+    echo "VPN connected!"
+    return 0
+  fi
+
+  if ! variable_exists $OVPN_CONFIG; then
+    echo "OVPN_CONFIG required!"
+    return 1
+  fi
+
+  sudo openvpn --config $OVPN_CONFIG &
+}
+
+function vpn_disconnect(){
+  if is_app_running "openvpn"; then
+   sudo killall openvpn
+  fi
+  return 0
+}
+
+function ensure_vpn_connected(){
+  vpn_connect
+  echo -ne "VPN Connecting ..."
+  while ! is_vpn_connected ; do
+    echo -ne "."
+    sleep 1
+  done
+  echo "VPN Connected!"
+  return 0
+}
 
 # aws credentials expiration
 function get-aws-ceredentials-expiration(){
@@ -38,9 +86,9 @@ function load-dev-cli() {
       local date_now_formated=$(date +%s)
 
       if [[ $aws_expiration_date_formated -lt $date_now_formated ]]; then
-        check_vpn_connection
         saml2aws login
         dev-cli configure --code-artifact
+
       else
          print-red "AWS - credentials are not expired, skipping!"
       fi

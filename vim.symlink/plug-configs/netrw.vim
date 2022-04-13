@@ -1,5 +1,9 @@
 let g:netrw_liststyle = 1
-let g:netrw_localcopydircmd = 'cp -r'
+let g:netrw_localcopydircmd='cp'
+let g:netrw_localcopydircmdopt='-r'
+let g:netrw_localrmdir='rm'
+let g:netrw_localrmdiropt='-rf'
+let g:netrw_localmovecmd='mv'
 
 hi! link netrwMarkFile Search
 autocmd FileType netrw setl bufhidden=wipe
