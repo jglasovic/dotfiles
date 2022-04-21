@@ -7,13 +7,11 @@ prompt_segment() {
 
 prompt_end() {
   local color="green"
-  if variable_exists $ZVM_MODE; then
-    case $ZVM_MODE in
-      $ZVM_MODE_NORMAL)      color="2";;
-      $ZVM_MODE_INSERT)      color="39";;
-      $ZVM_MODE_VISUAL)      color="13";;
-      $ZVM_MODE_VISUAL_LINE) color="13";;
-      $ZVM_MODE_REPLACE)     color="9";;
+
+  if variable_exists $KEYMAP; then
+    case $KEYMAP in
+        vicmd)        color="2";;
+        viins|main)   color="39";;
     esac
   fi
 

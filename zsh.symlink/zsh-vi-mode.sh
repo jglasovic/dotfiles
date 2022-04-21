@@ -1,76 +1,78 @@
-# source zshrc fix
 bindkey -v
 
-# protect from sourcing zshrc multiple times
-if ! variable_exists $ZVM_LOADED; then
-  ZVM_LOADED=true
-  # ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
+zle_highlight+=(paste:none)
 
-  zle_highlight+=(paste:none)
+# reset prompt on mode change
+function zle-keymap-select zle-line-init
+{
+    zle reset-prompt
+    zle -R
+}
 
-  function custom_put_replace_selection(){
-    zvm_highlight clear
-    zle .put-replace-selection "$@"
-    zvm_yank
-    echo "$CUTBUFFER" | pbcopy
-    zvm_select_vi_mode $ZVM_MODE_NORMAL true
-  }
+### use system clipboard
+function pbpaste_to_cutbuffer() {
+  CUTBUFFER=`pbpaste -Prefer txt`;
+}
 
-  zle -N put_replace_selection custom_put_replace_selection
+function pbcopy_cutbuffer() {
+  echo "$CUTBUFFER" | pbcopy
+}
+###
 
-  # overriding some functions, cannot use .function for these
-  functions[_zvm_vi_yank]=$functions[zvm_vi_yank]
-  functions[_zvm_vi_put_after]=$functions[zvm_vi_put_after]
-  functions[_zvm_vi_put_before]=$functions[zvm_vi_put_before]
-  functions[_zvm_vi_delete]=$functions[zvm_vi_delete]
+# override to use system clipboard
+function vi_yank(){
+  zle .vi-yank
+  pbcopy_cutbuffer
+}
 
-  # use system clipboard
-  function pbpaste_to_cutbuffer() {
-    CUTBUFFER=`pbpaste -Prefer txt`;
-  }
+function vi_yank_whole_line(){
+  zle .vi-yank-whole-line
+  pbcopy_cutbuffer
+}
 
-  function pbcopy_cutbuffer() {
-    echo "$CUTBUFFER" | pbcopy
-  }
+function vi_delete() {
+  zle .vi-delete
+  pbcopy_cutbuffer
+}
 
-  function zvm_vi_yank() {
-    _zvm_vi_yank "$@"
-    pbcopy_cutbuffer
-  }
+function vi_put_after(){
+  pbpaste_to_cutbuffer
+  zle .vi-put-after
+}
 
-  function zvm_vi_delete() {
-    zvm_highlight clear
-    _zvm_vi_delete "$@"
-    pbcopy_cutbuffer
-  }
+function vi_put_before(){
+  pbpaste_to_cutbuffer
+  zle .vi-put-before
+}
 
-  function zvm_vi_put_after(){
-    pbpaste-to-cutbuffer
-    _zvm_vi_put_after "$@"
-    zvm_highlight clear
-  }
+function put_replace_selection(){
+  pbpaste_to_cutbuffer
+  zle .put-replace-selection
+}
 
-  function zvm_vi_put_before(){
-    pbpaste-to-cutbuffer
-    _zvm_vi_put_before "$@"
-    zvm_highlight clear
-  }
+zle -N vi-yank vi_yank
+zle -N vi-yank-whole-line vi_yank_whole_line
+zle -N vi-put-after vi_put_after
+zle -N vi-put-before vi_put_before
+zle -N vi-delete vi_delete
+zle -N put-replace-selection put_replace_selection
 
-  # keybindings
-  bindkey -M vicmd 'H' beginning-of-line
-  bindkey -M vicmd 'L' end-of-line
+zle -N zle-line-init
+zle -N zle-keymap-select
 
-  bindkey -M vicmd 'k' up-line-or-beginning-search
-  bindkey -M vicmd 'j' down-line-or-beginning-search
+# keybindings
+bindkey -M vicmd 'H' beginning-of-line
+bindkey -M vicmd 'L' end-of-line
 
-  bindkey -M vicmd '^[[A' up-line-or-beginning-search
-  bindkey -M vicmd '^[[B' down-line-or-beginning-search
-  bindkey -M viins '^[[A' up-line-or-beginning-search
-  bindkey -M viins '^[[B' down-line-or-beginning-search
+bindkey -M vicmd 'k' up-line-or-beginning-search
+bindkey -M vicmd 'j' down-line-or-beginning-search
 
-  bindkey -M visual 'p' put_replace_selection
+bindkey -M vicmd '^[[A' up-line-or-beginning-search
+bindkey -M vicmd '^[[B' down-line-or-beginning-search
+bindkey -M viins '^[[A' up-line-or-beginning-search
+bindkey -M viins '^[[B' down-line-or-beginning-search
 
-fi
+
 
 
 
