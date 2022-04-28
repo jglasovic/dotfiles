@@ -1,3 +1,4 @@
+let g:netrw_dirhistmax = 0
 let g:netrw_liststyle = 1
 let g:netrw_localcopydircmd='cp'
 let g:netrw_localcopydircmdopt='-r'

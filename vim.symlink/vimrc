@@ -20,4 +20,8 @@ runtime! plug-list.vim
 runtime! settings/*
 
 "Plug-configs
-runtime! plug-configs/*
+runtime! plug-configs/*.vim
+
+if has('nvim')
+  runtime! plug-configs/*.lua
+endif

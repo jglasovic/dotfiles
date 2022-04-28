@@ -1,3 +1,7 @@
+if !has('nvim')
+  finish
+endif
+
 let g:poetv_executables = ['poetry']
 
 "turning off auto activate and overriding to refresh coc

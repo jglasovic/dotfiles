@@ -6,7 +6,7 @@ prompt_segment() {
 }
 
 prompt_end() {
-  local color="green"
+  local color="39"
 
   if variable_exists $KEYMAP; then
     case $KEYMAP in
@@ -81,11 +81,11 @@ prompt_virtualenv() {
 prompt_status() {
   local -a symbols
 
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ $RETVAL"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment default "$symbols "
+  [[ -n "$symbols" ]] && prompt_segment default "$symbols"
 }
 
 prompt_aws() {

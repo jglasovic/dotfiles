@@ -9,9 +9,9 @@ set tabstop=2
 set shiftwidth=2
 set backspace=2
 set cursorline
+set cursorlineopt=number
 set hidden
-set list
-set switchbuf=usetab,newtab "If a bffer is already open in a window in any tab, switch to that tab/window < https://stackoverflow.com/a/3476411/278810 >
+set switchbuf=usetab,newtab
 set wildmode=longest:full,full
 set wildmenu
 set wildignore=*.o,*~
@@ -20,20 +20,19 @@ set nobackup
 set nowritebackup
 set cmdheight=2
 set shortmess+=c
-set signcolumn=yes:1
 set updatetime=100
 set spelllang=en_us
 set noshowmode
 set clipboard=unnamedplus
 set noswapfile
+set ignorecase
+set smartcase
+set smartindent
 
-" allow mouse jumps
+" allow mouse
 set ttyfast
 set mouse=a
 
-" Permanent undo
-set undodir=~/.vim/vimdid
-set undofile
 
 " Line numbers
 set number relativenumber
@@ -47,7 +46,16 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-" Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+if has('nvim')
+  set list
+  set signcolumn=yes:1
+
+  " Permanent undo - nvim undofiles are incompatible with vim undofiles
+  set undodir=~/.vim/vimdid
+  set undofile
+  
+  " Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+  let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
+  let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+endif
 
