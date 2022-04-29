@@ -6,8 +6,11 @@ call plug#begin('~/.vim/plugged')
   if has('nvim')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'lewis6991/gitsigns.nvim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'petobens/poet-v'
     Plug 'puremourning/vimspector'
+    "  Plug 'neovim/nvim-lspconfig
+    "  Plug 'williamboman/nvim-lsp-installer'
   endif
 
   Plug 'tpope/vim-fugitive'
@@ -16,7 +19,5 @@ call plug#begin('~/.vim/plugged')
 
   Plug 'pgr0ss/vim-github-url'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)
-"  Plug 'neovim/nvim-lspconfig
-"  Plug 'williamboman/nvim-lsp-installer'
   Plug 'joshdick/onedark.vim'
 call plug#end()

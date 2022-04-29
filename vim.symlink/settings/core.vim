@@ -46,6 +46,7 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
+
 if has('nvim')
   set list
   set signcolumn=yes:1
@@ -53,9 +54,11 @@ if has('nvim')
   " Permanent undo - nvim undofiles are incompatible with vim undofiles
   set undodir=~/.vim/vimdid
   set undofile
-  
+
   " Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
   let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
   let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+else
+  set re=0 "fix vi highlighting
 endif
 
