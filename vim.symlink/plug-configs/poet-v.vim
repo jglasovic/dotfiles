@@ -8,12 +8,12 @@ let g:poetv_executables = ['poetry']
 let g:poetv_auto_activate = 0
 
 function ActivatePoetv()
-  let CURRENT_VIRTUAL_ENV = $VIRTUAL_ENV
+  let g:CURRENT_VIRTUAL_ENV = $VIRTUAL_ENV
 
   if &previewwindow != 1 && expand('%:p') !~# "/\\.git/"
     call poetv#activate()
-    if CURRENT_VIRTUAL_ENV != $VIRTUAL_ENV
-      silent exec "CocRestart"
+    if g:CURRENT_VIRTUAL_ENV != $VIRTUAL_ENV
+      silent exec "LspRestart"
     endif
   endif
 endfunction

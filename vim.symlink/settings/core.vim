@@ -29,10 +29,6 @@ set ignorecase
 set smartcase
 set smartindent
 
-" allow mouse
-set ttyfast
-set mouse=a
-
 
 " Line numbers
 set number relativenumber
