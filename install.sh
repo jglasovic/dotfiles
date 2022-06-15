@@ -9,18 +9,18 @@ fi
 
 
 for file in `find $SELF_PATH -maxdepth 1 -name \*.symlink`; do
-	src_file=`basename "$file"`
-	dest_file=`echo "$HOME/.$src_file" | sed "s/\.symlink$//g"`
-	if [ -e $dest_file ]; then
+  src_file=`basename "$file"`
+  dest_file=`echo "$HOME/.$src_file" | sed "s/\.symlink$//g"`
+  if [ -e $dest_file ]; then
     if [[ $should_overwrite_all == "-d" ]]; then
       rm -rf $dest_file
       ln -sv $SELF_PATH/$src_file $dest_file
     else
       echo "$dest_file already exists; skipping it..."
     fi
-	else
-		ln -sv $SELF_PATH/$src_file $dest_file
-	fi
+  else
+    ln -sv $SELF_PATH/$src_file $dest_file
+  fi
 done
 
 nvim_src=$SELF_PATH/nvim
@@ -34,7 +34,7 @@ if [ -e $nvim_dest ]; then
     echo "$nvim_dest already exists; skipping it..."
   fi
 else
-	ln -sv $nvim_src $nvim_dest
+  ln -sv $nvim_src $nvim_dest
 fi
 
 

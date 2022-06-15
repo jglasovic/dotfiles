@@ -20,4 +20,5 @@ call plug#begin('~/.vim/plugged')
   Plug 'pgr0ss/vim-github-url'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} " upgrading to native lsp, need more time :)
   Plug 'joshdick/onedark.vim'
+
 call plug#end()

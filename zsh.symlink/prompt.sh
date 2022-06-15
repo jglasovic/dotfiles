@@ -6,12 +6,14 @@ prompt_segment() {
 }
 
 prompt_end() {
-  local color="39"
+  local color="2"
 
   if variable_exists $KEYMAP; then
     case $KEYMAP in
-        vicmd)        color="2";;
-        viins|main)   color="39";;
+        vicmd)
+          color="39";;
+        viins|main)
+          color="2";;
     esac
   fi
 

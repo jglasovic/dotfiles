@@ -66,5 +66,5 @@ nmap <leader>X  <Plug>(coc-fix-current)
 nmap <leader>x  <Plug>(coc-codeaction-cursor)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nnoremap <leader>[ :CocRestart<CR>
-nnoremap <silent><expr> <leader>, CloseBuffers('Location List', 1) ? ":echom 'aaaaa' \<CR>" : ":CocDiagnostics \<CR>"
+nnoremap <leader>, :CocDiagnostics<CR>
 "}}}
