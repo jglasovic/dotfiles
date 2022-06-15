@@ -8,7 +8,8 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 set backspace=2
-set cursorline
+" set cursorline
+set guicursor=
 set cursorlineopt=number
 set hidden
 set switchbuf=usetab,newtab
@@ -28,6 +29,7 @@ set noswapfile
 set ignorecase
 set smartcase
 set smartindent
+set scrolloff=12
 
 
 " Line numbers
