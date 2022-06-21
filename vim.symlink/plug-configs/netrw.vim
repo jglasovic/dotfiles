@@ -1,9 +1,7 @@
 let g:netrw_dirhistmax = 0
-let g:netrw_liststyle = 1
+let g:netrw_liststyle = 0
 let g:netrw_localcopydircmd='cp'
-let g:netrw_localcopydircmdopt='-r'
-let g:netrw_localrmdir='rm'
-let g:netrw_localrmdiropt='-rf'
+let g:netrw_localrmdiropt='-r'
 let g:netrw_localmovecmd='mv'
 
 hi! link netrwMarkFile Search
@@ -11,9 +9,9 @@ autocmd FileType netrw setl bufhidden=wipe
 
 
 "open directory of the current file
-nnoremap <leader>T :Explore <CR>
+nnoremap <leader>t :Explore <CR>
 "open current working directory
-nnoremap <Leader>t :Explore $PWD<CR>
+nnoremap <Leader>T :Explore $PWD<CR>
 
 function! NetrwRemoveRecursive()
   if &filetype ==# 'netrw'

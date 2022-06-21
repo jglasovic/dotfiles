@@ -1,4 +1,4 @@
-if has('nvim')
+if $USE_LSP == 'true'
   finish
 endif
 
@@ -41,9 +41,8 @@ augroup mygroup
 augroup end
 
 command! -nargs=0 Format  :call CocAction('format')
-command! -nargs=? Fold    :call     CocAction('fold', <f-args>)
-command! -nargs=0 OR      :call     CocAction('runCommand', 'editor.action.organizeImport')
-
+command! -nargs=? Fold    :call CocAction('fold', <f-args>)
+command! -nargs=0 OR      :call CocAction('runCommand', 'editor.action.organizeImport')
 """ Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
@@ -70,5 +69,8 @@ nmap <leader>X  <Plug>(coc-fix-current)
 nmap <leader>x  <Plug>(coc-codeaction-cursor)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 nnoremap <leader>[ :CocRestart<CR>
-nnoremap <silent><expr> <leader>, CloseBuffers('Location List', 1) ? ":echom 'aaaaa' \<CR>" : ":CocDiagnostics \<CR>"
+nnoremap <leader>, :CocDiagnostics<CR>
 "}}}
+"
+
+command! -nargs=0 RestartDiagnostics  :CocRestart

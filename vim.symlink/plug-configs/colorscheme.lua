@@ -2,14 +2,14 @@ local fmt = string.format
 local match = string.match
 
 -- small and fast my custom statusline written in lua
--- oneday going to extract this into a separate repo as plugin
+-- one day going to extract this into a separate repo as plugin
 local statusline = require('custom-statusline')
 
 -- transparent background
 vim.g['onedark_color_overrides'] = {
   background = { gui = "NONE", cterm = "NONE", cterm16 = "NONE" }
 }
-vim.opt.termguicolors = true
+-- vim.opt.termguicolors = true
 vim.cmd'colorscheme onedark'
 -- Get colors defined in colorscheme
 local onedark_colors = vim.fn['onedark#GetColors']()

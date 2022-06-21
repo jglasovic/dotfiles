@@ -1,15 +1,15 @@
-let s:plugged_dir_path = '~/.vim/plugged'
-let s:autoload_plug_path = '~/.vim/autoload/plug.vim'
+let g:plugged_dir_path = '~/.vim/plugged'
+let g:autoload_plug_path = '~/.vim/autoload/plug.vim'
 
 " load plugins
-if empty(glob(s:autoload_plug_path))
-  silent exec "!curl -fLo ".s:autoload_plug_path." --create-dirs "
-    \ ."https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+if empty(glob(g:autoload_plug_path))
+  silent exec "!curl -fLo ".g:autoload_plug_path." --create-dirs "
+    \ ."httpg://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 endif
 
 " check for plugged dir
-if empty(glob(s:plugged_dir_path))
-  silent exec "!mkdir ".s:plugged_dir_path
+if empty(glob(g:plugged_dir_path))
+  silent exec "!mkdir ".g:plugged_dir_path
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 

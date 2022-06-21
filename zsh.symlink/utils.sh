@@ -30,3 +30,7 @@ function is_app_running(){
   pgrep -xq "$1"; 
   [[ $? == 0 ]]
 }
+
+function ensure_installed_global_npm_package(){
+  npm list -g "$1" || npm i -g "$1"
+}

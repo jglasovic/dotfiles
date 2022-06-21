@@ -71,9 +71,6 @@ bindkey -M vicmd '^[[A' up-line-or-beginning-search
 bindkey -M vicmd '^[[B' down-line-or-beginning-search
 bindkey -M viins '^[[A' up-line-or-beginning-search
 bindkey -M viins '^[[B' down-line-or-beginning-search
-
-
-
-
-
+# Fix backspace: https://github.com/spaceship-prompt/spaceship-prompt/issues/91#issuecomment-327996599
+bindkey "^?" backward-delete-char
 

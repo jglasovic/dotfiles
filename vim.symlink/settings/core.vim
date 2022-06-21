@@ -8,8 +8,6 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 set backspace=2
-" set cursorline
-set guicursor=
 set cursorlineopt=number
 set hidden
 set switchbuf=usetab,newtab
@@ -30,7 +28,7 @@ set ignorecase
 set smartcase
 set smartindent
 set scrolloff=12
-
+set mouse=a
 
 " Line numbers
 set number relativenumber
@@ -58,5 +56,6 @@ if has('nvim')
   let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
 else
   set re=0 "fix vi highlighting
+  set ttyfast
 endif
 

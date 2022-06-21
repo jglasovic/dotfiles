@@ -13,7 +13,7 @@ function ActivatePoetv()
   if &previewwindow != 1 && expand('%:p') !~# "/\\.git/"
     call poetv#activate()
     if g:CURRENT_VIRTUAL_ENV != $VIRTUAL_ENV
-      silent exec "LspRestart"
+      silent exec "RestartDiagnostics"
     endif
   endif
 endfunction
