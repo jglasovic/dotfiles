@@ -9,7 +9,7 @@ local statusline = require('custom-statusline')
 vim.g['onedark_color_overrides'] = {
   background = { gui = "NONE", cterm = "NONE", cterm16 = "NONE" }
 }
--- vim.opt.termguicolors = true
+-- vim.opt.termguicolors = true -- not using termguicolors 
 vim.cmd'colorscheme onedark'
 -- Get colors defined in colorscheme
 local onedark_colors = vim.fn['onedark#GetColors']()

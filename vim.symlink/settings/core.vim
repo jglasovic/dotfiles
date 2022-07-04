@@ -8,9 +8,9 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 set backspace=2
+set cursorline
 set cursorlineopt=number
 set hidden
-set switchbuf=usetab,newtab
 set wildmode=longest:full,full
 set wildmenu
 set wildignore=*.o,*~

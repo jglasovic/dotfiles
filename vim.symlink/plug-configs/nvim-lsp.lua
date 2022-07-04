@@ -84,18 +84,21 @@ local get_pyright_opts = function()
   return {
     cmd = { "pyright-langserver", "--stdio" },
     filetypes = { "python" },
-    root_dir = function(fname)
-      local root_files = {
-        '.git'
-        -- , '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json'        -- 'pyproject.toml',
-        -- 'setup.py',
-        -- 'setup.cfg',
-        -- 'requirements.txt',
-        -- 'Pipfile',
-        -- 'pyrightconfig.json',
-      }
-      return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
-    end,
+    root_dir = util.root_pattern(".git"),
+
+    -- root_dir = function(fname)
+    --   local root_files = {
+    --     '.git'
+    --     -- , '.env', 'venv', '.venv', 'setup.cfg', 'setup.py', 'pyproject.toml', 'pyrightconfig.json'
+    --     -- 'pyproject.toml',
+    --     -- 'setup.py',
+    --     -- 'setup.cfg',
+    --     -- 'requirements.txt',
+    --     -- 'Pipfile',
+    --     -- 'pyrightconfig.json',
+    --   }
+    --   return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
+    -- end,
     settings = {
       python = {
         -- formatting = {
@@ -121,7 +124,7 @@ local get_pyright_opts = function()
         -- }
       }
     },
-    single_file_support = true,
+    -- single_file_support = true,
     on_attach = on_attach,
     capabilities = capabilities
   }
@@ -167,7 +170,7 @@ null_ls.setup({
     null_ls.builtins.formatting.eslint_d,
     null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.diagnostics.mypy,
+    -- null_ls.builtins.diagnostics.mypy,
     null_ls.builtins.diagnostics.pylint
   },
   on_attach = on_attach,
