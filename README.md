@@ -19,7 +19,9 @@ My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for manag
 
 ### `rcfiles`
 
-#### `settings`
+Base vim config files
+
+#### `settings.vim`
 
 - clipboard unnamedplus
 - no backup, no swap file
@@ -31,7 +33,7 @@ My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for manag
 - ripgrep, undo history
 - if missing, creating dirs on buf save
 
-#### `mappings`
+#### `mappings.vim`
 
 - arrow keys for movement are disabled!
 - `<Space>` - leader key
@@ -62,19 +64,21 @@ My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for manag
 - `<A-{j/k}>` - move line(s) content down/up
 - `<C-{arrow keys}` - resize splits
 
-#### `visual`
+#### `visual.vim`
 
 - using [onedark.vim](https://github.com/joshdick/onedark.vim) colorscheme, dark background, no termguicolors (with this colorscheme, it looks nice to me without)
 - cursorline in insert mode
 - created custom statusline/bufferline in lua. (I have spent some time trying to find some light plugin but couldn't, so I created my own :) maybe this TODO: [lightline](https://github.com/itchyny/lightline.vim))
 
-#### `functions`
+#### `functions.vim`
 
-- some useful functions like: `FindBuffers`, `CloseBuffers`, `HasBuffer`,...
+Some useful functions like: `FindBuffers`, `CloseBuffers`, `HasBuffer`,...
 
 ### `rcplugins`
 
-#### `netrw`
+Specific plugin config files
+
+#### `netrw.vim`
 
 File explorer
 
@@ -106,9 +110,7 @@ Mappings in explorer buf:
 - `bd` - remove most recent bookmark
 - `bj` - jump to the most recent bookmark
 
-#### `coc`
-
-[coc.nvim](https://github.com/neoclide/coc.nvim)
+#### `coc.vim` [coc.nvim](https://github.com/neoclide/coc.nvim)
 
 - `[g` - diagnostics prev
 - `]g` - diagnostics next
@@ -130,16 +132,14 @@ Mappings in explorer buf:
 - `:OR` - organize imports
 - `:Prettier` - prettier
 
-#### `nvim-lsp`
+#### `nvim-lsp.lua`
 
 A list of plugins to support lsp: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig), [nvim-cmp](https://github.com/hrsh7th/nvim-cmp), [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip), [LuaSnip](https://github.com/L3MON4D3/LuaSnip), and [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
 
 If using `nvim` with `USE_LSP="true"`, `nvim` is not going to use `coc`, but instead it's going to use `nvim-lsp`
 Mappings are the same as with `coc` (TODO: I have to fix some)
 
-#### `vim-fugitive`
-
-[vim-fugitive](https://github.com/tpope/vim-fugitive)
+#### `vim-fugitive.vim` [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
 - `<leader>gs` - toggle git status
 - `<leader>gb` - toggle git blame
@@ -147,8 +147,17 @@ Mappings are the same as with `coc` (TODO: I have to fix some)
 - `<leader>gl` - pick right in gitdiff
 - `<leader>gh` - pick left in gitdiff
 
-#### `vim-github-url`
-
-[vim-github-url](https://github.com/pgr0ss/vim-github-url)
+#### `vim-github-url.vim` [vim-github-url](https://github.com/pgr0ss/vim-github-url)
 
 - `<leader>gy` - yank github url on current/selected line(s)
+
+#### Other plugins with default configs
+
+- [fzf.vim](https://github.com/junegunn/fzf.vim)
+- [vim-surround](https://github.com/tpope/vim-surround)
+- [vim-commentary](https://github.com/tpope/vim-commentary)
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- [plenary](https://github.com/nvim-lua/plenary.nvim)
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
+- [poet-v](https://github.com/petobens/poet-v)
+- [vimspector](https://github.com/puremourning/vimspector)
