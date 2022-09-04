@@ -1,7 +1,6 @@
 let g:netrw_dirhistmax = 0
 let g:netrw_liststyle = 0
 let g:netrw_localcopydircmd='cp'
-let g:netrw_localrmdiropt='-r'
 let g:netrw_localmovecmd='mv'
 
 hi! link netrwMarkFile Search
@@ -54,7 +53,7 @@ function! NetrwMapping()
   "create a file
   nmap <buffer> ff %:w<CR>:buffer #<CR>
   "rename a file
-  nmap <buffer> fe R
+  nmap <buffer> fr R
   "copy the marked files
   nmap <buffer> fc mc
   "mark and copy in one
@@ -69,14 +68,14 @@ function! NetrwMapping()
   "show a list of marked files
   nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
   "Show the target directory
-  nmap <buffer> fq :echo 'Target:' . netrw#Expose("netrwmftgt")<CR>
+  nmap <buffer> ft :echo 'Target:' . netrw#Expose("netrwmftgt")<CR>
 
   "create a bookmark
   nmap <buffer> bb mb
   "remove the most recent bookmark
   nmap <buffer> bd mB
   "jump to the most recent bookmark
-  nmap <buffer> bl gb
+  nmap <buffer> bj gb
 
   "remove
   nmap <buffer> FF :call NetrwRemoveRecursive()<CR>

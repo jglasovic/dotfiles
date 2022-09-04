@@ -49,7 +49,6 @@ set softtabstop=0
 " wrapping / line height / screen
 set linebreak
 set wrap
-autocmd VimResized * | set columns=120
 set textwidth=120
 set scrolloff=12
 

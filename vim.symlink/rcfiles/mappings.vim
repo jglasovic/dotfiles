@@ -15,10 +15,10 @@ inoremap ;; <Esc>
 tnoremap ;; <C-\><C-n>
 
 " Toggle 'set list' (toggles invisible characters)
-nmap <leader>li :set list!<CR>
+nmap <leader>ic :set list!<CR>
 
 " Toggle line numbers
-nnoremap <leader>n :call ToggleLineNumbers()<CR>
+nnoremap <leader>ln :call ToggleLineNumbers()<CR>
 
 " Close buffer
 nnoremap <C-w> :bd<CR>
@@ -31,7 +31,7 @@ noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
 " Spell check
-nmap <leader>S :call ToggleSpellchecking()<CR>
+nmap <leader>sc call ToggleSpellchecking()<CR>
 
 " Find
 nmap <silent> <leader>p :Files<CR>
@@ -39,7 +39,7 @@ nmap <silent> <leader>P :Rg<CR>
 nmap <silent> <leader>b :Buffers<CR>
 
 " Search hi
-nnoremap <silent><expr> <leader><esc> (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+nnoremap <silent><expr> <CR> (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
 " Jump to start and end of line using the home row keys
 map H ^

@@ -1,4 +1,4 @@
-if $USE_LSP == 'true'
+if has('nvim') && $USE_LSP == 'true'
   finish
 endif
 
