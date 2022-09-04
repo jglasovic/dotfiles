@@ -60,9 +60,9 @@ function! NetrwMapping()
   "mark and copy in one
   nmap <buffer> fC mtmc
   "move marked files
-  nmap <buffer> fx mm
+  nmap <buffer> fm mm
   "mark and move in one
-  nmap <buffer> fX mtmm
+  nmap <buffer> fM mtmm
   "run external commands on the marked files
   nmap <buffer> f; mx
 

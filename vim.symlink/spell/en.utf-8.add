@@ -6,3 +6,9 @@ filename
 filetype
 powerline
 nerdtree
+autoread
+cmd
+UserDTO
+lastName
+firstName
+createdAt

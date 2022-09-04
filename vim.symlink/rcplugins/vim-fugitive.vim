@@ -19,8 +19,8 @@ function! s:ToggleStatus()
   endif
 endfunction
 
-nnoremap <silent><leader>g :call <SID>ToggleStatus()<CR>
-nnoremap <silent><leader>b :call <SID>ToggleBlame()<CR>
-nnoremap <silent><leader>d :call <SID>ToggleDiff()<CR>
-nnoremap <silent>g<left> :diffget //2<CR>
-nnoremap <silent>g<right> :diffget //3<CR>
+nnoremap <silent><leader>gs :call <SID>ToggleStatus()<CR>
+nnoremap <silent><leader>gb :call <SID>ToggleBlame()<CR>
+nnoremap <silent><leader>gd :call <SID>ToggleDiff()<CR>
+nnoremap <silent>gl :diffget //2<CR>
+nnoremap <silent>gh :diffget //3<CR>

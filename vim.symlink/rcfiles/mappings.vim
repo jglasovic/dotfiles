@@ -1,28 +1,21 @@
 let mapleader=" "
 
+" reload vim
+nnoremap <leader>v :source $MYVIMRC<CR>
+
 ""Mappings for opening new splits
-" Window
 nmap <leader>wh   :topleft  vnew<CR>
 nmap <leader>wl   :botright vnew<CR>
 nmap <leader>wk   :topleft  new<CR>
 nmap <leader>wj   :botright new<CR>
-
-" Buffer
-nmap <leader>wbh  :leftabove  vnew<CR>
-nmap <leader>wbl  :rightbelow vnew<CR>
-nmap <leader>wbk  :leftabove  new<CR>
-nmap <leader>wbj  :rightbelow new<CR>
 
 " Insert mode exit
 inoremap ;; <Esc>
 " Terminal exit
 tnoremap ;; <C-\><C-n>
 
-" Reload Vim configuration
-nmap <leader>. :source $MYVIMRC<CR>
-
 " Toggle 'set list' (toggles invisible characters)
-nmap <leader>i :set list!<CR>
+nmap <leader>li :set list!<CR>
 
 " Toggle line numbers
 nnoremap <leader>n :call ToggleLineNumbers()<CR>
@@ -43,18 +36,14 @@ nmap <leader>S :call ToggleSpellchecking()<CR>
 " Find
 nmap <silent> <leader>p :Files<CR>
 nmap <silent> <leader>P :Rg<CR>
-nmap <silent> <leader>s :Buffers<CR>
+nmap <silent> <leader>b :Buffers<CR>
 
 " Search hi
-nnoremap <silent><expr> <leader>f (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+nnoremap <silent><expr> <leader><esc> (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
-
-" change buffers
-nnoremap <leader>l :bn<CR>
-nnoremap <leader>h :bp<CR>
 
 " Toggles between buffers
 nnoremap <leader><leader> <c-^>
@@ -64,6 +53,22 @@ map <up>    :echo "No!"<CR>
 map <down>  :echo "No!"<CR>
 map <left>  :echo "No!"<CR>
 map <right> :echo "No!"<CR>
+
+" fold, unfold
+nnoremap <leader>ff za
+nnoremap <leader>FF zA
+
+" Maps for folding, unfolding all
+nnoremap <leader>fa zM<cr>
+nnoremap <leader>Fa zR<cr>
+
+" shortcuts for substitutions
+nnoremap <leader>sg :%s///g<left><left><left>
+nnoremap <leader>sl :s///g<left><left><left>
+
+" word good/bad for spell
+nnoremap <leader>wg zg
+nnoremap <leader>wb z=
 
 "paste
 xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>
