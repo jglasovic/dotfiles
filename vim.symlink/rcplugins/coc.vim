@@ -63,7 +63,9 @@ function! ShowDocIfNoDiagnostic(timer_id)
 endfunction
 
 function! s:show_hover_doc()
-  call timer_start(500, 'ShowDocIfNoDiagnostic')
+  if get(g:, 'coc_service_initialized', 0)
+    call timer_start(500, 'ShowDocIfNoDiagnostic')
+  endif
 endfunction
 
 autocmd CursorHoldI * :call <sid>show_hover_doc()

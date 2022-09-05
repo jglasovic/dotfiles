@@ -1,7 +1,5 @@
 # Jure's dotfiles
 
-Thanks to [Josh Dick](https://github.com/joshdick)
-
 ## Installation:
 
 TODO: will add
@@ -14,8 +12,8 @@ My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for manag
 
 - configuration files are in two main directories:
 
-  - `rcfiles` - base vim configs
-  - `rcplugins` - specific plugin configs
+  - `rcfiles` - base vim config files
+  - `rcplugins` - plugins config files
 
 ### `rcfiles`
 
@@ -48,7 +46,7 @@ Base vim config files
 - `<leader>P` - search files content
 - `<leader>b` - search buffers
 - `<leader>w{h/j/k/l}` - opening new splits
-- `<leader><leader>` - switch between two recent buffers
+- `<leader><leader>` - toggle between last open buffers
 - `<leader>ln` - toggle line numbers
 - `<leader>ic` - toggle invisible characters
 - `<leader>ff` - fold/unfold current (non recursive, only one level)
@@ -76,14 +74,12 @@ Some useful functions like: `FindBuffers`, `CloseBuffers`, `HasBuffer`,...
 
 ### `rcplugins`
 
-Specific plugin config files
+Plugin config files
 
-#### `netrw.vim`
-
-File explorer
+#### `netrw.vim` - File explorer
 
 - `<leader>t` - open explorer in dir of the current buffer
-- `<leader>T` - open explorer in $PWD dir
+- `<leader>T` - open explorer in `$PWD` dir
 
 Mappings in explorer buf:
 
@@ -110,7 +106,7 @@ Mappings in explorer buf:
 - `bd` - remove most recent bookmark
 - `bj` - jump to the most recent bookmark
 
-#### `coc.vim` [coc.nvim](https://github.com/neoclide/coc.nvim)
+#### `coc.vim` - [coc.nvim](https://github.com/neoclide/coc.nvim)
 
 - `[g` - diagnostics prev
 - `]g` - diagnostics next
@@ -139,19 +135,19 @@ A list of plugins to support lsp: [nvim-lspconfig](https://github.com/neovim/nvi
 If using `nvim` with `USE_LSP="true"`, `nvim` is not going to use `coc`, but instead it's going to use `nvim-lsp`
 Mappings are the same as with `coc` (TODO: I have to fix some)
 
-#### `vim-fugitive.vim` [vim-fugitive](https://github.com/tpope/vim-fugitive)
+#### `vim-fugitive.vim` - [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
 - `<leader>gs` - toggle git status
 - `<leader>gb` - toggle git blame
 - `<leader>gd` - toggle git diff
-- `<leader>gl` - pick right in gitdiff
-- `<leader>gh` - pick left in gitdiff
+- `gl` - pick right in gitdiff
+- `gh` - pick left in gitdiff
 
-#### `vim-github-url.vim` [vim-github-url](https://github.com/pgr0ss/vim-github-url)
+#### `vim-github-url.vim` - [vim-github-url](https://github.com/pgr0ss/vim-github-url)
 
 - `<leader>gy` - yank github url on current/selected line(s)
 
-#### Other plugins with default configs
+### Other plugins with default configs
 
 - [fzf.vim](https://github.com/junegunn/fzf.vim)
 - [vim-surround](https://github.com/tpope/vim-surround)
