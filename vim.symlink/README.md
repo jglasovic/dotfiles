@@ -2,13 +2,13 @@
 
 ## `vimrc`
 
-I'm actively using neovim but this configuration is also compatible with vim
+I'm actively using neovim but this configuration is also compatible with vim.
+
 My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for managing plugins
 
-- configuration files are in two main directories:
-
-  - `rcfiles` - base vim config files
-  - `rcplugins` - plugins config files
+Configuration files are in two main directories:
+ - `rcfiles` - base vim config files
+ - `rcplugins` - plugins config files
 
 ## `rcfiles`
 
