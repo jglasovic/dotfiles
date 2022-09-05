@@ -16,7 +16,7 @@ augroup END
 
 
 if !has('nvim')
-  g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
+  let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
   colorscheme onedark
   hi! link CocMenuSel PmenuSel
   finish
