@@ -85,22 +85,26 @@ Mappings in explorer buf:
 
 - `<Esc>` - close explorer
 - `<leader>R` - refresh
+- `h/l` - move directories up/down or open file
+- `H` - back in history
+- `.` - show/hide dotfiles
+
+- `ff` - create file
+- `d` - create directory
+- `fr` - rename file/dir
+- `D` - delete marked file(s)/dir(s) or the one under the cursor
+
 - `<TAB>` - toggle mark on a file or dir
 - `<S-TAB>` - remove all marks in a current dir
 - `<leader><TAB>` - remove all marks
-- `h/l` - move directories up/down or open file
-- `H` - back in history
-- `ff` - file create
-- `FF` - delete file(s) and dirs (TODO: need to fix this)
-- `fr` - file rename
-- `fd` - file delete
+- `mt` - make target dir
 - `fc` - copy marked file(s)
 - `fC` - mark and copy one
 - `fm` - move marked file(s)
 - `fM` - mark and move one
 - `fl` - show all marked files
 - `ft` - show target dir
-- `f;` - run external command on marked file(s)
+- `f;` - run external command on marked file(s)/dir(s)
 
 - `bb` - create a bookmark
 - `bd` - remove most recent bookmark

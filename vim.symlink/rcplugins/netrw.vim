@@ -6,27 +6,50 @@ let g:netrw_localmovecmd='mv'
 hi! link netrwMarkFile Search
 autocmd FileType netrw setl bufhidden=wipe
 
+function! Confirm(msg)
+    echo a:msg . ' '
+    let l:answer = nr2char(getchar())
+
+    if l:answer ==? 'y'
+        return 1
+    elseif l:answer ==? 'n'
+        return 0
+    else
+        echo 'Please enter "y" or "n"'
+        return Confirm(a:msg)
+    endif
+endfun
+
+function! GetMarkedOrCurrent()
+  let marked_paths = netrw#Expose("netrwmarkfilelist")
+  if type(marked_paths) == v:t_list && len(marked_paths) > 0
+    return marked_paths
+  endif
+  let path = glob(b:netrw_curdir . '/' . expand('<cfile>'))
+  return [path]
+endfunction
+
+
+" if marked files, ask to delete them, else ask to delete file under cursor
+function! DeleteRecursive()
+  let paths = GetMarkedOrCurrent()
+  let msg_paths = join(paths, "\n")
+  let msg = join(['Delete with `rm -r` path(s):', msg_paths, '? [y/n]'], "\n")
+  if Confirm(msg)
+    try
+      silent execute "!rm -r " . join(paths, " ")
+      normal mu
+      echo "Deleted!"
+    catch
+      echo "Cannot delete: " . msg_paths
+    endtry
+  endif
+endfunction
 
 "open directory of the current file
 nnoremap <leader>t :Explore <CR>
 "open current working directory
 nnoremap <Leader>T :Explore $PWD<CR>
-
-function! NetrwRemoveRecursive()
-  if &filetype ==# 'netrw'
-    cnoremap <buffer> <CR> rm -r<CR>
-    normal mu
-    normal mf
-
-    try
-      normal mx
-    catch
-      echo "Canceled"
-    endtry
-
-    cunmap <buffer> <CR>
-  endif
-endfunction
 
 function! NetrwMapping()
   "close
@@ -49,7 +72,6 @@ function! NetrwMapping()
   nmap <buffer> <S-TAB> mF
   "remove all the marks on all files
   nmap <buffer> <leader><TAB> mu
-
   "create a file
   nmap <buffer> ff %:w<CR>:buffer #<CR>
   "rename a file
@@ -64,6 +86,8 @@ function! NetrwMapping()
   nmap <buffer> fM mtmm
   "run external commands on the marked files
   nmap <buffer> f; mx
+  "remove marked or file/dir under the cursor (override default D)
+  nmap <buffer> D :call DeleteRecursive()<CR>
 
   "show a list of marked files
   nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
@@ -77,8 +101,6 @@ function! NetrwMapping()
   "jump to the most recent bookmark
   nmap <buffer> bj gb
 
-  "remove
-  nmap <buffer> FF :call NetrwRemoveRecursive()<CR>
 endfunction
 
 augroup netrw_mapping
