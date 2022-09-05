@@ -64,7 +64,7 @@ source "$HOME/.cargo/env"
 # source utils first
 source "$HOME/.zsh/utils.sh"
 # source scripts
-for script in `find $HOME/.zsh/ -type f -maxdepth 1 -mindepth 1 ! -iname "utils.sh"`; do
+for script in `find $HOME/.zsh/config/ -type f -maxdepth 1 -mindepth 1`; do
   source $script
 done
 
