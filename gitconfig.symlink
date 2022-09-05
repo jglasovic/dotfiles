@@ -29,7 +29,7 @@ prompt = false
 	trustExitCode = false
 	keepBackup = false
 [commit]
-	template = /Users/jurepc/.stCommitMsg
+	template = ~/.stCommitMsg
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
