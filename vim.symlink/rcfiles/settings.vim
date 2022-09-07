@@ -15,8 +15,9 @@ set encoding=utf-8
 set mouse=a
 
 " spell
-set spelllang=en_us
-set spell
+" currently using coc-spell-checker
+" set spelllang=en_us
+" set spell
 
 " autoread
 set autoread

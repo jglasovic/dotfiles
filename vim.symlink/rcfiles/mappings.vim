@@ -30,9 +30,6 @@ nnoremap <C-q> :q<CR>
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
-" Spell check
-nmap <leader>sc call ToggleSpellchecking()<CR>
-
 " Find
 nmap <silent> <leader>p :Files<CR>
 nmap <silent> <leader>P :Rg<CR>
@@ -47,6 +44,10 @@ map L $
 
 " Toggles between buffers
 nnoremap <leader><leader> <c-^>
+
+" change buffers
+nnoremap <leader>l :bn<CR>
+nnoremap <leader>h :bp<CR>
 
 " No arrow keys
 map <up>    :echo "No!"<CR>
@@ -65,10 +66,6 @@ nnoremap <leader>Fa zR<cr>
 " shortcuts for substitutions
 nnoremap <leader>sg :%s///g<left><left><left>
 nnoremap <leader>sl :s///g<left><left><left>
-
-" word good/bad for spell
-nnoremap <leader>wg zg
-nnoremap <leader>wb z=
 
 "paste
 xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>

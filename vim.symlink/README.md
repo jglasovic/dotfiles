@@ -7,8 +7,9 @@ I'm actively using neovim but this configuration is also compatible with vim.
 My configuration uses [vim-plug](https://github.com/junegunn/vim-plug) for managing plugins
 
 Configuration files are in two main directories:
- - `rcfiles` - base vim config files
- - `rcplugins` - plugins config files
+
+- `rcfiles` - base vim config files
+- `rcplugins` - plugins config files
 
 ## `rcfiles`
 
@@ -18,7 +19,6 @@ Base vim config files
 
 - clipboard unnamedplus
 - no backup, no swap file
-- spell lang en_us
 - incremental, case-insensitive search
 - fold indent, 2 spaces, no tabs
 - vertical split goes right, horizontal split goes up
@@ -50,9 +50,6 @@ Base vim config files
 - `<leader>Fa` - open all folds
 - `<leader>sl` - substitutions - line
 - `<leader>sg` - substitutions - global
-- `<leader>sc` - toggle spell check
-- `<leader>wg` - spell check - mark word as good
-- `<leader>wb` - spell check - fix bad word
 - `H` and `L` - jump to start/end of line
 - `<A-{j/k}>` - move line(s) content down/up
 - `<C-{arrow keys}` - resize splits

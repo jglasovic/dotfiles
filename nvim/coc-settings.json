@@ -23,5 +23,12 @@
     "${workspaceFolder}/pyproject.toml"
   ],
   // lua
-  "Lua.diagnostics.globals": ["vim"]
+  "Lua.diagnostics.globals": [
+    "vim"
+  ],
+  "cSpell.userWords": [
+    "pyright",
+    "rcfiles",
+    "rcplugins"
+  ]
 }

@@ -13,7 +13,8 @@ let g:coc_global_extensions = [
   \ '@yaegassy/coc-intelephense',
   \ 'coc-lua',
   \ 'coc-rust-analyzer',
-  \ 'coc-go'
+  \ 'coc-go',
+  \ 'coc-spell-checker'
   \ ]
 
 function! CheckBackspace() abort
@@ -68,8 +69,8 @@ function! s:show_hover_doc()
   endif
 endfunction
 
-autocmd CursorHoldI * :call <sid>show_hover_doc()
-autocmd CursorHold * :call <sid>show_hover_doc()
+" autocmd CursorHoldI * :call <sid>show_hover_doc()
+" autocmd CursorHold * :call <sid>show_hover_doc()
 autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup coc_group
   autocmd!

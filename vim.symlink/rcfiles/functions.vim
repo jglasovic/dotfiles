@@ -36,10 +36,6 @@ function! CloseBuffers(pattern, ...)
   return buflen
 endfunction
 
-function! ToggleSpellchecking()
-  set spell!
-endfunction
-
 function! ToggleLineNumbers()
   set number!
   set relativenumber!

@@ -4,7 +4,7 @@ let g:autoload_plug_path = '~/.vim/autoload/plug.vim'
 " load plugins
 if empty(glob(g:autoload_plug_path))
   silent exec "!curl -fLo ".g:autoload_plug_path." --create-dirs "
-    \ ."httpg://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    \ ."https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 endif
 
 " check for plugged dir
