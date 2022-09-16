@@ -50,6 +50,7 @@ Base vim config files
 - `<leader>Fa` - open all folds
 - `<leader>sl` - substitutions - line
 - `<leader>sg` - substitutions - global
+- `Q` - playback of the recording that was put into the q register
 - `H` and `L` - jump to start/end of line
 - `<A-{j/k}>` - move line(s) content down/up
 - `<C-{arrow keys}` - resize splits

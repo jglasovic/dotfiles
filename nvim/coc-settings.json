@@ -18,17 +18,31 @@
     "${workspaceFolder}/pyproject.toml"
   ],
   "pyright.organizeimports.provider": "isort",
+  "pyright.inlayHints.enable": false,
   "python.sortImports.args": [
     "--settings-path",
     "${workspaceFolder}/pyproject.toml"
   ],
   // lua
-  "Lua.diagnostics.globals": [
-    "vim"
-  ],
+  "Lua.diagnostics.globals": ["vim"],
   "cSpell.userWords": [
+    "asyncio",
+    "authz",
+    "circleci",
+    "forganizations",
+    "gevent",
+    "isort",
+    "noselect",
+    "organizeimports",
+    "orgs",
+    "pyenv",
+    "pylint",
+    "pylintrc",
+    "pyproject",
     "pyright",
+    "rcfile",
     "rcfiles",
-    "rcplugins"
+    "rcplugins",
+    "relnum"
   ]
 }

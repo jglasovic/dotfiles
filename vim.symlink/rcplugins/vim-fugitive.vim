@@ -23,5 +23,5 @@ nnoremap <silent><leader>gs :call <SID>ToggleStatus()<CR>
 nnoremap <silent><leader>gb :call <SID>ToggleBlame()<CR>
 nnoremap <silent><leader>gd :call <SID>ToggleDiff()<CR>
 
-nnoremap <silent>gl :diffget //2<CR>
-nnoremap <silent>gh :diffget //3<CR>
+nnoremap <silent>gh :diffget //2<CR>
+nnoremap <silent>gl :diffget //3<CR>

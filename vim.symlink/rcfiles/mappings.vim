@@ -67,8 +67,12 @@ nnoremap <leader>Fa zR<cr>
 nnoremap <leader>sg :%s///g<left><left><left>
 nnoremap <leader>sl :s///g<left><left><left>
 
-"paste
+"paste and hold position
 xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>
+
+" Quick access for playback q register recording
+" qq - start recording, q - stop recording, Q - playback
+noremap Q @q
 
 " Resize view
 nnoremap <C-right>  :vertical resize +10<CR>

@@ -1,7 +1,7 @@
 syntax on
 filetype plugin indent on
 
-set clipboard+=unnamedplus
+set clipboard^=unnamed,unnamedplus
 set hidden
 set confirm
 set updatetime=100
@@ -13,11 +13,6 @@ set laststatus=2
 set incsearch
 set encoding=utf-8
 set mouse=a
-
-" spell
-" currently using coc-spell-checker
-" set spelllang=en_us
-" set spell
 
 " autoread
 set autoread
@@ -86,7 +81,6 @@ endif
 
 
 if has('nvim')
-  set list
   set signcolumn=yes:1
 
   " Permanent undo - nvim undofiles are incompatible with vim undofiles
@@ -104,5 +98,21 @@ endif
 augroup CreateDirsOnSave
     autocmd!
     autocmd BufWritePre * if expand("<afile>")!~#'^\w\+:/' && !isdirectory(expand("%:h")) | execute "silent! !mkdir -p ".shellescape(expand('%:h'), 1) | redraw! | endif
+augroup END
+
+" sync system clipboard outside vim
+" to " and 0 registers like yank does,
+" not to lose them after d,x,c,s operations
+function! SyncPlusAndZeroReg()
+  let reg_def = getreg('0')
+  let reg_plus = getreg('+')
+  if reg_def!=#reg_plus
+    call setreg('0', reg_plus)
+    call setreg('"', reg_plus)
+  endif
+endfunction
+augroup SyncRegisters
+    autocmd!
+    autocmd FocusGained * call SyncPlusAndZeroReg()
 augroup END
 
