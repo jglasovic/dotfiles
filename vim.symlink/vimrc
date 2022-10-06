@@ -46,7 +46,7 @@ call plug#begin(g:plugged_dir_path)
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
-
+  Plug 'tsandall/vim-rego'
   Plug 'pgr0ss/vim-github-url'
   Plug 'joshdick/onedark.vim'
 call plug#end()

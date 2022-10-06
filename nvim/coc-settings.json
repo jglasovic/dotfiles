@@ -26,11 +26,16 @@
   // lua
   "Lua.diagnostics.globals": ["vim"],
   "cSpell.userWords": [
+    "Gvdiffsplit",
+    "aioboto",
     "asyncio",
     "authz",
+    "blist",
     "circleci",
+    "entitie",
     "forganizations",
     "gevent",
+    "httpx",
     "isort",
     "noselect",
     "organizeimports",
@@ -43,6 +48,11 @@
     "rcfile",
     "rcfiles",
     "rcplugins",
-    "relnum"
+    "rego",
+    "relnum",
+    "selectinload",
+    "strongdm",
+    "targz",
+    "vapi"
   ]
 }

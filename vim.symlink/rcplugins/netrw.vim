@@ -1,8 +1,8 @@
 let g:netrw_dirhistmax = 0
 let g:netrw_liststyle = 0
 let g:netrw_localcopydircmd='cp'
-let g:netrw_localmovecmd='mv'
-
+" let g:netrw_localmovecmd='mv'
+" let g:netrw_localmovecmdopt="-r"
 hi! link netrwMarkFile Search
 autocmd FileType netrw setl bufhidden=wipe
 

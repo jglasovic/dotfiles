@@ -39,6 +39,7 @@ Base vim config files
 - `<leader>v` - source vimrc
 - `<leader>p` - search files
 - `<leader>P` - search files content
+- `<leader>d` - search dirs
 - `<leader>b` - search buffers
 - `<leader>w{h/j/k/l}` - opening new splits
 - `<leader><leader>` - toggle between last open buffers

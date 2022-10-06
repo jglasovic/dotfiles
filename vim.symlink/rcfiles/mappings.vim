@@ -30,10 +30,15 @@ nnoremap <C-q> :q<CR>
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
+function! Aaa(arg)
+  echom a:arg
+endfunction
+
 " Find
 nmap <silent> <leader>p :Files<CR>
 nmap <silent> <leader>P :Rg<CR>
 nmap <silent> <leader>b :Buffers<CR>
+nmap <silent> <leader>d :call fzf#run(fzf#wrap({'source': 'find * -type d'}))<CR>
 
 " Search hi
 nnoremap <silent><expr> <CR> (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
