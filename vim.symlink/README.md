@@ -144,9 +144,14 @@ Mappings are the same as with `coc` (TODO: I have to fix some)
 - `gh` - pick left in gitdiff
 
 - `:DiffHistory <optional args [max: 2]: branches or commit hashes>` - diff history if args are not provided.
+
   - if single arg is provided, example: `DiffHistory main` - diff between current branch and `main`
   - if both args are provided, example: `DiffHistory main test-branch-1` - diff between `main` and `test-branch-1`
   - Commit hashes could also be provided (also in any combination with branches): `DiffHistory 0c29b5f b929329`, `DiffHistory main b929329`
+
+    - `]q` - next changes
+    - `[q` - previous changes
+
   - `:Git log` then selecting a commit, `DiffHistory` is going to show all changes in that commit
 
 ### `vim-github-url.vim` - [vim-github-url](https://github.com/pgr0ss/vim-github-url)
