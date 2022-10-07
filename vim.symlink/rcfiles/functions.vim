@@ -33,7 +33,8 @@ function! CloseBuffers(patterns, ...)
       try
         silent exec 'bwipeout!' buffer.name
       catch 
-        echo "Error deleting bufname: ".buffer.name
+        silent echo "Error deleting bufname: ".buffer.name
+        continue
       endtry
       if close_only_first
         return buflen

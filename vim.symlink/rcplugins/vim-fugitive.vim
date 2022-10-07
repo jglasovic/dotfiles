@@ -27,6 +27,7 @@ function! s:get_compare_str(args)
   return a:args[0].'..'.a:args[1]
 endfunction
 
+" bellow is modified script: https://github.com/tpope/vim-fugitive/issues/132#issuecomment-649516204
 function! s:view_git_history(...) abort
   let diff = s:get_compare_str(a:000)
   exe "Git difftool --name-only ".diff
