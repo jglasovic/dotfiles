@@ -29,7 +29,6 @@ endfunction
 
 function! s:view_git_history(...) abort
   let diff = s:get_compare_str(a:000)
-  echom diff
   exe "Git difftool --name-only ".diff
   call s:diff_current_quickfix_entry()
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
@@ -51,7 +50,6 @@ function s:diff_current_quickfix_entry() abort
   let qf = getqflist({'context': 0, 'idx': 0})
   if get(qf, 'idx') && type(get(qf, 'context')) == type({}) && type(get(qf.context, 'items')) == type([])
     let diff = get(qf.context.items[qf.idx - 1], 'diff', [])
-    echom string(reverse(range(len(diff))))
     for i in reverse(range(len(diff)))
       exe (i ? 'leftabove' : 'rightbelow') 'vert diffsplit' fnameescape(diff[i].filename)
       call s:add_mappings()
