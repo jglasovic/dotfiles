@@ -6,8 +6,8 @@ function! s:CloseFugitive()
 endfunction
 
 
-function! s:view_git_history() abort
-  Git difftool --name-only ! !^@
+function! s:view_git_history(branch) abort
+  exe "Git difftool --name-only ".(a:branch != '' ? a:branch."..." : '! !^@')
   call s:diff_current_quickfix_entry()
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
   " There's probably a better way to map this without changing the window
@@ -44,7 +44,7 @@ function! s:add_mappings() abort
   wincmd p
 endfunction
 
-command! DiffHistory call s:view_git_history()
+command! -nargs=? DiffHistory call s:view_git_history(<q-args>)
 
 nnoremap <silent><leader>gs :G<CR>
 nnoremap <silent><leader>gb :G blame<CR>
