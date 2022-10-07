@@ -7,6 +7,11 @@ endfunction
 
 
 function! s:view_git_history(branch) abort
+  let current_branch = FugitiveHead()
+  if current_branch == a:branch
+    echom "Already on ".a:branch." branch"
+    return
+  endif
   exe "Git difftool --name-only ".(a:branch != '' ? a:branch."..." : '! !^@')
   call s:diff_current_quickfix_entry()
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
