@@ -1,18 +1,36 @@
 function! s:CloseFugitive()
-  let closed_buf_len = CloseBuffers(['fugitive:', 'fugitiveblame', 'QuickFix'])
+  let closed_buf_len = CloseBuffers(['fugitive:', 'fugitiveblame'])
   if closed_buf_len == 0
     echom "No fugitive buffers"
   endif
 endfunction
 
-
-function! s:view_git_history(branch) abort
-  let current_branch = FugitiveHead()
-  if current_branch == a:branch
-    echom "Already on ".a:branch." branch"
-    return
+function! s:get_compare_str(args)
+  if len(a:args) == 0
+    return '! !^@'
   endif
-  exe "Git difftool --name-only ".(a:branch != '' ? a:branch."..." : '! !^@')
+
+  if len(a:args) == 1
+    let branch = a:args[0]
+    let current_branch = FugitiveHead()
+    if current_branch == branch
+      echom "Already on ".branch." branch, comparing previous commit history"
+      return '! !^@'
+    endif
+    return branch.'...'
+  endif
+
+  if len(a:args) > 2
+    echom "Cannot use more than two commits or branches to compare. Comparing first two!"
+  endif
+
+  return a:args[0].'..'.a:args[1]
+endfunction
+
+function! s:view_git_history(...) abort
+  let diff = s:get_compare_str(a:000)
+  echom diff
+  exe "Git difftool --name-only ".diff
   call s:diff_current_quickfix_entry()
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
   " There's probably a better way to map this without changing the window
@@ -49,7 +67,7 @@ function! s:add_mappings() abort
   wincmd p
 endfunction
 
-command! -nargs=? DiffHistory call s:view_git_history(<q-args>)
+command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 
 nnoremap <silent><leader>gs :G<CR>
 nnoremap <silent><leader>gb :G blame<CR>
