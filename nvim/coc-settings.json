@@ -28,6 +28,7 @@
   "cSpell.userWords": [
     "Gvdiffsplit",
     "aioboto",
+    "anyio",
     "asyncio",
     "authz",
     "blist",
