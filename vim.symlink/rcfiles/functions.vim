@@ -9,25 +9,32 @@ function! HasBuffer(pattern)
 endfunction
 
 
-function! FindBuffers(pattern)
+function! FindBuffers(patterns)
   let blist = getbufinfo()
   let filtered = []
   for buffer in blist
-    if(match(buffer.name, a:pattern) > -1)
-      let filtered = add(filtered, buffer)
-    endif
+    for pattern in a:patterns
+      if(match(buffer.name, pattern) > -1)
+        let filtered = add(filtered, buffer)
+        break
+      endif
+    endfor
   endfor
   return filtered
 endfunction
 
-function! CloseBuffers(pattern, ...)
+function! CloseBuffers(patterns, ...)
   let close_only_first = a:0 || 0
-  let buffers = FindBuffers(a:pattern)
+  let buffers = FindBuffers(a:patterns)
   let buflen = len(buffers)
   for buffer in buffers
     let bufnr = get(buffer,'bufnr',0)
     if bufnr > 0
-      silent exec 'bwipeout!' buffer.name
+      try
+        silent exec 'bwipeout!' buffer.name
+      catch 
+        echo "Error deleting bufname: ".buffer.name
+      endtry
       if close_only_first
         return buflen
       endif

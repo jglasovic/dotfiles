@@ -30,10 +30,6 @@ nnoremap <C-q> :q<CR>
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
-function! Aaa(arg)
-  echom a:arg
-endfunction
-
 " Find
 nmap <silent> <leader>p :Files<CR>
 nmap <silent> <leader>P :Rg<CR>
