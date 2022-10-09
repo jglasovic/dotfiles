@@ -37,10 +37,10 @@ Base vim config files
 - `<C-q>` - :q
 - `<C-{h/j/k/l}>` - jumping around splits in vim and tmux [vim-tmux-navigator](christoomey/vim-tmux-navigator)
 - `<leader>v` - source vimrc
-- `<leader>p` - search files
-- `<leader>P` - search files content
-- `<leader>d` - search dirs
-- `<leader>b` - search buffers
+- `<leader>p` - find files
+- `<leader>P` - find files content
+- `<leader>fd` - find dirs
+- `<leader>fb` - find buffers
 - `<leader>w{h/j/k/l}` - opening new splits
 - `<leader><leader>` - toggle between last open buffers
 - `<leader>ln` - toggle line numbers
@@ -157,6 +157,14 @@ Mappings are the same as with `coc` (TODO: I have to fix some)
 ### `vim-github-url.vim` - [vim-github-url](https://github.com/pgr0ss/vim-github-url)
 
 - `<leader>gy` - yank github url on current/selected line(s)
+
+### `vim-dadbod` and `vim-dadbod-ui` - [vim-dadbod](https://github.com/tpope/vim-dadbod) & [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui)
+
+- `<leader>db` - Toggle DB client
+- `dbout` buffer
+  - `w` - move cursor to the right column
+  - `b` - move cursor to the left column
+  - `<C-]>` - cursor on column, jump to reference table row
 
 ### Other plugins with default configs
 

@@ -23,6 +23,28 @@ function! FindBuffers(patterns)
   return filtered
 endfunction
 
+function! CloseBuffersByFiletype(filetypes)
+  let buffers = getbufinfo()
+  for buffer in buffers
+    let bufnr = get(buffer,'bufnr',0)
+    if bufnr > 0
+      let bufFiletype = getbufvar(bufnr, '&filetype')
+      for ft in a:filetypes
+        if ft == bufFiletype
+          try
+            silent exec 'bwipeout!' buffer.name
+            break
+          catch 
+            silent echo "Error deleting bufname: ".buffer.name
+            break
+          endtry
+        endif
+      endfor
+    endif
+  endfor
+endfunction
+
+
 function! CloseBuffers(patterns, ...)
   let close_only_first = a:0 || 0
   let buffers = FindBuffers(a:patterns)
