@@ -3,6 +3,7 @@
 
 alias vim="nvim"
 alias s="git status"
+alias cat="bat"
 alias ls="exa"
 alias zshconf="vim $HOME/.zshrc"
 alias xcode="open -a Xcode"
