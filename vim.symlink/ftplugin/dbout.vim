@@ -1,4 +1,4 @@
-set nowrap
+setlocal nowrap
 
 function! s:move_columns(direction)
   let line = getline('.')

@@ -45,7 +45,7 @@ function! CloseBuffersByFiletype(filetypes)
 endfunction
 
 
-function! CloseBuffers(patterns, ...)
+function! CloseBuffersByNameContains(patterns, ...)
   let close_only_first = a:0 || 0
   let buffers = FindBuffers(a:patterns)
   let buflen = len(buffers)

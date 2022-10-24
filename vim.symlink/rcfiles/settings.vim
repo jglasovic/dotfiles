@@ -111,6 +111,7 @@ function! SyncPlusAndZeroReg()
     call setreg('"', reg_plus)
   endif
 endfunction
+
 augroup SyncRegisters
     autocmd!
     autocmd FocusGained * call SyncPlusAndZeroReg()

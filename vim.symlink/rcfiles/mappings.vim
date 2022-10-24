@@ -32,12 +32,13 @@ noremap! <C-s> <Esc>:w<CR>
 
 " Find
 nmap <silent> <leader>p :Files<CR>
-nmap <silent> <leader>P :Rg<CR>
+nmap <silent> <leader>P :RG<CR>
 nmap <silent> <leader>fb :Buffers<CR>
-nmap <silent> <leader>fd :call fzf#run(fzf#wrap({'source': 'find * -type d'}))<CR>
+nmap <silent> <leader>fd :Dirs<CR>
+nmap <silent> <leader>fg :GFiles<CR>
 
 " Search hi
-nnoremap <silent><expr> <CR> (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+nnoremap <silent><expr> <leader>fh (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
 " Jump to start and end of line using the home row keys
 map H ^
