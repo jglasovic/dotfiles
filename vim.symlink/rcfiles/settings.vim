@@ -7,7 +7,6 @@ set confirm
 set updatetime=100
 set nobackup
 set nowritebackup
-set noshowmode
 set noswapfile
 set laststatus=2
 set incsearch
@@ -51,10 +50,6 @@ set scrolloff=12
 " indent
 set autoindent
 set smartindent
-
-" cursor / rows
-set cursorline
-set cursorlineopt=number
 
 " cmd
 set showcmd
