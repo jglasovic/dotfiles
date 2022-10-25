@@ -15,19 +15,19 @@
 	tool = fugitive
 [difftool]
 	prompt = false
+  trustExitCode = false
+  keepBackup = false
 [difftool "fugitive"]
 	cmd = vim -f -c "Gvdiffsplit!" \"$REMOTE\"
-	trustExitCode = false
-	keepBackup = false
 [merge]
 	tool = fugitive
 	conflictstyle = merge
 [mergetool]
-prompt = false
+  prompt = false
+  trustExitCode = false
+  keepBackup = false
 [mergetool "fugitive"]
 	cmd = vim -f -c "Gvdiffsplit!" \"$MERGED\"
-	trustExitCode = false
-	keepBackup = false
 [commit]
 	template = ~/.stCommitMsg
 [filter "lfs"]
