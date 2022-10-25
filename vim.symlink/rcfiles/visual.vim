@@ -77,10 +77,11 @@ endfunction
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
 hi! link CocMenuSel PmenuSel
+hi CursorLineNr ctermfg=170  guifg=#C678DD
 
 if has("statusline") && !&cp
   set laststatus=2                          " always show the status bar
-  set statusline=\ %{BufferLabel('%',':t')} " filename
+  set statusline=\ %t                       " filename
   set statusline+=\ %m%r                    " modified, readonly
   set statusline+=\ %{GitInfo()}            " branch and hunks
   set statusline+=%=                        " left-right separation point
