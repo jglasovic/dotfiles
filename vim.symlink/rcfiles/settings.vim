@@ -15,7 +15,10 @@ set mouse=a
 
 " autoread
 set autoread
-autocmd FocusGained,BufEnter * checktime
+augroup _checktime
+  autocmd!
+  autocmd FocusGained,BufEnter * silent! checktime
+augroup END
 
 " searching
 set ignorecase

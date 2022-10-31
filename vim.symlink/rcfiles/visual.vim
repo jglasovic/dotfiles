@@ -77,7 +77,8 @@ endfunction
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
 hi! link CocMenuSel PmenuSel
-hi CursorLineNr ctermfg=170  guifg=#C678DD
+hi! CursorLineNr ctermfg=170  guifg=#C678DD
+hi! StatuslineNC ctermbg=233  guibg=#121212
 
 if has("statusline") && !&cp
   set laststatus=2                          " always show the status bar

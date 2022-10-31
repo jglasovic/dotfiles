@@ -71,7 +71,7 @@ endfunction
 
 " autocmd CursorHoldI * :call <sid>show_hover_doc()
 " autocmd CursorHold * :call <sid>show_hover_doc()
-autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent! call CocActionAsync('highlight')
 augroup coc_group
   autocmd!
   autocmd FileType * setl formatexpr=CocAction('formatSelected')

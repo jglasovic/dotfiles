@@ -25,6 +25,8 @@
   ],
   // lua
   "Lua.diagnostics.globals": ["vim"],
+  // spell check
+  "cSpell.enabled": false,
   "cSpell.userWords": [
     "Gvdiffsplit",
     "aioboto",

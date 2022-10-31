@@ -6,7 +6,7 @@ function! Confirm(msg)
 
     if l:answer ==? 'y'
         return 1
-    elseif l:answer ==? 'n'
+    elseif l:answer ==? 'n' || l:answer ==? '^['
         return 0
     else
         echo 'Please enter "y" or "n"'
@@ -31,9 +31,9 @@ function! DeleteRecursive()
   let msg = join(['Delete with `rm -r` path(s):', msg_paths, '? [y/n]'], "\n")
   if Confirm(msg)
     try
-      silent execute "!rm -r " . join(paths, " ")
-      normal mu
+      silent! execute "!rm -r " . join(paths, " ")
       echo "Deleted!"
+      normal mu
     catch
       echo "Cannot delete: " . msg_paths
     endtry
