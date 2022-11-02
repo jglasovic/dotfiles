@@ -32,8 +32,8 @@ call plug#begin(g:plugged_dir_path)
   Plug 'tsandall/vim-rego'
   Plug 'pgr0ss/vim-github-url'
   Plug 'joshdick/onedark.vim'
+  Plug 'NLKNguyen/papercolor-theme'
   if has('nvim')
-    Plug 'lewis6991/gitsigns.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'petobens/poet-v'
   endif
@@ -42,7 +42,6 @@ call plug#end()
 
 " vim configs
 runtime! rcfiles/*.vim
-
 " plugin configs
 runtime! rcplugins/*.vim
 if has('nvim')
