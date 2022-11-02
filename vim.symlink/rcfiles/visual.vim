@@ -1,21 +1,5 @@
-function! DiagnosticsInfo()
-  let s:info = get(b:, 'coc_diagnostic_info', {})
-  let error = get(s:info, 'error', 0)
-  let warn = get(s:info, 'warning', 0)
-  let info = get(s:info, 'information', 0)
-  let hint = get(s:info, 'hint', 0)
-  return (error ? "E:".error : "").(warn ? " W:".warn : "").(info ? " I:".info : "").(hint ? " H:".hint : "")
-endfunction
 
-function! GitInfo()
-  let s:branch = FugitiveHead()
-    if s:branch != ''
-      return ' '.s:branch
-    end
-    return ''
-endfunction
-
-function! BufferLabel(bn, mod) abort
+function! s:buffer_label(bn, mod) abort
     let bufname = fnamemodify(bufname(a:bn), a:mod)
     if bufname == ''
       let bufname = '[No Name]'
@@ -43,7 +27,7 @@ function! s:get_all_buffers()
 endfunction
 
 " cannot use %m%r for bufferline because it's just showing for the current one
-function! BuffMod(bn)
+function! s:buff_mod(bn)
   let mod = ''
   if getbufvar(a:bn, '&modified') == 1
     let mod.= '[+]'
@@ -64,12 +48,29 @@ function! DisplayBuffline() abort
   for bn in buflist
     let line .= (bn == current_bn ? '%#Title#' : '%#TabLine#') " for highlighting
     let line .= ' '
-    let line .= BufferLabel(bn, ':t')                               " filename
-    let line .= BuffMod(bn)                                         " modified, readonly
+    let line .= s:buffer_label(bn, ':t')                               " filename
+    let line .= s:buff_mod(bn)                                         " modified, readonly
     let line .= ' '
   endfor
   let line .= '%#TabLineFill#'
   return line .' ' 
+endfunction
+
+function! DiagnosticsInfo()
+  let s:info = get(b:, 'coc_diagnostic_info', {})
+  let error = get(s:info, 'error', 0)
+  let warn = get(s:info, 'warning', 0)
+  let info = get(s:info, 'information', 0)
+  let hint = get(s:info, 'hint', 0)
+  return (error ? "E:".error : "").(warn ? " W:".warn : "").(info ? " I:".info : "").(hint ? " H:".hint : "")
+endfunction
+
+function! GitInfo()
+  let s:branch = FugitiveHead()
+    if s:branch != ''
+      return ' '.s:branch
+    end
+    return ''
 endfunction
 
 " Setup colorscheme, statusline, tabline, cursorline
