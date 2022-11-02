@@ -62,7 +62,7 @@ function! DisplayBuffline() abort
   let current_bn = bufnr("%")
   let buflist = s:get_all_buffers()
   for bn in buflist
-    let line .= (bn == current_bn ? '%1*' : '%#TabLine#') " for highlighting
+    let line .= (bn == current_bn ? '%#Title#' : '%#TabLine#') " for highlighting
     let line .= ' '
     let line .= BufferLabel(bn, ':t')                               " filename
     let line .= BuffMod(bn)                                         " modified, readonly
@@ -76,10 +76,8 @@ endfunction
 set background=dark
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
-" cursor line number to be purple
-hi! CursorLineNr ctermfg=170  guifg=#C678DD
-" user1 color to be cyan
-hi! User1 ctermfg=0 ctermbg=38 guifg=0 guibg=#56B6C2 
+hi! link CursorLineNr Keyword
+hi! link User1 Cursor 
 
 if has("statusline") && !&cp
   set laststatus=2                          " always show the status bar

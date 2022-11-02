@@ -32,7 +32,6 @@ call plug#begin(g:plugged_dir_path)
   Plug 'tsandall/vim-rego'
   Plug 'pgr0ss/vim-github-url'
   Plug 'joshdick/onedark.vim'
-  Plug 'NLKNguyen/papercolor-theme'
   if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'petobens/poet-v'
