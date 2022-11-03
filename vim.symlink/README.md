@@ -10,6 +10,7 @@ Configuration files are in two main directories:
 
 - `rcfiles` - base vim config files
 - `rcplugins` - plugins config files
+- `ftplugins` - filetype specific config files
 
 ## `rcfiles`
 
@@ -30,37 +31,31 @@ Base vim config files
 
 - arrow keys for movement are disabled!
 - `<Space>` - leader key
-- `;;` - exiting insert and terminal mode
-- `<CR>` - toggle highlighting after search
-- `<C-s>` - save
+- `<C-s>` - write
 - `<C-w>` - delete buffer
 - `<C-q>` - :q
 - `<C-{h/j/k/l}>` - jumping around splits in vim and tmux [vim-tmux-navigator](christoomey/vim-tmux-navigator)
 - `<leader>v` - source vimrc
-- `<leader>p` - find files
-- `<leader>P` - find files content
-- `<leader>fd` - find dirs
-- `<leader>fb` - find buffers
+- `<leader>f` - find files
+- `<leader>F` - find in files
+- `<leader>d` - find dirs
+- `<leader>b` - find buffers
 - `<leader>w{h/j/k/l}` - opening new splits
-- `<leader><leader>` - toggle between last open buffers
+- `<leader><leader>` - toggle between last opened buffers
 - `<leader>ln` - toggle line numbers
 - `<leader>ic` - toggle invisible characters
-- `<leader>ff` - fold/unfold current (non recursive, only one level)
-- `<leader>FF` - fold/unfold recursive
-- `<leader>fa` - close all folds
-- `<leader>Fa` - open all folds
+- `<leader>h` - toggle highlighting after search
 - `<leader>sl` - substitutions - line
 - `<leader>sg` - substitutions - global
 - `Q` - playback of the recording that was put into the q register
-- `H` and `L` - jump to start/end of line
 - `<A-{j/k}>` - move line(s) content down/up
 - `<C-{arrow keys}` - resize splits
 
 ### `visual.vim`
 
-- using [onedark.vim](https://github.com/joshdick/onedark.vim) colorscheme, dark background, no termguicolors (with this colorscheme, it looks nice to me without)
+- using [onedark.vim](https://github.com/joshdick/onedark.vim) colorscheme, dark background, no termguicolors (with this colorscheme, it looks nice without)
 - cursorline in insert mode
-- created custom statusline/bufferline in lua. (I couldn't find one light plugin so I created my own :) TODO: try [lightline](https://github.com/itchyny/lightline.vim))
+- simple statusline and tabline
 
 ### `functions.vim`
 
@@ -72,8 +67,8 @@ Plugin config files
 
 ### `netrw.vim` - File explorer
 
-- `<leader>t` - open explorer in dir of the current buffer
-- `<leader>T` - open explorer in `$PWD` dir
+- `<leader>e` - open explorer in dir of the current buffer
+- `<leader>E` - open explorer in `$PWD` dir
 
 Mappings in explorer buf:
 
@@ -126,13 +121,6 @@ Mappings in explorer buf:
 - `:OR` - organize imports
 - `:Prettier` - prettier
 
-### `nvim-lsp.lua`
-
-A list of plugins to support lsp: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig), [nvim-cmp](https://github.com/hrsh7th/nvim-cmp), [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip), [LuaSnip](https://github.com/L3MON4D3/LuaSnip), and [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim)
-
-If using `nvim` with `USE_LSP="true"`, `nvim` is not going to use `coc`, but instead it's going to use `nvim-lsp`
-Mappings are the same as with `coc` (TODO: I have to fix some)
-
 ### `vim-fugitive.vim` - [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
 - `<leader>gs` - git status
@@ -160,8 +148,8 @@ Mappings are the same as with `coc` (TODO: I have to fix some)
 
 ### `vim-dadbod` and `vim-dadbod-ui` - [vim-dadbod](https://github.com/tpope/vim-dadbod) & [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui)
 
-- `<leader>db` - Toggle DB client
-- `dbout` buffer
+- `:DB` - Toggle DB client
+- `dbout` buffer:
   - `w` - move cursor to the right column
   - `b` - move cursor to the left column
   - `<C-]>` - cursor on column, jump to reference table row
@@ -172,7 +160,4 @@ Mappings are the same as with `coc` (TODO: I have to fix some)
 - [vim-surround](https://github.com/tpope/vim-surround)
 - [vim-commentary](https://github.com/tpope/vim-commentary)
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-- [plenary](https://github.com/nvim-lua/plenary.nvim)
-- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
 - [poet-v](https://github.com/petobens/poet-v)
-- [vimspector](https://github.com/puremourning/vimspector)

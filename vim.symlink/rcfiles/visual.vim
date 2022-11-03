@@ -1,4 +1,3 @@
-
 function! s:buffer_label(bn, mod) abort
     let bufname = fnamemodify(bufname(a:bn), a:mod)
     if bufname == ''
@@ -46,10 +45,10 @@ function! DisplayBuffline() abort
   let current_bn = bufnr("%")
   let buflist = s:get_all_buffers()
   for bn in buflist
-    let line .= (bn == current_bn ? '%#Title#' : '%#TabLine#') " for highlighting
+    let line .= (bn == current_bn ? '%#MatchParen#' : '%#TabLine#') " for highlighting
     let line .= ' '
-    let line .= s:buffer_label(bn, ':t')                               " filename
-    let line .= s:buff_mod(bn)                                         " modified, readonly
+    let line .= s:buffer_label(bn, ':t')                       " filename
+    let line .= s:buff_mod(bn)                                 " modified, readonly
     let line .= ' '
   endfor
   let line .= '%#TabLineFill#'
@@ -86,10 +85,10 @@ if has("statusline") && !&cp
   set statusline+=\ %t                      " filename
   set statusline+=%m%r                      " modified, readonly
   set statusline+=\ %0*
-  set statusline+=\ %{GitInfo()}            " branch and hunks
+  set statusline+=\ %{GitInfo()}            " branch
   set statusline+=%=                        " left-right separation point
   set statusline+=\ %{DiagnosticsInfo()}    " diagnostics
-  set statusline+=\ %y                        " filetype
+  set statusline+=\ %y                      " filetype
   set statusline+=\ %1*
   set statusline+=\ %v:%l/%L[%p%%]          " current column : current line/total lines [percentage]
   set statusline+=%0*

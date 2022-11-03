@@ -7,7 +7,7 @@ let g:poetv_executables = ['poetry']
 "turning off auto activate and overriding to refresh coc
 let g:poetv_auto_activate = 0
 
-function ActivatePoetv()
+function s:activate_poetv()
   let g:CURRENT_VIRTUAL_ENV = $VIRTUAL_ENV
 
   if &previewwindow != 1 && expand('%:p') !~# "/\\.git/"
@@ -20,5 +20,5 @@ endfunction
 
 augroup poetv_autocmd
     au!
-    au WinEnter,BufWinEnter *.py call ActivatePoetv()
+    au WinEnter,BufWinEnter *.py call <SID>activate_poetv()
 augroup END

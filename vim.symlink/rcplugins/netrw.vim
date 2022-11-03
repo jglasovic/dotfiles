@@ -5,6 +5,6 @@ let g:netrw_localmovecmd='mv'
 let g:netrw_localmovecmdopt="-r"
 hi! link netrwMarkFile Search
 "open directory of the current file
-nnoremap <leader>t :Explore <CR>
+nnoremap <leader>e :Explore <CR>
 "open current working directory
-nnoremap <Leader>T :Explore $PWD<CR>
+nnoremap <Leader>E :Explore $PWD<CR>

@@ -4,10 +4,6 @@ function! s:custom_toggle_dbui()
   DBUIToggle
 endfunction
 
-
-" Toggle db client
-nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
-
 " Override mappings
 augroup dbui_mappings
   autocmd!
@@ -29,11 +25,7 @@ let g:db_ui_table_helpers = {
 \   }
 \ }
 
-" Auto exec
 let g:db_ui_auto_execute_table_helpers = 1
 
-" Connections
-" let g:dbs = {
-" \  'acorn_local': $ACORN_LOCAL,
-" \  'acorn_sdm_stage_ro': $ACORN_SDM_STAGE_RO
-" \ }
+command! DB :call <SID>custom_toggle_dbui()<CR>
+

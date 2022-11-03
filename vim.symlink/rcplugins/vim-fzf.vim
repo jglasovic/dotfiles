@@ -1,4 +1,4 @@
-function! RipgrepFzf(query, fullscreen)
+function! s:ripgrep_fzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --hidden --smart-case --glob "!{$FZF_EXCLUDE}" -- %s || true'
   let initial_command = printf(command_fmt, shellescape(a:query))
   let reload_command = printf(command_fmt, '{q}')
@@ -6,10 +6,10 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
-function! FindDirs()
+function! s:find_dirs()
   let command_fmt = 'rg --hidden --smart-case --files --glob "!{$FZF_EXCLUDE}" --null 2> /dev/null | xargs -0 dirname | sort -u'
   call fzf#run(fzf#wrap({'source': command_fmt}))
 endfunction
 
-command! -nargs=0 Dirs call FindDirs()
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+command! -nargs=0 Dirs call <SID>find_dirs()
+command! -nargs=* -bang RG call <SID>ripgrep_fzf(<q-args>, <bang>0)

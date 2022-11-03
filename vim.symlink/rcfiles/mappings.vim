@@ -9,11 +9,6 @@ nmap <leader>wl   :botright vnew<CR>
 nmap <leader>wk   :topleft  new<CR>
 nmap <leader>wj   :botright new<CR>
 
-" Insert mode exit
-inoremap ;; <Esc>
-" Terminal exit
-tnoremap ;; <C-\><C-n>
-
 " Toggle 'set list' (toggles invisible characters)
 nmap <leader>ic :set list!<CR>
 
@@ -26,19 +21,19 @@ nnoremap <C-w> :bd<CR>
 " Exit vim
 nnoremap <C-q> :q<CR>
 
-" Mapping for saving
+" Write
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
 " Find
-nmap <silent> <leader>p :Files<CR>
-nmap <silent> <leader>P :RG<CR>
-nmap <silent> <leader>fb :Buffers<CR>
-nmap <silent> <leader>fd :Dirs<CR>
-nmap <silent> <leader>fg :GFiles<CR>
+nmap <silent> <leader>f :Files<CR>
+nmap <silent> <leader>F :RG<CR>
+nmap <silent> <leader>b :Buffers<CR>
+nmap <silent> <leader>d :Dirs<CR>
+nmap <silent> <leader>gf :GFiles<CR>
 
 " Search hi
-nnoremap <silent><expr> <leader>fh (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
 " Jump to start and end of line using the home row keys
 map H ^
@@ -47,23 +42,11 @@ map L $
 " Toggles between buffers
 nnoremap <leader><leader> <c-^>
 
-" change buffers
-nnoremap <leader>l :bn<CR>
-nnoremap <leader>h :bp<CR>
-
 " No arrow keys
 map <up>    :echo "No!"<CR>
 map <down>  :echo "No!"<CR>
 map <left>  :echo "No!"<CR>
 map <right> :echo "No!"<CR>
-
-" fold, unfold
-nnoremap <leader>ff za
-nnoremap <leader>FF zA
-
-" Maps for folding, unfolding all
-nnoremap <leader>fa zM<cr>
-nnoremap <leader>Fa zR<cr>
 
 " shortcuts for substitutions
 nnoremap <leader>sg :%s///g<left><left><left>

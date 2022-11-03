@@ -1,6 +1,6 @@
 setlocal bufhidden=wipe
 
-function! Confirm(msg)
+function! s:confirm(msg)
     echo a:msg . ' '
     let l:answer = nr2char(getchar())
 
@@ -14,7 +14,7 @@ function! Confirm(msg)
     endif
 endfun
 
-function! GetMarkedOrCurrent()
+function! s:get_marked_or_current()
   let marked_paths = netrw#Expose("netrwmarkfilelist")
   if type(marked_paths) == v:t_list && len(marked_paths) > 0
     return marked_paths
@@ -25,11 +25,11 @@ endfunction
 
 
 " if marked files, ask to delete them, else ask to delete file under cursor
-function! DeleteRecursive()
-  let paths = GetMarkedOrCurrent()
+function! s:delete_recursive()
+  let paths = s:get_marked_or_current()
   let msg_paths = join(paths, "\n")
   let msg = join(['Delete with `rm -r` path(s):', msg_paths, '? [y/n]'], "\n")
-  if Confirm(msg)
+  if s:confirm(msg)
     try
       silent! execute "!rm -r " . join(paths, " ")
       echo "Deleted!"
@@ -76,7 +76,7 @@ nmap <buffer> fM mtmm
 "run external commands on the marked files
 nmap <buffer> f; mx
 "remove marked or file/dir under the cursor (override default D)
-nmap <buffer> D :call DeleteRecursive()<CR>
+nmap <buffer> D :call <SID>delete_recursive()<CR>
 
 "show a list of marked files
 nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
@@ -89,10 +89,3 @@ nmap <buffer> bb mb
 nmap <buffer> bd mB
 "jump to the most recent bookmark
 nmap <buffer> bj gb
-
-
-" Override navigation
-nnoremap <buffer> <C-j> <C-w>j
-nnoremap <buffer> <C-k> <C-w>k
-" nnoremap <buffer> <C-l> <C-w>l
-" nnoremap <buffer> <C-h> <C-w>h

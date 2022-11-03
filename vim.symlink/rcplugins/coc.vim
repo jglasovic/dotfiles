@@ -1,7 +1,3 @@
-if has('nvim') && $USE_LSP == 'true'
-  finish
-endif
-
 let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-json',
@@ -17,14 +13,14 @@ let g:coc_global_extensions = [
   \ 'coc-spell-checker'
   \ ]
 
-function! CheckBackspace() abort
+function! s:check_backspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
+      \ <SID>check_backspace() ? "\<Tab>" :
       \ coc#refresh()
 
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
@@ -38,7 +34,7 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-function! ShowDocumentation()
+function! s:show_documentation()
   if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
@@ -46,7 +42,7 @@ function! ShowDocumentation()
   endif
 endfunction
 
-function! ShowManDocumentation()
+function! s:show_man_documentation()
   if index(['vim', 'help'], &filetype) >= 0
     execute 'h ' . expand('<cword>')
   else
@@ -55,7 +51,7 @@ function! ShowManDocumentation()
 endfunction
 
 " show diagnostics, otherwise documentation, on hold
-function! ShowDocIfNoDiagnostic(timer_id)
+function! s:show_doc_if_no_diagnostic(timer_id)
   if (CocAction('hasProvider','hover'))
     if (coc#float#has_float() == 0)
       silent call CocActionAsync('doHover')
@@ -65,7 +61,7 @@ endfunction
 
 function! s:show_hover_doc()
   if get(g:, 'coc_service_initialized', 0)
-    call timer_start(500, 'ShowDocIfNoDiagnostic')
+    call timer_start(500, 's:show_doc_if_no_diagnostic')
   endif
 endfunction
 
@@ -107,8 +103,8 @@ nmap <silent>gr <Plug>(coc-references)
 " rename
 nmap <leader>rn <Plug>(coc-rename)
 " show documentation
-nnoremap <silent> K :call ShowDocumentation()<CR>
-nnoremap <silent> M :call ShowManDocumentation()<CR>
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> M :call <SID>show_man_documentation()<CR>
 " code-action
 nmap <leader>ab  <Plug>(coc-codeaction)
 nmap <leader>.  <Plug>(coc-codeaction-cursor)
