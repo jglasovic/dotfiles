@@ -5,11 +5,10 @@
   // eslint
   "eslint.autoFixOnSave": true,
   "eslint.alwaysShowStatus": true,
-  // ts
-  "tsserver.formatOnType": true,
   // python
-  "python.formatting.provider": "black",
   "python.analysis.diagnosticMode": "workspace",
+  "python.linting.mypyEnabled": true,
+  "python.formatting.provider": "black",
   "python.linting.lintOnSave": true,
   "python.linting.pylintEnabled": true,
   "python.linting.pylintArgs": ["--rcfile", "${workspaceFolder}/.pylintrc"],
@@ -18,7 +17,8 @@
     "${workspaceFolder}/pyproject.toml"
   ],
   "pyright.organizeimports.provider": "isort",
-  "pyright.inlayHints.enable": false,
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false,
   "python.sortImports.args": [
     "--settings-path",
     "${workspaceFolder}/pyproject.toml"
