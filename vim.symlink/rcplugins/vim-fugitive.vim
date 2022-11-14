@@ -106,4 +106,3 @@ nnoremap <silent><leader>gD :DiffHistory<CR>
 nnoremap <silent>gh :diffget //2<CR>
 nnoremap <silent>gl :diffget //3<CR>
 
-

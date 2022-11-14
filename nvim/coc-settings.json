@@ -26,36 +26,5 @@
   // lua
   "Lua.diagnostics.globals": ["vim"],
   // spell check
-  "cSpell.enabled": false,
-  "cSpell.userWords": [
-    "Gvdiffsplit",
-    "aioboto",
-    "anyio",
-    "asyncio",
-    "authz",
-    "blist",
-    "circleci",
-    "entitie",
-    "forganizations",
-    "gevent",
-    "httpx",
-    "isort",
-    "noselect",
-    "organizeimports",
-    "orgs",
-    "pyenv",
-    "pylint",
-    "pylintrc",
-    "pyproject",
-    "pyright",
-    "rcfile",
-    "rcfiles",
-    "rcplugins",
-    "rego",
-    "relnum",
-    "selectinload",
-    "strongdm",
-    "targz",
-    "vapi"
-  ]
+  "cSpell.enabled": false
 }

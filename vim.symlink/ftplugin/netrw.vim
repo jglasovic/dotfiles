@@ -1,19 +1,5 @@
 setlocal bufhidden=wipe
 
-function! s:confirm(msg)
-    echo a:msg . ' '
-    let l:answer = nr2char(getchar())
-
-    if l:answer ==? 'y'
-        return 1
-    elseif l:answer ==? 'n' || l:answer ==? '^['
-        return 0
-    else
-        echo 'Please enter "y" or "n"'
-        return Confirm(a:msg)
-    endif
-endfun
-
 function! s:get_marked_or_current()
   let marked_paths = netrw#Expose("netrwmarkfilelist")
   if type(marked_paths) == v:t_list && len(marked_paths) > 0
@@ -23,13 +9,19 @@ function! s:get_marked_or_current()
   return [path]
 endfunction
 
-
+" delete has some issues in netrw, using custom function
 " if marked files, ask to delete them, else ask to delete file under cursor
 function! s:delete_recursive()
   let paths = s:get_marked_or_current()
   let msg_paths = join(paths, "\n")
-  let msg = join(['Delete with `rm -r` path(s):', msg_paths, '? [y/n]'], "\n")
-  if s:confirm(msg)
+  echohl ErrorMsg 
+  echo msg_paths
+  echohl None
+  let l:choice = confirm("Delete with `rm -r`?", "&yes\n&no", 0)
+
+  if l:choice == 0 || l:choice == 2
+    echo "Canceled!"
+  elseif l:choice == 1
     try
       silent! execute "!rm -r " . join(paths, " ")
       echo "Deleted!"
@@ -44,7 +36,7 @@ endfunction
 "close
 nmap <buffer><Esc> :bd<CR>
 "refresh
-nmap <leader>R <plug>NetrwRefresh
+nmap <buffer> <leader>r <plug>NetrwRefresh
 "go back in history
 nmap <buffer> H u
 "go up in directory
@@ -53,8 +45,6 @@ nmap <buffer> h -^
 nmap <buffer> l <CR>
 "toggle the dotfiles
 nmap <buffer> . gh
-"close the preview window
-nmap <buffer> <leader>t <C-w>
 "toggles the mark on a file or directory
 nmap <buffer> <TAB> mf
 "unmark all the files in the current buffer

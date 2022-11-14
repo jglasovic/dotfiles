@@ -111,7 +111,7 @@ function! SetCursorLine()
   endif
 endfunction
 
-augroup style
+augroup cursor_line_style
   autocmd!
   " automatically rebalance windows on vim resize
   autocmd VimResized * :wincmd =

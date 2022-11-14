@@ -1,14 +1,3 @@
-function! HasBuffer(pattern)
-  let blist = getbufinfo()
-  for buffer in blist
-    if(match(buffer.name, a:pattern) > -1)
-      return 1
-    endif
-  endfor
-  return 0
-endfunction
-
-
 function! FindBuffers(patterns)
   let blist = getbufinfo()
   let filtered = []
@@ -43,7 +32,6 @@ function! CloseBuffersByFiletype(filetypes)
     endif
   endfor
 endfunction
-
 
 function! CloseBuffersByNameContains(patterns, ...)
   let close_only_first = a:0 || 0
