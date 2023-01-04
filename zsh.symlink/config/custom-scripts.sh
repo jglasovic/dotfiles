@@ -9,7 +9,7 @@ function vpn_check(){
   if is_vpn_connected; then
     echo "\033[1;32mUsing VPN! \033[0m"
   else
-    print-red "Not connected to VPN!"
+    print_red "Not connected to VPN!"
   fi
 }
 
@@ -53,7 +53,7 @@ function ensure_vpn_connected(){
 # aws credentials expiration
 function get-aws-ceredentials-expiration(){
   local aws_credentials_path=~/.aws/credentials
-  if check-file-exists $aws_credentials_path ; then
+  if check_file_exists $aws_credentials_path ; then
     local x_security_token_expires=$1
     while IFS=' = ' read key value
     do
@@ -90,7 +90,7 @@ function load-dev-cli() {
         dev-cli configure --code-artifact
 
       else
-         print-red "AWS - credentials are not expired, skipping!"
+         print_red "AWS - credentials are not expired, skipping!"
       fi
     fi
   done
@@ -105,16 +105,16 @@ function npmrc-restore(){
   local yarnrc=~/.yarnrc
   local yarnrcyml=~/.yarnrc.yml
 
-  check-file-exists $npmrc && \
-  { print-red "Removing .npmrc"; rm -rf $npmrc }
-  print-red "Adding .npmrc with npm registry"
+  check_file_exists $npmrc && \
+  { print_red "Removing .npmrc"; rm -rf $npmrc }
+  print_red "Adding .npmrc with npm registry"
   cp $npmrc_bak $npmrc
 
-  check-file-exists $yarnrc && \
-  { print-red "Removing .yarnrc"; rm -rf $yarnrc }
-  check-file-exists $yarnrcyml && \
-  { print-red "Removing .yarnrc.yml"; rm -rf $yarnrcyml }
+  check_file_exists $yarnrc && \
+  { print_red "Removing .yarnrc"; rm -rf $yarnrc }
+  check_file_exists $yarnrcyml && \
+  { print_red "Removing .yarnrc.yml"; rm -rf $yarnrcyml }
 
-  print-red "Adding .yarnrc with yarnpkg registry"
+  print_red "Adding .yarnrc with yarnpkg registry"
   cp $yarnrc_bak $yarnrc
 }

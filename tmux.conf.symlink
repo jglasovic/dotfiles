@@ -41,6 +41,8 @@ set -g renumber-windows on
 set -g base-index 1
 set -g pane-base-index 1
 
+#### history
+set-option -g history-limit 50000
 #### Other misc. options
 # set -g visual-bell on
 set -s escape-time 0 # For vim < http://unix.stackexchange.com/a/25638/9580 >
