@@ -1,4 +1,3 @@
-
 ## Aliases
 
 alias vim="nvim"

@@ -3,7 +3,7 @@
 SELF_PATH="$( cd "$( dirname "$0" )" && pwd )"
 
 # source utils 
-. "$SELF_PATH/zsh.symlink/utils.sh"
+source "$SELF_PATH/zsh.symlink/utils.sh"
 
 if check_file_exists "$HOME/.profile" ; then
   rm -r "$HOME/.profile"
@@ -13,7 +13,7 @@ source "$HOME/.zshrc"
 
 # setup python using pyenv 
 py_3=3.9.9
-py_2=2.7.11
+py_2=2.7.18
 py_version=$(pyenv version)
 py_versions=$(pyenv versions)
 

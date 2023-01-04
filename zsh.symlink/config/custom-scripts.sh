@@ -1,5 +1,3 @@
-#!/bin/sh
-
 function is_vpn_connected(){
   local publicIP=`curl -s ifconfig.me/ip`
   [[ $MY_VPN_IP == $publicIP ]]

@@ -1,7 +1,6 @@
-#!/bin/sh
 # set node version based on .nvmrc
-function load-nvmrc() {
-  if command_exists nvm ; then
+function load_nvmrc() {
+  if command_exists "nvm" ; then
     local node_version="$(nvm version)"
     local nvmrc_path="$(nvm_find_nvmrc)"
 
@@ -18,6 +17,6 @@ function load-nvmrc() {
       nvm use default
     fi
   else
-    exit "Missing nvm command"
+    error "Missing nvm command"
   fi
 }

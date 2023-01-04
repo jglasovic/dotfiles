@@ -1,3 +1,5 @@
+#!/bin/sh
+
 check_file_exists() {
   [ -f "$1" ]
 }
@@ -15,7 +17,7 @@ command_exists() {
 }
 
 error(){
-  echo $1 1>&2
+  echo "$1" 1>&2
   exit 1
 }
 
@@ -26,7 +28,7 @@ cheat() {
 
 is_app_running() {
   pgrep -xq "$1"; 
-  [[ $? == 0 ]]
+  [ $? = 0 ]
 }
 
 ensure_installed_global_npm_package() {
