@@ -2,6 +2,7 @@ function! s:custom_toggle_dbui()
   call CloseBuffersByNameContains(['dbout'])
   call CloseBuffersByFiletype(['sql'])
   DBUIToggle
+  let g:db_cache = {}
 endfunction
 
 function! s:override_mappings()

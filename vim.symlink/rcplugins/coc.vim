@@ -10,7 +10,8 @@ let g:coc_global_extensions = [
   \ 'coc-lua',
   \ 'coc-rust-analyzer',
   \ 'coc-go',
-  \ 'coc-spell-checker'
+  \ 'coc-spell-checker',
+  \ 'coc-db'
   \ ]
 
 function! s:check_backspace() abort

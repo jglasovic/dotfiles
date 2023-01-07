@@ -1,0 +1,27 @@
+From 526382808e942338fa8694b220da90700c2beccc Mon Sep 17 00:00:00 2001
+From: Jure Glasovic <jglasovic@gmail.com>
+Date: Sat, 7 Jan 2023 18:06:08 +0100
+Subject: [PATCH] jump to FK fix
+
+---
+ autoload/db_ui/dbout.vim | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/autoload/db_ui/dbout.vim b/autoload/db_ui/dbout.vim
+index 9d883de..a588ec0 100644
+--- a/autoload/db_ui/dbout.vim
++++ b/autoload/db_ui/dbout.vim
+@@ -15,6 +15,10 @@ function! db_ui#dbout#jump_to_foreign_table() abort
+   let field_value = trim(getline('.')[cell_range.from : cell_range.to])
+ 
+   let foreign_key_query = substitute(scheme.foreign_key_query, '{col_name}', field_name, '')
++  if exists('b:table') && b:table != ''
++    let limit_removed = substitute(foreign_key_query, 'LIMIT 1', '', '')
++    let foreign_key_query = limit_removed . "and kcu.table_name = '" . b:table . "' LIMIT 1"
++  endif
+   let Parser = get(scheme, 'parse_virtual_results', scheme.parse_results)
+   let result = Parser(db_ui#schemas#query(db_url, scheme, foreign_key_query), 3)
+ 
+-- 
+2.39.0
+
