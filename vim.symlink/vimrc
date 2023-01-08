@@ -32,9 +32,9 @@ call plug#begin(g:plugged_dir_path)
   Plug 'tsandall/vim-rego'
   Plug 'pgr0ss/vim-github-url'
   Plug 'joshdick/onedark.vim'
+  Plug 'petobens/poet-v'
   if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'petobens/poet-v'
   endif
 call plug#end()
 

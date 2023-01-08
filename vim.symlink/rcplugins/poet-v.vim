@@ -1,4 +1,4 @@
-if !has('nvim')
+if !has('python3')
   finish
 endif
 

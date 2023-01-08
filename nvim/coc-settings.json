@@ -24,7 +24,5 @@
     "${workspaceFolder}/pyproject.toml"
   ],
   // lua
-  "Lua.diagnostics.globals": ["vim"],
-  // spell check
-  "cSpell.enabled": false
+  "Lua.diagnostics.globals": ["vim"]
 }
