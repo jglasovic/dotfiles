@@ -43,7 +43,7 @@ prompt_git() {
     if [[ -n $dirty ]]; then
       prompt_segment yellow
     else
-      prompt_segment blue
+      prompt_segment 39
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -53,6 +53,7 @@ prompt_git() {
     elif [[ -e "${repo_path}/rebase" || -e "${repo_path}/rebase-apply" || -e "${repo_path}/rebase-merge" || -e "${repo_path}/../.dotest" ]]; then
       mode=" >R>"
     fi
+
 
     setopt promptsubst
     autoload -Uz vcs_info
