@@ -88,7 +88,14 @@ fi
 ln -sv "$self_zshenv_path" "$zshenv_path"
 
 ## setup tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ -e "$HOME/.tmux/plugins/tpm" ]; then
+  if [ "$should_overwrite_all" = "1" ]; then
+    rm -r "$HOME/.tmux/plugins/tpm"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  fi
+else
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 
 ## setup zsh
 "$SELF_PATH/setup.zsh"
