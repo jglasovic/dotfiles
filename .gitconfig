@@ -1,37 +1,37 @@
 [user]
-	name = Jure Glasovic
-	email = jglasovic@gmail.com
+  name = Jure Glasovic
+  email = jglasovic@gmail.com
 [core]
-	excludesfile = ~/.gitignore_global
+  excludesfile = ~/.gitignore_global
 [help]
-	format = web
-	autocorrect = 1
+  format = web
+  autocorrect = 1
 [push]
-	default = upstream
-	autoSetupRemote = true
+  default = upstream
+  autoSetupRemote = true
 [pull]
-	rebase = false
+  rebase = false
 [diff]
-	tool = fugitive
+  tool = fugitive
 [difftool]
-	prompt = false
+  prompt = false
   trustExitCode = false
   keepBackup = false
 [difftool "fugitive"]
-	cmd = vim -f -c "Gvdiffsplit!" \"$REMOTE\"
+  cmd = vim -f -c "Gvdiffsplit!" \"$REMOTE\"
 [merge]
-	tool = fugitive
-	conflictstyle = merge
+  tool = fugitive
+  conflictstyle = merge
 [mergetool]
   prompt = false
   trustExitCode = false
   keepBackup = false
 [mergetool "fugitive"]
-	cmd = vim -f -c "Gvdiffsplit!" \"$MERGED\"
+  cmd = vim -f -c "Gvdiffsplit!" \"$MERGED\"
 [commit]
-	template = ~/.stCommitMsg
+  template = ~/.stCommitMsg
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true

@@ -5,31 +5,22 @@ if ! hash git &> /dev/null; then
 	exit 1
 fi
 
-echo ""
-echo "This script will automatically install Jure Glasovic's dotfiles on your system."
-echo "(See https://github.com/jglasovic/dotfiles for more information.)"
-echo ""
-echo "The dotfiles will live in a self-contained git repository on your system,"
-echo "and will be symlinked into your home directory."
+echo "Installing Jure Glasovic's dotfiles"
 echo "Press [ENTER] to proceed, or [CTRL+C] to cancel installation."
 read
 
-default_path="$HOME/.dotfiles"
-read -p "Where should the dotfiles repository be cloned to? [$default_path] " -e path
-if [ -z "$path" ]; then
-	path="$default_path"
-fi
+path="$HOME/.dotfiles"
 
 git clone https://github.com/jglasovic/dotfiles.git "$path"
 
 if [ $? -ne 0 ]; then
-	echo "Error: There was a problem cloning the dotfiles repository! Try running this script again." 1>&2;
-	exit 1
+  echo "Error: There was a problem cloning the dotfiles repository! Try running this script again." 1>&2;
+  exit 1
 fi
 
 read -p "Use SSH remote for the dotfiles repository? [y/n] " -e USE_SSH_REMOTE
 if [[ $USE_SSH_REMOTE =~ ^[Yy]$ ]]; then
-	git -C "$path" remote set-url origin git@github.com:jglasovic/dotfiles.git
+  git -C "$path" remote set-url origin git@github.com:jglasovic/dotfiles.git
 fi
 
 "$path"/install.sh

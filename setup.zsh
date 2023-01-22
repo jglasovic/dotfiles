@@ -2,8 +2,6 @@
 
 source "$HOME/.zshrc"
 
-
-
 # remove .profile if exists
 if check_file_exists "$HOME/.profile" ; then
   rm -rf "$HOME/.profile"

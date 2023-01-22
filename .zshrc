@@ -17,7 +17,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 ## ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+# export SSH_KEY_PATH="~/.ssh/rsa_id
 
 export FZF_EXCLUDE=".git/*,node_modules/*,**/*/node_modules/*,*cache*/*,**/*/*cache*/*"
 export FZF_DEFAULT_COMMAND="rg --smart-case --files --follow --no-ignore-vcs --hidden --glob '!{$FZF_EXCLUDE}'"
@@ -39,16 +39,21 @@ export PHP_ROOT="$BREW_PREFIX/Cellar/php/8.1.2"
 export OPENSSL_ROOT="$BREW_PREFIX/opt/openssl@3"
 export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
 export C_INCLUDE_PATH="$HOMEBREW_PREFIX/include"
+export CURL_ROOT="$BREW_PREFIX/opt/curl"
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+
+export LD_LIBRARY_PATH="$BREW_PREFIX/lib"
+export LIBRARY_PATH="$BREW_PREFIX/lib"
 
 export LDFLAGS="-L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
 export CPPFLAGS="-I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
 
-# GRPC
+export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
 export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
 export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
-# pycurl
 export PYCURL_SSL_LIBRARY=openssl
+export SODIUM_INSTALL=system
+export LIBSODIUM_MAKE_ARGS=-j8
 
 ## export path
 export PATH="$SBIN_PATH":\
@@ -62,6 +67,7 @@ export PATH="$SBIN_PATH":\
 "$MYSQL_ROOT/bin":\
 "$POSTGRES_ROOT/bin":\
 "$GPG/bin":\
+"$CURL_ROOT/bin":\
 "$PATH"
 
 ## rustup
