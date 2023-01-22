@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 check_file_exists() {
   [ -f "$1" ]
@@ -13,10 +13,10 @@ variable_exists() {
 }
 
 command_exists() {
-  type "$1" &> /dev/null ;
+  type "$1" &> /dev/null
 }
 
-error(){
+error() {
   echo "$1" 1>&2
   exit 1
 }
@@ -30,6 +30,18 @@ is_app_running() {
   pgrep -xq "$1"; 
   [ $? = 0 ]
 }
+
+set_symlink() {
+  path="$1"
+  symlink_path="$2"
+  should_overwrite_all="$3"
+  if [ ! -e "$symlink_path" ] || [ "$should_overwrite_all" = "1" ]; then
+    echo "will be created $path $symlink_path $should_overwrite_all"
+    rm -rf "$symlink_path"
+    ln -sv "$path" "$symlink_path"
+  fi
+}
+
 
 ensure_installed_global_npm_package() {
   npm list -g "$1" || npm i -g "$1"

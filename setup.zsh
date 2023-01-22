@@ -1,15 +1,20 @@
 #!/bin/zsh
- 
-SELF_PATH="$( cd "$( dirname "$0" )" && pwd )"
-
-# source utils 
-source "$SELF_PATH/zsh.symlink/utils.sh"
-
-if check_file_exists "$HOME/.profile" ; then
-  rm -r "$HOME/.profile"
-fi
 
 source "$HOME/.zshrc"
+
+
+
+# remove .profile if exists
+if check_file_exists "$HOME/.profile" ; then
+  rm -rf "$HOME/.profile"
+fi
+
+# check for rustup
+if ! command_exists "rustup" ; then
+  echo "installing rustup..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  echo "rustup has been successfully instaled!"
+fi
 
 # setup python using pyenv 
 py_3=3.9.9

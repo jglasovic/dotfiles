@@ -1,4 +1,0 @@
-vimrc.symlink linguist-language=vim
-zshrc.symlink linguist-language=shell
-tmux.conf.symlink linguist-language=shell
-gitconfig.symlink linguist-language=gitconfig

@@ -1,6 +1,6 @@
-vim.symlink/autoload
-vim.symlink/plugged
-vim.symlink/vimdid
-zshenv.symlink
+.vim/autoload
+.vim/plugged
+.vim/vimdid
 .zshenv
+local
 *.json
