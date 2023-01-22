@@ -16,6 +16,7 @@ py_3=3.9.9
 py_2=2.7.18
 py_version=$(pyenv version)
 py_versions=$(pyenv versions)
+poetry_version=1.2.1
 
 if [[ "$py_versions" != *"$py_3"* ]]; then
   echo "installing py version $py_3"
@@ -36,27 +37,28 @@ fi
 # check for poetry
 if ! command_exists "poetry" ; then
   echo "installing poetry..."
-  curl -sSL https://install.python-poetry.org | python3 -
+  curl -sSL https://install.python-poetry.org | POETRY_VERSION=$poetry_version python3 -
   echo "poetry has been successfully instaled!"
 fi
 
 # setup neovim py
 if ! check_file_exists "$HOME/.pyenv/versions/neovim2/bin/python" ; then
+  echo "setuping neovim py v2 virtualenv"
   pyenv virtualenv $py_2 neovim2
   pyenv activate neovim2
   pip install neovim
   pyenv deactivate neovim2
 fi
 if ! check_file_exists "$HOME/.pyenv/versions/neovim3/bin/python" ; then
+  echo "setuping neovim py v3 virtualenv"
   pyenv virtualenv $py_3 neovim3
   pyenv activate neovim3
   pip install neovim
   pyenv deactivate neovim3
 fi
-
 # setup nvm
 # add yarn, ts-node, neovim to be installed global for all node versions
-echo "yarn\nts-node\nneovim" > "$HOME/.nvm/default-packages"
+echo "yarn\nts-node\nneovim" > "$NVM_DIR/default-packages"
 nvm use default &> /dev/null
 if [ $? != 0 ] ; then
   nvm install --lts --default

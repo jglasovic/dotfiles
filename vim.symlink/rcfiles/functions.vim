@@ -14,12 +14,14 @@ endfunction
 
 function! CloseBuffersByFiletype(filetypes)
   let buffers = getbufinfo()
+  let numClosed = 0
   for buffer in buffers
     let bufnr = get(buffer,'bufnr',0)
     if bufnr > 0
       let bufFiletype = getbufvar(bufnr, '&filetype')
       for ft in a:filetypes
         if ft == bufFiletype
+          let numClosed = numClosed + 1
           try
             silent exec 'bwipeout!' buffer.name
             break
@@ -31,6 +33,7 @@ function! CloseBuffersByFiletype(filetypes)
       endfor
     endif
   endfor
+  return numClosed
 endfunction
 
 function! CloseBuffersByNameContains(patterns, ...)

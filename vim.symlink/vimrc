@@ -29,6 +29,7 @@ call plug#begin(g:plugged_dir_path)
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-dadbod'
   Plug 'kristijanhusak/vim-dadbod-ui', {'do': 'git am ../../jump-to-fk-fix.patch'}
+  Plug 'diepm/vim-rest-console'
   Plug 'tsandall/vim-rego'
   Plug 'pgr0ss/vim-github-url'
   Plug 'joshdick/onedark.vim'

@@ -31,18 +31,24 @@ if ! command_exists "rustup" ; then
 fi
 
 ######## Creating symlinks
-# use -f flag to overwrite all
-should_overwrite_all=$1
-if [ "$should_overwrite_all" = "-f" ]; then
-  echo "-f (force) flag has been set. Overwriting existing files!!!"
+should_overwrite_all=0
+read -p "Do you want to overwrite existing files in your home dirrectory? [y/n] " -e force
+
+if [[ $force =~ ^[Yy]$ ]]; then
+  echo "Existing config files will be overwritten!"
+  should_overwrite_all=1
+else 
+  echo "Existing config files will not be overwritten!"
+  should_overwrite_all=0
 fi
+
 
 echo "Creating symlinks"
 for file in $(find "$SELF_PATH" -maxdepth 1 -name \*.symlink); do
   src_file=$(basename "$file")
   dest_file=$(echo "$HOME/.$src_file" | sed "s/\.symlink$//g")
   if [ -e "$dest_file" ]; then
-    if [ "$should_overwrite_all" = "-f" ]; then
+    if [ "$should_overwrite_all" = "1" ]; then
       rm -rf "$dest_file"
       ln -sv "$SELF_PATH/$src_file" "$dest_file"
     else
@@ -59,7 +65,7 @@ nvim_dest=$HOME/.config/nvim
 
 echo "Creating neovim symlinks"
 if [ -e "$nvim_dest" ]; then
-  if [ "$should_overwrite_all" = "-f" ]; then
+  if [ "$should_overwrite_all" = "1" ]; then
     rm -rf "$nvim_dest"
     ln -sv "$nvim_src" "$nvim_dest"
   else
@@ -70,6 +76,24 @@ else
 fi
 echo "Neovim symlinks have been successfully created!"
 
+# move existing .zshenv in SELF_PATH and create symlink
+zshenv_path="$HOME/.zshenv"
+self_zshenv_path="$SELF_PATH/.zshenv"
+if [ -e "$zshenv_path" ]; then
+  cp "$zshenv_path" "$self_zshenv_path"
+  rm -r "$zshenv_path"
+else
+  touch "$self_zshenv_path"
+fi
+ln -sv "$self_zshenv_path" "$zshenv_path"
+
+## setup tmux plugin manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 ## setup zsh
-./setup.zsh
+"$SELF_PATH/setup.zsh"
+
+
+
+
 

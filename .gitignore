@@ -2,4 +2,5 @@ vim.symlink/autoload
 vim.symlink/plugged
 vim.symlink/vimdid
 zshenv.symlink
+.zshenv
 *.json
