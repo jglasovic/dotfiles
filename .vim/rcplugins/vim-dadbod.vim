@@ -32,5 +32,5 @@ let g:db_ui_table_helpers = {
 
 let g:db_ui_auto_execute_table_helpers = 1
 
-nmap <leader>t :call <SID>custom_toggle_dbui()<CR>
+nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
 

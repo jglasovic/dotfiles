@@ -26,11 +26,11 @@ noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
 " Find
-nmap <silent> <leader>f :Files<CR>
-nmap <silent> <leader>F :RG<CR>
-nmap <silent> <leader>b :Buffers<CR>
-nmap <silent> <leader>d :Dirs<CR>
-nmap <silent> <leader>gf :GFiles<CR>
+nmap <silent> <leader>ff :Files<CR>
+nmap <silent> <leader>fF :RG<CR>
+nmap <silent> <leader>fb :Buffers<CR>
+nmap <silent> <leader>fd :Dirs<CR>
+nmap <silent> <leader>fg :GFiles<CR>
 
 " Search hi
 nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"

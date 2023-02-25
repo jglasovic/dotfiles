@@ -38,12 +38,15 @@ export MYSQL_ROOT="$BREW_PREFIX/mysql"
 export PHP_ROOT="$BREW_PREFIX/Cellar/php/8.1.2"
 export OPENSSL_ROOT="$BREW_PREFIX/opt/openssl@3"
 export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
-export C_INCLUDE_PATH="$HOMEBREW_PREFIX/include"
 export CURL_ROOT="$BREW_PREFIX/opt/curl"
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 
-export LD_LIBRARY_PATH="$BREW_PREFIX/lib"
-export LIBRARY_PATH="$BREW_PREFIX/lib"
+# export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BREW_PREFIX/lib"
+# export LIBRARY_PATH="$LIBRARY_PATH:$BREW_PREFIX/lib"
+export C_INCLUDE_PATH="/usr/local/opt/curl/include:$C_INCLUDE_PATH"
+export LD_LIBRARY_PATH="/usr/local/opt/curl/lib:$LD_LIBRARY_PATH"
+
+export LIBRARY_PATH="/usr/local/opt/curl/lib:$LIBRARY_PATH"
 
 export LDFLAGS="-L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
 export CPPFLAGS="-I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
@@ -54,21 +57,11 @@ export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
 export PYCURL_SSL_LIBRARY=openssl
 export SODIUM_INSTALL=system
 export LIBSODIUM_MAKE_ARGS=-j8
-
+export HOMEBREW_FORCE_BREWED_CURL=1
+export PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
+export PYCURL_CURL_DIR=/usr/local/opt/curl/lib
+export PYCURL_SETUP_OPTIONS="--with-openssl --curl-dir=$PYCURL_CURL_DIR"
 ## export path
-export PATH="$SBIN_PATH":\
-"$CORE_UTILS_PATH":\
-"$ANDROID_TOOLS_PATH":\
-"$OPENSSL_ROOT/bin":\
-"$PHP_ROOT/bin":\
-"$PYENV_ROOT/bin":\
-"$POETRY_ROOT/bin":\
-"$DENO_ROOT/bin":\
-"$MYSQL_ROOT/bin":\
-"$POSTGRES_ROOT/bin":\
-"$GPG/bin":\
-"$CURL_ROOT/bin":\
-"$PATH"
 
 ## rustup
 source "$HOME/.cargo/env"
@@ -95,6 +88,19 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+export PATH="$OPENSSL_ROOT/bin":\
+"$CURL_ROOT/bin":\
+"$PHP_ROOT/bin":\
+"$PYENV_ROOT/bin":\
+"$POETRY_ROOT/bin":\
+"$DENO_ROOT/bin":\
+"$MYSQL_ROOT/bin":\
+"$POSTGRES_ROOT/bin":\
+"$GPG_ROOT/bin":\
+"$SBIN_PATH":\
+"$CORE_UTILS_PATH":\
+"$ANDROID_TOOLS_PATH":\
+"$PATH"
 # source utils first
 source "$HOME/.zsh/utils.sh"
 # source scripts

@@ -1,28 +1,29 @@
 {
   "suggest.noselect": true,
+  "coc.preferences.formatOnSave": true,
   "coc.preferences.formatOnSaveFiletypes": ["*"],
-  "coc.preferences.formatOnType": true,
   // eslint
   "eslint.autoFixOnSave": true,
   "eslint.alwaysShowStatus": true,
   // python
   "python.analysis.diagnosticMode": "workspace",
-  "python.linting.mypyEnabled": true,
   "python.formatting.provider": "black",
-  "python.linting.lintOnSave": true,
-  "python.linting.pylintEnabled": true,
-  "python.linting.pylintArgs": ["--rcfile", "${workspaceFolder}/.pylintrc"],
   "python.formatting.blackArgs": [
     "--config",
     "${workspaceFolder}/pyproject.toml"
   ],
-  "pyright.organizeimports.provider": "isort",
-  "pyright.inlayHints.variableTypes": false,
-  "pyright.inlayHints.functionReturnTypes": false,
+  "python.linting.mypyEnabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintArgs": ["--rcfile", "${workspaceFolder}/.pylintrc"],
   "python.sortImports.args": [
     "--settings-path",
     "${workspaceFolder}/pyproject.toml"
   ],
+  // pyright
+  "pyright.organizeimports.provider": "isort",
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false,
   // lua
   "Lua.diagnostics.globals": ["vim"]
 }
