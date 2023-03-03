@@ -35,8 +35,15 @@ else
 endif
 
 function! s:show_documentation()
-  if CocAction('hasProvider', 'hover') && CocAction('doHover')
-  elseif index(['vim', 'help'], &filetype) >= 0
+  if CocAction('hasProvider', 'hover') 
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('n')
+  endif
+endfunction
+
+function! s:show_man_documentation()
+  if index(['vim', 'help'], &filetype) >= 0
     execute 'h ' . expand('<cword>')
   else
     execute '!' . &keywordprg . " " . expand('<cword>')
@@ -48,9 +55,6 @@ augroup coc_group
   autocmd FileType * setl formatexpr=CocAction('formatSelected')
   autocmd CursorHold * silent! call CocActionAsync('highlight')
 augroup end
-
-command! -nargs=0 Format  :call CocAction('format')
-command! -nargs=0 OR      :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " """ Pyright
 " autocmd FileType python let b:coc_root_patterns = [
@@ -71,22 +75,20 @@ function FormatAndSortImports()
 endfunction
 
 " show documentation
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-" diagnostics
+nmap <silent> K :call <SID>show_documentation()<CR>
+nmap <silent> M :call <SID>show_man_documentation()<CR>
 nmap <silent><leader>N <Plug>(coc-diagnostic-prev)
 nmap <silent><leader>n <Plug>(coc-diagnostic-next)
-" goto
 nmap <silent>gd <Plug>(coc-definition)
 nmap <silent>gt <Plug>(coc-type-definition)
 nmap <silent>gi <Plug>(coc-implementation)
 nmap <silent>gr <Plug>(coc-references)
-
 nmap <silent>cr <Plug>(coc-rename)
-nmap <leader>cf :call FormatAndSortImports()<CR>
-nnoremap <leader>cc :CocRestart<CR>
-
 nmap <leader>.  <Plug>(coc-codeaction-cursor)
-nnoremap <leader>, :CocDiagnostics<CR>
+nmap <leader>, :CocDiagnostics<CR>
+nmap <leader>cf :call FormatAndSortImports()<CR>
+nmap <leader>cc :CocRestart<CR>
 
 command! -nargs=0 RestartDiagnostics  :CocRestart
-
+command! -nargs=0 Format  :call CocAction('format')
+command! -nargs=0 OR      :call CocAction('runCommand', 'editor.action.organizeImport')

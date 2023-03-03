@@ -1,6 +1,6 @@
 function! s:delete_all_fugitive_wins_and_buffs()
   call s:delete_fugitive_wins()
-  let closed_buf_len = CloseBuffersByNameContains(['fugitive:', 'fugitiveblame'])
+  let closed_buf_len = utils#close_buffers_by_name_contains(['fugitive:', 'fugitiveblame'])
   if closed_buf_len == 0
     echom "No fugitive buffers"
   endif

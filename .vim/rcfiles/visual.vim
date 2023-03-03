@@ -72,6 +72,13 @@ function! GitInfo()
     return ''
 endfunction
 
+function! DebugStatus()
+  if !has('nvim')
+    return ''
+  endif
+  let Status = luaeval("require'dap'.status")
+  return Status()
+endfunction
 " Setup colorscheme, statusline, tabline, cursorline
 set background=dark
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
@@ -87,6 +94,7 @@ if has("statusline") && !&cp
   set statusline+=\ %0*
   set statusline+=\ %{GitInfo()}            " branch
   set statusline+=%=                        " left-right separation point
+  set statusline+=\ %{DebugStatus()}
   set statusline+=\ %{DiagnosticsInfo()}    " diagnostics
   set statusline+=\ %y                      " filetype
   set statusline+=\ %1*

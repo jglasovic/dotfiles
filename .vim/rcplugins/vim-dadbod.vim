@@ -1,6 +1,6 @@
 function! s:custom_toggle_dbui()
-  call CloseBuffersByNameContains(['dbout'])
-  call CloseBuffersByFiletype(['sql'])
+  call utils#close_buffers_by_name_contains(['dbout'])
+  call utils#close_buffers_by_filetype(['sql'])
   DBUIToggle
   let g:db_cache = {}
 endfunction

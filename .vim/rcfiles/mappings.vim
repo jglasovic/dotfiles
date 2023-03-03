@@ -13,7 +13,7 @@ nmap <leader>wj   :botright new<CR>
 nmap <leader>ic :set list!<CR>
 
 " Toggle line numbers
-nnoremap <leader>ln :call ToggleLineNumbers()<CR>
+nnoremap <leader>ln :call utils#toggle_line_numbers()<CR>
 
 " Close buffer
 nnoremap <C-w> :bd<CR>
@@ -26,11 +26,11 @@ noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 
 " Find
-nmap <silent> <leader>ff :Files<CR>
-nmap <silent> <leader>fF :RG<CR>
-nmap <silent> <leader>fb :Buffers<CR>
-nmap <silent> <leader>fd :Dirs<CR>
-nmap <silent> <leader>fg :GFiles<CR>
+nmap <silent> <leader>f :Files<CR>
+nmap <silent> <leader>F :RG<CR>
+nmap <silent> <leader>b :Buffers<CR>
+nmap <silent> <leader>df :Dirs<CR>
+nmap <silent> <leader>gf :GFiles<CR>
 
 " Search hi
 nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
@@ -57,6 +57,7 @@ xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>
 
 " Quick access for playback q register recording
 " qq - start recording, q - stop recording, Q - playback
+
 noremap Q @q
 
 " Resize view

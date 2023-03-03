@@ -1,5 +1,5 @@
-let g:plugged_dir_path = '~/.vim/plugged'
-let g:autoload_plug_path = '~/.vim/autoload/plug.vim'
+let g:plugged_dir_path = expand('$HOME/.vim/plugged')
+let g:autoload_plug_path = expand('$HOME/.vim/autoload/plug.vim')
 
 " load plugins
 if empty(glob(g:autoload_plug_path))
@@ -35,12 +35,16 @@ call plug#begin(g:plugged_dir_path)
   Plug 'joshdick/onedark.vim'
   Plug 'vim-test/vim-test'
   Plug 'preservim/vimux'
+
   if has('python3')
     Plug 'petobens/poet-v'
   endif
+  
   if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'mfussenegger/nvim-dap'
   endif
+
 call plug#end()
 
 
@@ -48,6 +52,7 @@ call plug#end()
 runtime! rcfiles/*.vim
 " plugin configs
 runtime! rcplugins/*.vim
+
 if has('nvim')
   runtime! rcplugins/*.lua
 endif

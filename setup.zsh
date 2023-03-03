@@ -56,7 +56,7 @@ if ! check_file_exists "$HOME/.pyenv/versions/neovim3/bin/python" ; then
   echo "setuping neovim py v3 virtualenv"
   pyenv virtualenv $py_3 neovim3
   pyenv activate neovim3
-  pip install neovim
+  pip3 install neovim
   pyenv deactivate neovim3
 fi
 # setup nvm

@@ -1,7 +1,7 @@
 {
   "suggest.noselect": true,
   "coc.preferences.formatOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  // "coc.preferences.formatOnSaveFiletypes": ["*"],
   // eslint
   "eslint.autoFixOnSave": true,
   "eslint.alwaysShowStatus": true,
