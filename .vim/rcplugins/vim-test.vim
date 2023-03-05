@@ -8,30 +8,14 @@ endif
 let test#neovim#term_position = "vert"
 let test#vim#term_position = "vert"
 let g:test#transformation = 'custom'
+
 " when working with monorepo, workspaces or file opened explicitly with vim, 
 " dynamicly sets project root dir based on coc#util#root_patterns
-let g:project_root_mappings = {}
-
-function! s:get_project_root_for_test_file()
-  let test_file_dir = expand('%:p:h')
-  if has_key(g:project_root_mappings, test_file_dir)
-    return get(g:project_root_mappings, test_file_dir)
-  endif
-
-  let root_patterns = utils#get_coc_root_patterns()
-  let opts = {
-      \ "workspace_folders": utils#get_workspace_folders(test_file_dir)
-      \ }
-  let project_root_path = utils#get_project_root_by_patterns(test_file_dir, root_patterns, opts)
-  let g:project_root_mappings[test_file_dir] = project_root_path
-  return project_root_path
-endfunction
-
 function! s:run_before()
   if !test#exists()
     throw "Not a test file!"
   endif
-  let g:test#project_root = s:get_project_root_for_test_file()
+  let g:test#project_root = utils#get_root_dir()
 endfunction
 
 " transforming all test cmd to cd into the proper root for exec

@@ -69,17 +69,6 @@ function! utils#syn_group()
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfun
 
-function! utils#get_workspace_folders(file_dir)
-  let workspace_folders = [] 
-  for path in get(g:, 'WorkspaceFolders', [])
-    let full_path = expand(path) 
-    if stridx(a:file_dir, full_path)
-      call add(workspace_folders, full_path)
-    endif
-  endfor
-  return workspace_folders
-endfunction
-
 function! utils#get_coc_root_patterns()
   if !exists("*coc#util#root_patterns")
     return []
@@ -88,38 +77,57 @@ function! utils#get_coc_root_patterns()
   return get(coc_root_patterns, 'server', []) + get(coc_root_patterns, 'buffer', []) + get(coc_root_patterns, 'global', [])
 endfunction
 
-function! utils#get_project_root_by_patterns(dir_path, patterns, ...) abort
-  let opts = get(a:000, 0, {})
-  let workspace_folders = get(opts, 'workspace_folders', []) " wanna first check on some known workspace_folders
-  let stop_dir_path = get(opts, 'stop_path', expand('$HOME')) " prevent search upwards at specific dir
-  let strict = get(opts, 'strict', 0) " throw an error if cannot find dir by patterns, otherwise return cwd
-
-  if len(a:patterns) == 0 || a:dir_path == stop_dir_path
-    if strict
-      throw "Cannot find root dir by patterns provided"
-    endif
-    return expand(getcwd())
-  endif
-
-  let idx = index(workspace_folders, a:dir_path)
-  if idx != -1
-    return workspace_folders[idx]
+function! s:get_root_dir_by_patterns(dir, patterns, stop_dir) abort
+  if a:dir == a:stop_dir
+    throw "Cannot find root dir by provided patterns: ".join(patterns, ' ')
   endif
 
   for pattern in a:patterns
-    let test_pattern_path = a:dir_path . '/' . pattern
+    let test_pattern_path = a:dir . '/' . pattern
     if !empty(glob(test_pattern_path))
-      return a:dir_path
+      return [pattern, a:dir]
     endif
   endfor
-  " going upwards one dir 
-  let up_dir_path = substitute(a:dir_path,'/[^\/]\+\(?\=\/$\|$\)', '', 'g')
-  return utils#get_project_root_by_patterns(up_dir_path, a:patterns, opts)
+  let up_dir = substitute(a:dir,'/[^\/]\+\(?\=\/$\|$\)', '', 'g')
+  return s:get_root_dir_by_patterns(up_dir, a:patterns, a:stop_dir)
+endfunction
+
+function! utils#get_root_dir(...) abort
+  let opts = get(a:000, 0, {})
+  let dir = get(opts, 'dir', expand('%:p:h'))
+  let patterns = get(opts, 'patterns', utils#get_coc_root_patterns())
+  let stop_dir = get(opts, 'stop_dir', expand('$HOME'))
+  
+  if len(patterns) == 0
+    throw "Missing patterns to search for root dir!"
+  endif
+  " create cache if doesn't exist
+  if !exists('g:root_dir_cache')
+    let g:root_dir_cache = {}
+  endif
+
+  if has_key(g:root_dir_cache, dir)
+    let cache = g:root_dir_cache[dir]
+    for pattern in patterns
+      if has_key(cache, pattern)
+        return cache[pattern]
+      endif
+    endfor
+  endif
+
+  let [pattern, root_dir] = s:get_root_dir_by_patterns(dir, patterns, stop_dir)
+
+  if !has_key(g:root_dir_cache, dir)
+    let g:root_dir_cache[dir] = {}
+  endif
+  let g:root_dir_cache[dir][pattern] = root_dir
+
+  return root_dir
 endfunction
 
 function! utils#test_command_time(com, ...)
   let time = 0.0
-  let numberOfTimes = a:0 ? a:1 : 50000
+  let numberOfTimes = a:0 ? a:1 : 5000
   for i in range(numberOfTimes + 1)
     let t = reltime()
     execute a:com
