@@ -11,5 +11,5 @@ function! s:find_dirs()
   call fzf#run(fzf#wrap({'source': command_fmt}))
 endfunction
 
-command! -nargs=0 Dirs call <SID>find_dirs()
-command! -nargs=* -bang RG call <SID>ripgrep_fzf(<q-args>, <bang>0)
+command! -nargs=0 Dirs call s:find_dirs()
+command! -nargs=* -bang RG call s:ripgrep_fzf(<q-args>, <bang>0)

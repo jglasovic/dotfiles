@@ -1,12 +1,8 @@
 local dap = require('dap')
 
-if vim.g.dap_init_finshed then
-  return
-end
-
 local get_vscode_launch_json = function()
   local launch_json = '.vscode/launch.json'
-  local opts = { patterns = { launch_json }, strict = 1 }
+  local opts = { patterns = { launch_json } }
   local ok, project_root_path = pcall(vim.fn['utils#get_root_dir'], opts)
   if not ok then
     return nil
@@ -64,25 +60,39 @@ local custom_session_cleanup = function()
   end
 end
 
+local test_debugger = function()
+  local port = vim.g.test_debug_port or 5678
+  local config = {
+    name = vim.fn.expand('%:t'),
+    request = 'attach',
+    type = vim.bo.filetype,
+    port = port,
+    host = 'localhost'
+  }
+  dap.run(config)
+end
+
 -- on session init and cleanup
+-- TODO: add reconnect logic if request is attach and it is terminated
 dap.listeners.after.event_initialized["dap_init"] = custom_session_init
 dap.listeners.before.event_terminated["dap_cleanup"] = custom_session_cleanup
 dap.listeners.before.event_exited["dap_cleanup"] = custom_session_cleanup
+dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
 
--- keybindings - there are more but I mostly use just relp for everything
-vim.keymap.set({ 'n', 't' }, '<leader>dc', custom_continue)
+-- keymaps - there are more but I mostly use just REPL for everything
+vim.keymap.set('n', '<leader>dd', custom_continue)
 vim.keymap.set('n', '<leader>dx', custom_close)
 vim.keymap.set('n', '<leader>dh', dap.toggle_breakpoint)
 vim.keymap.set('n', '<leader>da', toggle_list_breakpoints)
 vim.keymap.set('n', '<leader>dR', dap.clear_breakpoints)
 vim.keymap.set('n', '<leader>dE', function() dap.set_exception_breakpoints({ "all" }) end)
 vim.keymap.set('n', '<leader>di', function() require "dap.ui.widgets".hover() end)
-vim.keymap.set('n', '<leader>dd', function()
+vim.keymap.set('n', '<leader>d?', function()
   local widgets = require "dap.ui.widgets";
   widgets.centered_float(widgets.scopes)
 end)
 vim.keymap.set('n', '<leader>dr', function() dap.repl.toggle({}, "vsplit") end)
-
+vim.api.nvim_create_user_command('RunTestDebugger', test_debugger, {})
 
 ------ Python config --------
 local get_python_path = function()
@@ -92,13 +102,6 @@ local get_python_path = function()
   end
   return vim.fn.trim(vim.fn.system("which python"))
 end
-
--- local enrich_config = function(config, on_config)
---   if not config.pythonPath and not config.python then
---     config.pythonPath = get_python_path()
---   end
---   on_config(config)
--- end
 
 local python = function(cb, config)
   if config.request == 'attach' then
@@ -111,17 +114,16 @@ local python = function(cb, config)
       type = 'server',
       port = assert(port, '`connect.port` is required for a python `attach` configuration'),
       host = host,
-      -- enrich_config = enrich_config,
       options = {
         source_filetype = 'python',
       }
     })
   else
+    local command = config.command or get_python_path()
     cb({
       type = 'executable',
-      command = get_python_path(),
+      command = command,
       args = { '-m', 'debugpy.adapter' },
-      -- enrich_config = enrich_config,
       options = {
         source_filetype = 'python',
       }
@@ -131,8 +133,7 @@ end
 ------------------------------
 
 local adapters = {
-  -- TODO: add other adapters
   python = python
+  -- TODO: add other adapters
 }
 dap.adapters = adapters
-vim.g.dap_init_finished = true

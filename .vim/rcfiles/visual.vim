@@ -56,28 +56,40 @@ function! DisplayBuffline() abort
 endfunction
 
 function! DiagnosticsInfo()
-  let s:info = get(b:, 'coc_diagnostic_info', {})
-  let error = get(s:info, 'error', 0)
-  let warn = get(s:info, 'warning', 0)
-  let info = get(s:info, 'information', 0)
-  let hint = get(s:info, 'hint', 0)
-  return (error ? "E:".error : "").(warn ? " W:".warn : "").(info ? " I:".info : "").(hint ? " H:".hint : "")
+  let mapping = {
+      \ 'error': 'E:',
+      \ 'warning': 'W:',
+      \ 'information': 'I:',
+      \ 'hint': 'H:'
+      \ }
+  let info = get(b:, 'coc_diagnostic_info', {})
+  let status_list = []
+  for [key, value] in items(info)
+    if !has_key(mapping, key) || value == 0
+      continue
+    endif
+    call add(status_list, mapping[key].value)
+  endfor
+  return join(status_list, ' ')
 endfunction
 
 function! GitInfo()
   let s:branch = FugitiveHead()
-    if s:branch != ''
-      return ' '.s:branch
-    end
-    return ''
+  if s:branch != ''
+    return ' '.s:branch
+  end
+  return ''
 endfunction
 
 function! DebugStatus()
   if !has('nvim')
     return ''
   endif
-  let Status = luaeval("require'dap'.status")
-  return Status()
+  let status = luaeval("require'dap'.status")()
+  if status == ''
+    return ''
+  endif
+  return '%2* '.status.' %*'
 endfunction
 " Setup colorscheme, statusline, tabline, cursorline
 set background=dark
@@ -85,21 +97,18 @@ let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE"
 colorscheme onedark
 hi! link CursorLineNr Keyword
 hi! link User1 Cursor 
+hi! link User2 Search
+hi! StatusLineNC ctermfg=59 guifg=#5c6370 ctermbg=236 guibg=#2c323c
 
 if has("statusline") && !&cp
-  set laststatus=2                          " always show the status bar
-  set statusline=%1*
-  set statusline+=\ %t                      " filename
-  set statusline+=%m%r                      " modified, readonly
-  set statusline+=\ %0*
-  set statusline+=\ %{GitInfo()}            " branch
-  set statusline+=%=                        " left-right separation point
-  set statusline+=\ %{DebugStatus()}
-  set statusline+=\ %{DiagnosticsInfo()}    " diagnostics
-  set statusline+=\ %y                      " filetype
-  set statusline+=\ %1*
-  set statusline+=\ %v:%l/%L[%p%%]          " current column : current line/total lines [percentage]
-  set statusline+=%0*
+  set laststatus=2                        " always show the status bar
+  set statusline=%1*\ %t%m%r\ %*          " filename, modified, readonly
+  set statusline+=\ %{GitInfo()}          " branch
+  set statusline+=%=                      " left-right separation point
+  set statusline+=\ %{%DebugStatus()%}      " debugger status
+  set statusline+=\ %{DiagnosticsInfo()}  " diagnostics
+  set statusline+=\%y\                   " filetype
+  set statusline+=%1*\ %v:%l/%L[%p%%]\%* " current column : current line/total lines [percentage]
 endif
 
 set showmode
