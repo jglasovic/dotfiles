@@ -23,7 +23,6 @@ augroup END
 " searching
 set ignorecase
 set smartcase
-set hlsearch
 
 " completion
 set completeopt=menu,menuone,preview
@@ -68,8 +67,8 @@ set wildignorecase
 " gutters
 set number relativenumber
 augroup relnum_focus
-  autocmd! FocusLost,InsertEnter * if &number | setl norelativenumber | else | echom "Line numbers hidden" | endif
-  autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echom "Line numbers hidden" | endif
+  autocmd! FocusLost,InsertEnter * if &number | setl norelativenumber | else | echo "Line numbers hidden" | endif
+  autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echo "Line numbers hidden" | endif
 augroup END
 
 if executable('rg')
@@ -80,13 +79,12 @@ endif
 
 if has('nvim')
   set signcolumn=yes:1
-
   " Permanent undo - nvim undofiles are incompatible with vim undofiles
-  set undodir=~/.vim/vimdid
+  set undodir=$HOME/.vim/vimdid
   set undofile
   " Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-  let g:python_host_prog = '~/.pyenv/versions/neovim2/bin/python'
-  let g:python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+  let g:python_host_prog = "$HOME/.pyenv/versions/neovim2/bin/python"
+  let g:python3_host_prog = "$HOME/.pyenv/versions/neovim3/bin/python"
 else
   set re=0 "fix vi highlighting
   set ttyfast

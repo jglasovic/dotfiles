@@ -1,4 +1,10 @@
 local dap = require('dap')
+if vim.g.nvim_dap_custom_attach_cache == nil then
+  vim.g.nvim_dap_custom_attach_cache = {
+    port = 5678,
+    host = 'localhost'
+  }
+end
 
 local get_vscode_launch_json = function()
   local launch_json = '.vscode/launch.json'
@@ -60,34 +66,55 @@ local custom_session_cleanup = function()
   end
 end
 
-local test_debugger = function()
-  local port = vim.g.test_debug_port or 5678
+local attach_debugger = function(port, host, type)
   local config = {
     name = vim.fn.expand('%:t'),
     request = 'attach',
-    type = vim.bo.filetype,
+    type = type or vim.bo.filetype,
     port = port,
-    host = 'localhost'
+    host = host
   }
   dap.run(config)
 end
 
+local test_debugger = function()
+  local port = vim.g.test_debug_port or 5678
+  return attach_debugger(port, 'localhost')
+end
+
+local custom_attach = function()
+  local prev_host = vim.g.nvim_dap_custom_attach_cache.host
+  local prev_port = vim.g.nvim_dap_custom_attach_cache.port
+  local host = vim.fn.input("Add host: ", prev_host)
+  if host == '' then
+    return print("Abort!")
+  end
+  local port = vim.fn.input("Add port: ", prev_port)
+  if host == '' then
+    return print("Abort!")
+  end
+  vim.g.nvim_dap_custom_attach_cache.port = port
+  vim.g.nvim_dap_custom_attach_cache.host = host
+  return attach_debugger(port, host)
+end
+
 -- on session init and cleanup
--- TODO: add reconnect logic if request is attach and it is terminated
+-- TODO: add reconnect logic if request is attach
 dap.listeners.after.event_initialized["dap_init"] = custom_session_init
 dap.listeners.before.event_terminated["dap_cleanup"] = custom_session_cleanup
 dap.listeners.before.event_exited["dap_cleanup"] = custom_session_cleanup
 dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
 
--- keymaps - there are more but I mostly use just REPL for everything
+-- keymaps - there are more but I mostly just use REPL
 vim.keymap.set('n', '<leader>dd', custom_continue)
-vim.keymap.set('n', '<leader>dx', custom_close)
+vim.keymap.set('n', '<leader>da', custom_attach)
+vim.keymap.set('n', '<leader>dc', custom_close)
 vim.keymap.set('n', '<leader>dh', dap.toggle_breakpoint)
-vim.keymap.set('n', '<leader>da', toggle_list_breakpoints)
-vim.keymap.set('n', '<leader>dR', dap.clear_breakpoints)
+vim.keymap.set('n', '<leader>dA', toggle_list_breakpoints)
+vim.keymap.set('n', '<leader>dx', dap.clear_breakpoints)
 vim.keymap.set('n', '<leader>dE', function() dap.set_exception_breakpoints({ "all" }) end)
-vim.keymap.set('n', '<leader>di', function() require "dap.ui.widgets".hover() end)
-vim.keymap.set('n', '<leader>d?', function()
+vim.keymap.set('n', '<leader>d?', function() require "dap.ui.widgets".hover() end)
+vim.keymap.set('n', '<leader>di', function()
   local widgets = require "dap.ui.widgets";
   widgets.centered_float(widgets.scopes)
 end)
