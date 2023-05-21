@@ -23,7 +23,6 @@ call plug#begin(g:plugged_dir_path)
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
@@ -35,6 +34,7 @@ call plug#begin(g:plugged_dir_path)
   Plug 'joshdick/onedark.vim'
   Plug 'vim-test/vim-test'
   Plug 'preservim/vimux'
+  Plug 'natebosch/vim-lsc'
 
   if has('python3')
     Plug 'petobens/poet-v'

@@ -106,7 +106,7 @@ if has("statusline") && !&cp
   set statusline+=\ %{GitInfo()}          " branch
   set statusline+=%=                      " left-right separation point
   set statusline+=\ %{%DebugStatus()%}      " debugger status
-  set statusline+=\ %{DiagnosticsInfo()}  " diagnostics
+  set statusline+=\ %{LSCServerStatus()}  " diagnostics
   set statusline+=\%y\                   " filetype
   set statusline+=%1*\ %v:%l/%L[%p%%]\%* " current column : current line/total lines [percentage]
 endif
