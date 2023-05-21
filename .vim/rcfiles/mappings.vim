@@ -4,7 +4,7 @@ map <up>    :echo "No!"<CR>
 map <down>  :echo "No!"<CR>
 map <left>  :echo "No!"<CR>
 map <right> :echo "No!"<CR>
-" reload vim
+" Reload vim
 nnoremap <leader>v :source $MYVIMRC<CR>
 ""Mappings for opening new splits
 nmap <leader>wh   :topleft  vnew<CR>
@@ -22,30 +22,30 @@ nnoremap <C-q> :q<CR>
 " Write
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
-" Search hi
+" Search hi toggle
 nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
 " Toggles between buffers
 nnoremap <leader><leader> <c-^>
-" shortcuts for substitutions
+" Shortcuts for substitutions
 nnoremap <leader>sg :%s///g<left><left><left>
 nnoremap <leader>sl :s///g<left><left><left>
-"paste and hold position
+" Paste and hold position
 xnoremap <silent> p p:let @+=@0<CR>:let @"=@0<CR>
 " Quick access for playback q register recording
 " qq - start recording, q - stop recording, Q - playback
 noremap Q @q
 " Resize view
-nnoremap <A-right>  :vertical resize +10<CR>
-nnoremap <A-left>   :vertical resize -10<CR>
-nnoremap <A-up>     :resize +10<CR>
-nnoremap <A-down>   :resize -10<CR>
-" content move
-nnoremap <A-j>      :m .+1<CR>==
-nnoremap <A-k>      :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j>      :m '>+1<CR>gv=gv
-vnoremap <A-k>      :m '<-2<CR>gv=gv
+nnoremap <M-right>  :vertical resize +10<CR>
+nnoremap <M-left>   :vertical resize -10<CR>
+nnoremap <M-up>     :resize +10<CR>
+nnoremap <M-down>   :resize -10<CR>
+" Content move
+nnoremap <M-j>      :m .+1<CR>==
+nnoremap <M-k>      :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j>      :m '>+1<CR>gv=gv
+vnoremap <M-k>      :m '<-2<CR>gv=gv

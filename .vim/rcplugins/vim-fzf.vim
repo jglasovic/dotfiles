@@ -26,7 +26,6 @@ endfunction
 command! -nargs=0 BDelete call s:delete_buffers()
 command! -nargs=0 Dirs call s:find_dirs()
 command! -nargs=? RG call s:ripgrep_fzf(<q-args>)
-
 " Find
 nmap <silent> <leader>f :Files<CR>
 nmap <silent> <leader>F :RG<CR>

@@ -2,7 +2,7 @@
   name = Jure Glasovic
   email = jglasovic@gmail.com
 [core]
-  excludesfile = ~/.gitignore_global
+  excludesfile = $HOME/.gitignore_global
 [help]
   format = web
   autocorrect = 1
@@ -29,7 +29,7 @@
 [mergetool "fugitive"]
   cmd = vim -f -c "Gvdiffsplit!" \"$MERGED\"
 [commit]
-  template = ~/.stCommitMsg
+  template = $HOME/.stCommitMsg
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f

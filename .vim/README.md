@@ -49,7 +49,7 @@ Base vim config files
 - `<leader>sg` - substitutions - global
 - `Q` - playback of the recording that was put into the q register
 - `<A-{j/k}>` - move line(s) content down/up
-- `<C-{arrow keys}` - resize splits
+- `<A-{arrow keys}` - resize splits
 
 ### `visual.vim`
 
@@ -57,7 +57,7 @@ Base vim config files
 - cursorline in insert mode
 - simple statusline and tabline
 
-### `functions.vim`
+### `utils.vim`
 
 - Some useful functions like: `FindBuffers`, `CloseBuffers`, `HasBuffer`,...
 
@@ -114,7 +114,7 @@ Mappings in explorer buf:
 - `<leader>ab` - code action all buffer
 - `<leader>qf` - quick fix under cursor
 - `<leader>cl` - code lens
-- `<leader>[` - restart coc server
+- `<leader>cc` - restart coc server
 
 - `:Format` - format
 - `:Fold` - fold
@@ -125,7 +125,7 @@ Mappings in explorer buf:
 
 - `<leader>gs` - git status
 - `<leader>gb` - git blame
-- `<leader>gd` - diff for a current file
+- `<leader>gd` - diff for a current buffer
 - `<leader>gD` - diff history
 - `<leader>gc` - closing all fugitive buffers
 - `gl` - pick right in gitdiff
@@ -148,11 +148,11 @@ Mappings in explorer buf:
 
 ### `vim-dadbod` and `vim-dadbod-ui` - [vim-dadbod](https://github.com/tpope/vim-dadbod) & [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui)
 
-- `:DB` - Toggle DB client
+- `:DB` or `<leader>db` - Toggle DB client
 - `dbout` buffer:
   - `w` - move cursor to the right column
   - `b` - move cursor to the left column
-  - `<C-]>` - cursor on column, jump to reference table row
+  - `gd` - cursor on column, jump to reference table row
 
 ### Other plugins with default configs
 

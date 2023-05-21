@@ -1,6 +1,6 @@
 {
   "suggest.noselect": true,
-  "coc.preferences.formatOnSave": true,
+  // "coc.preferences.formatOnSave": true,
   // "coc.preferences.formatOnSaveFiletypes": ["*"],
   // eslint
   "eslint.autoFixOnSave": true,
@@ -13,7 +13,7 @@
     "${workspaceFolder}/pyproject.toml"
   ],
   "python.linting.mypyEnabled": true,
-  "python.linting.lintOnSave": true,
+  // "python.linting.lintOnSave": true,
   "python.linting.pylintEnabled": true,
   "python.linting.pylintArgs": ["--rcfile", "${workspaceFolder}/.pylintrc"],
   "python.sortImports.args": [
