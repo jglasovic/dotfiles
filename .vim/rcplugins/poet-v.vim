@@ -12,7 +12,7 @@ function s:activate_poetv()
 
   if &previewwindow != 1 && expand('%:p') !~# "/\\.git/"
     call poetv#activate()
-    if g:CURRENT_VIRTUAL_ENV != $VIRTUAL_ENV && exists('g:coc_workspace_initialized') 
+    if g:CURRENT_VIRTUAL_ENV != $VIRTUAL_ENV 
       silent exec "RestartDiagnostics"
     endif
   endif

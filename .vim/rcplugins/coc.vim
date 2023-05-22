@@ -92,28 +92,3 @@
 " command! -nargs=0 RestartDiagnostics  :CocRestart
 " command! -nargs=0 Format  :call CocAction('format')
 " command! -nargs=0 OR      :call CocAction('runCommand', 'editor.action.organizeImport')
-
-let g:lsc_server_commands = {
- \  'python': {
- \    'command': 'pyright-langserver --stdio',
- \  }
- \}
-let g:lsc_enable_autocomplete  = v:true
-let g:lsc_enable_diagnostics   = v:true
-let g:lsc_reference_highlights = v:true
-let g:lsc_diagnostic_highlights = v:true
-let g:lsc_auto_map = {
-    \ 'defaults': v:true,
-    \ 'GoToDefinition': 'gd',
-    \ 'FindReferences': 'gr',
-    \ 'FindImplementations': 'gi',
-    \ 'FindCodeActions': '<leader>.',
-    \ 'Rename': 'cr',
-    \ 'ShowHover': 'K',
-    \ 'DocumentSymbol': 'go',
-    \ 'WorkspaceSymbol': 'gS',
-    \}
-
-nnoremap <leader>cc :LSClientRestartServer<CR>
-hi! link lscDiagnosticError SpellBad
-

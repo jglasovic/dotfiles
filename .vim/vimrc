@@ -34,13 +34,17 @@ call plug#begin(g:plugged_dir_path)
   Plug 'joshdick/onedark.vim'
   Plug 'vim-test/vim-test'
   Plug 'preservim/vimux'
-  Plug 'natebosch/vim-lsc'
 
   if has('python3')
     Plug 'petobens/poet-v'
   endif
   
   if has('nvim')
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp' 
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'mfussenegger/nvim-dap'
   endif
