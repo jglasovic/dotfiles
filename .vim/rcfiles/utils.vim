@@ -69,13 +69,13 @@ function! utils#syn_group()
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfun
 
-function! utils#get_coc_root_patterns()
-  if !exists("*coc#util#root_patterns")
-    return []
-  endif
-  let coc_root_patterns = coc#util#root_patterns()
-  return get(coc_root_patterns, 'server', []) + get(coc_root_patterns, 'buffer', []) + get(coc_root_patterns, 'global', [])
-endfunction
+" function! utils#get_coc_root_patterns()
+"   if !exists("*coc#util#root_patterns")
+"     return []
+"   endif
+"   let coc_root_patterns = coc#util#root_patterns()
+"   return get(coc_root_patterns, 'server', []) + get(coc_root_patterns, 'buffer', []) + get(coc_root_patterns, 'global', [])
+" endfunction
 
 function! s:get_root_dir_by_patterns(dir, patterns, stop_dir) abort
   if a:dir == a:stop_dir
@@ -84,6 +84,7 @@ function! s:get_root_dir_by_patterns(dir, patterns, stop_dir) abort
 
   for pattern in a:patterns
     let test_pattern_path = a:dir . '/' . pattern
+    echom test_pattern_path
     if !empty(glob(test_pattern_path))
       return [pattern, a:dir]
     endif
@@ -95,10 +96,11 @@ endfunction
 function! utils#get_root_dir(...) abort
   let opts = get(a:000, 0, {})
   let dir = get(opts, 'dir', expand('%:p:h'))
-  let patterns = get(opts, 'patterns', utils#get_coc_root_patterns())
+  let workspaces = luaeval('vim.lsp.buf.list_workspace_folders()')
+  let patterns = get(opts, 'patterns', [])
   let stop_dir = get(opts, 'stop_dir', expand('$HOME'))
   
-  if len(patterns) == 0
+  if len(patterns) == 0 && len(workspaces) == 0
     throw "Missing patterns to search for root dir!"
   endif
   " create cache if doesn't exist
@@ -106,22 +108,35 @@ function! utils#get_root_dir(...) abort
     let g:root_dir_cache = {}
   endif
 
-  if has_key(g:root_dir_cache, dir)
-    let cache = g:root_dir_cache[dir]
-    for pattern in patterns
-      if has_key(cache, pattern)
-        return cache[pattern]
-      endif
-    endfor
+  if len(patterns) > 0
+    if has_key(g:root_dir_cache, dir)
+      let cache = g:root_dir_cache[dir]
+      for pattern in patterns
+        if has_key(cache, pattern)
+          return cache[pattern]
+        endif
+      endfor
+    endif
+
+    let [pattern, root_dir] = s:get_root_dir_by_patterns(dir, patterns, stop_dir)
+
+    if !has_key(g:root_dir_cache, dir)
+      let g:root_dir_cache[dir] = {}
+    endif
+    let g:root_dir_cache[dir][pattern] = root_dir
+    return root_dir
   endif
 
-  let [pattern, root_dir] = s:get_root_dir_by_patterns(dir, patterns, stop_dir)
-
-  if !has_key(g:root_dir_cache, dir)
-    let g:root_dir_cache[dir] = {}
+  let root_dir = ''
+  for workspace in workspaces
+    if len(root_dir) < len(workspace) && stridx(dir, workspace) != -1
+      echom workspace
+      let root_dir = workspace
+    endif
+  endfor
+  if root_dir == ''
+    throw "Cannot find root dir in workspaces!"
   endif
-  let g:root_dir_cache[dir][pattern] = root_dir
-
   return root_dir
 endfunction
 
