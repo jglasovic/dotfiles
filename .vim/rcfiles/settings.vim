@@ -25,7 +25,7 @@ set ignorecase
 set smartcase
 
 " completion
-set completeopt=menu,menuone,preview
+set completeopt=menu,menuone,preview,noselect
 
 " folding
 set foldenable

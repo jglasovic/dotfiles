@@ -39,6 +39,8 @@ function! utils#close_buffers_by_filetype(filetypes)
 endfunction
 
 function! utils#close_buffers_by_name_contains(patterns, ...)
+  echom "patterns"
+  echom a:patterns
   let close_only_first = a:0 || 0
   let buffers = utils#find_buffers(a:patterns)
   let buflen = len(buffers)
