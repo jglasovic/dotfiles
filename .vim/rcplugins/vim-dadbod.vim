@@ -33,3 +33,8 @@ let g:db_ui_table_helpers = {
 let g:db_ui_auto_execute_table_helpers = 1
 
 nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
+
+augroup sql_configs
+  autocmd!
+  autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
+augroup end

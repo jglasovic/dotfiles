@@ -39,8 +39,6 @@ function! utils#close_buffers_by_filetype(filetypes)
 endfunction
 
 function! utils#close_buffers_by_name_contains(patterns, ...)
-  echom "patterns"
-  echom a:patterns
   let close_only_first = a:0 || 0
   let buffers = utils#find_buffers(a:patterns)
   let buflen = len(buffers)
@@ -71,14 +69,6 @@ function! utils#syn_group()
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfun
 
-" function! utils#get_coc_root_patterns()
-"   if !exists("*coc#util#root_patterns")
-"     return []
-"   endif
-"   let coc_root_patterns = coc#util#root_patterns()
-"   return get(coc_root_patterns, 'server', []) + get(coc_root_patterns, 'buffer', []) + get(coc_root_patterns, 'global', [])
-" endfunction
-
 function! s:get_root_dir_by_patterns(dir, patterns, stop_dir) abort
   if a:dir == a:stop_dir
     throw "Cannot find root dir by provided patterns: ".join(patterns, ' ')
@@ -98,12 +88,16 @@ endfunction
 function! utils#get_root_dir(...) abort
   let opts = get(a:000, 0, {})
   let dir = get(opts, 'dir', expand('%:p:h'))
-  let workspaces = luaeval('vim.lsp.buf.list_workspace_folders()')
   let patterns = get(opts, 'patterns', [])
   let stop_dir = get(opts, 'stop_dir', expand('$HOME'))
+
+  let workspaces = []
+  if has('nvim')
+    let workspaces = luaeval('vim.lsp.buf.list_workspace_folders()')
+  endif
   
   if len(patterns) == 0 && len(workspaces) == 0
-    throw "Missing patterns to search for root dir!"
+    throw "Missing patterns and workspaces to search for root dir!"
   endif
   " create cache if doesn't exist
   if !exists('g:root_dir_cache')

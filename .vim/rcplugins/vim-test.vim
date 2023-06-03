@@ -11,7 +11,7 @@ let g:test#transformation = 'custom'
 let g:test_debug_port = 5678
 
 " when working with monorepo, workspaces or file opened explicitly with vim, 
-" dynamicly sets project root dir based on coc#util#root_patterns
+" dynamicly sets project root dir based on LSP workspace
 function! s:run_before(...) abort
   if !test#exists()
     throw "Not a test file!"

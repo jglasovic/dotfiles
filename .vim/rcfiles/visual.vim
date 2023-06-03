@@ -56,21 +56,10 @@ function! DisplayBuffline() abort
 endfunction
 
 function! DiagnosticsInfo()
-  let mapping = {
-      \ 'error': 'E:',
-      \ 'warning': 'W:',
-      \ 'information': 'I:',
-      \ 'hint': 'H:'
-      \ }
-  let info = get(b:, 'coc_diagnostic_info', {})
-  let status_list = []
-  for [key, value] in items(info)
-    if !has_key(mapping, key) || value == 0
-      continue
-    endif
-    call add(status_list, mapping[key].value)
-  endfor
-  return join(status_list, ' ')
+  if has('nvim')
+    return ' '.luaeval('GetDiagnosticsStatus()').' '
+  endif
+  return ''
 endfunction
 
 function! GitInfo()
@@ -91,6 +80,7 @@ function! DebugStatus()
   endif
   return '%2* '.status.' %*'
 endfunction
+
 " Setup colorscheme, statusline, tabline, cursorline
 set background=dark
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
@@ -105,10 +95,10 @@ if has("statusline") && !&cp
   set statusline=%1*\ %t%m%r\ %*          " filename, modified, readonly
   set statusline+=\ %{GitInfo()}          " branch
   set statusline+=%=                      " left-right separation point
-  set statusline+=\ %{%DebugStatus()%}      " debugger status
-  " set statusline+=\ %{LSCServerStatus()}  " diagnostics
-  set statusline+=\%y\                   " filetype
-  set statusline+=%1*\ %v:%l/%L[%p%%]\%* " current column : current line/total lines [percentage]
+  set statusline+=\ %{%DebugStatus()%}    " debugger status
+  set statusline+=\ %{DiagnosticsInfo()}  " diagnostics
+  set statusline+=\%y\                    " filetype
+  set statusline+=%1*\ %v:%l/%L[%p%%]\%*  " current column : current line/total lines [percentage]
 endif
 
 set showmode

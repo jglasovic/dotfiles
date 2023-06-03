@@ -1,52 +1,70 @@
-require("mason").setup()
-local lspconfig = require('lspconfig')
-local mason_lsp = require("mason-lspconfig")
-local cmp = require('cmp')
-local cmp_nvim = require('cmp_nvim_lsp')
-local null_ls = require("null-ls")
-
 -- Settings (only modify this)------------------------------
-
--- Note: everything installed thru mason will automaticly be configured
+-- Note: every server installed thru mason will automaticly be configured
 local ensure_installed = {
   "pyright", "lua_ls", "jsonls", "vimls", "rust_analyzer", "intelephense", "gopls"
 }
+
+
+-- formatter settings: { <formatter name> : config }
+local formatter_settings_map = {
+  black = { timeout = 10000 },
+  isort = { timeout = 10000 }
+}
+
+-- linter settings: { <linter name> : config }
+local linter_settings_map = {
+  pylint = {
+    timeout = 20000,
+    extra_args = { "--rcfile", "$ROOT/.pylintrc" }
+  },
+  mypy = { timeout = 10000 }
+}
+
+local runtime_path = vim.split(package.path, ";")
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
 
 -- [Optional] server settings: { <server name> : config }
 local server_settings_map = {
   lua_ls = {
     settings = {
       Lua = {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = "LuaJIT",
+          -- Setup your lua path
+          path = runtime_path,
+        },
         diagnostics = {
-          globals = { "vim" }
-        }
-      }
+          -- Get the language server to recognize the `vim` global
+          globals = { "vim" },
+        },
+        workspace = {
+          -- Make the server aware of Neovim runtime files
+          library = vim.api.nvim_get_runtime_file("", true),
+        },
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
+      },
     }
-  }
-}
-
--- [Optional] formatter settings: { <formatter name> : config }
-local formatter_settings_map = {
-  black = {
-    extra_args = { "--config", "$ROOT/pyproject.toml" }
-  },
-  isort = {
-    extra_args = { "--settings-path", "$ROOT/pyproject.toml" }
-  }
-}
-
--- [Optional] linter settings: { <linter name> : config }
-local linter_settings_map = {
-  pylint = {
-    extra_args = { "--rcfile", "$ROOT/.pylintrc" }
   }
 }
 --------------------------------------------------------
 
--- Mappings
+-- Imports
+local mason = require("mason")
+local lspconfig = require('lspconfig')
+local mason_lsp = require("mason-lspconfig")
+local null_ls = require("null-ls")
 
+-- Setup mason first
+mason.setup()
+
+-- Mappings
 local man_documentation = function()
-  if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
+  if vim.fn.index({ 'vim', 'help', 'lua' }, vim.bo.filetype) >= 0 then
     return vim.cmd('h ' .. vim.fn.expand('<cword>'))
   end
   if vim.bo.keywordprg ~= '' then
@@ -56,18 +74,22 @@ local man_documentation = function()
 end
 
 local toggle_git_workspace = function(file)
+  -- toggle git root workspace dir
   return function()
-    -- toggle git root workspace dir
     local workspaces = vim.lsp.buf.list_workspace_folders()
     local git_root_dir = lspconfig.util.find_git_ancestor(file)
+    local removed = false
     for _, workspace in pairs(workspaces) do
       if workspace == git_root_dir then
         print("Removing workspace: " .. git_root_dir)
-        return vim.lsp.buf.remove_workspace_folder(git_root_dir)
+        removed = true
+        vim.lsp.buf.remove_workspace_folder(git_root_dir)
       end
     end
-    print("Adding workspace: " .. git_root_dir)
-    return vim.lsp.buf.add_workspace_folder(git_root_dir)
+    if not removed then
+      print("Adding workspace: " .. git_root_dir)
+      vim.lsp.buf.add_workspace_folder(git_root_dir)
+    end
   end
 end
 
@@ -86,7 +108,6 @@ end
 
 vim.keymap.set('n', '<leader>lr', lsp_restart)
 vim.keymap.set('n', '<leader>m', '<cmd>Mason<cr>', { silent = true })
-
 vim.keymap.set('n', '<leader>N', vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>,', vim.diagnostic.setloclist)
@@ -94,10 +115,14 @@ vim.keymap.set('n', '<leader>a,', function()
   vim.diagnostic.setloclist({ workspace = true })
 end)
 
+local lsp_conf_group = vim.api.nvim_create_augroup('UserLspConfig', {})
+
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  group = lsp_conf_group,
   callback = function(ev)
-    local opts = { buffer = ev.buf }
+    local buffer = ev.buf
+    local opts = { buffer = buffer }
+    vim.bo[buffer].omnifunc = 'v:lua.vim.lsp.omnifunc'
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -116,7 +141,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+local ctermbg = 236
+local bg = '#2c323c'
+vim.api.nvim_set_hl(0, "LspReferenceText", { ctermbg = ctermbg, bg = bg })
+vim.api.nvim_set_hl(0, "LspReferenceRead", { ctermbg = ctermbg, bg = bg })
+vim.api.nvim_set_hl(0, "LspReferenceWrite", { ctermbg = ctermbg, bg = bg })
 
+-- Diagnostics display
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  severity_sort = true,
+  float = { border = "single", focusable = false },
+})
 -- Show diagnostics in a pop-up window on hover
 local lsp_diagnostics_popup_handler = function()
   local current_cursor = vim.api.nvim_win_get_cursor(0)
@@ -131,106 +168,116 @@ end
 
 vim.api.nvim_create_autocmd('CursorHold', {
   callback = lsp_diagnostics_popup_handler,
-  group = vim.api.nvim_create_augroup('reset_group', {})
-})
-
--- diagnostics display
-vim.diagnostic.config({
-  virtual_text = false,
-  signs = true,
-  severity_sort = true,
-  float = { border = "single", focusable = false },
-})
-
--- completion
-local select_in_cmp = function(exec)
-  return function(fallback)
-    if cmp.visible() then
-      exec()
-    else
-      fallback()
-    end
-  end
-end
-
-local cmp_confirm = {
-  behavior = cmp.ConfirmBehavior.Replace,
-  select = true,
-}
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-u>'] = cmp.mapping.scroll_docs(-3),
-    ['<C-d>'] = cmp.mapping.scroll_docs(3),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm(cmp_confirm),
-    ['<Tab>'] = cmp.mapping(select_in_cmp(cmp.select_next_item), { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(select_in_cmp(cmp.select_prev_item), { 'i', 's' }),
-  }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' },
-    { name = 'buffer' },
-    { name = 'path' }
-  }, {
-    { name = 'buffer' },
-  })
-})
-
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'buffer' }
-  })
-})
-
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
+  group = vim.api.nvim_create_augroup('reset_group', { clear = true })
 })
 
 -- LSP config
 -- mason setup installed servers
+local on_attach_server = function(client, buffer)
+  if client.server_capabilities.documentHighlightProvider then
+    local hi_group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+    vim.api.nvim_clear_autocmds { buffer = buffer, group = hi_group }
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      command = "silent! lua vim.lsp.buf.document_highlight()",
+      buffer = buffer,
+      group = hi_group,
+      desc = "Document Highlight",
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      command = "silent! lua vim.lsp.buf.clear_references()",
+      buffer = buffer,
+      group = hi_group,
+      desc = "Clear All the References",
+    })
+  end
+end
+
+local global_capabilities = vim.lsp.protocol.make_client_capabilities()
+global_capabilities.textDocument.completion.completionItem.snippetSupport = true
+lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
+  capabilities = global_capabilities,
+})
+
+local setup_server = function(server_name)
+  local config = {
+    on_attach = on_attach_server,
+  }
+  if server_settings_map[server_name] then
+    config = vim.tbl_deep_extend("force", config, server_settings_map[server_name])
+  end
+  lspconfig[server_name].setup(config)
+end
+
 local handlers = {
   -- setup all mason installed servers with default config
   function(server_name)
-    lspconfig[server_name].setup({
-      capabilities = vim.tbl_deep_extend(
-        'force',
-        lspconfig.util.default_config.capabilities,
-        vim.lsp.protocol.make_client_capabilities(),
-        cmp_nvim.default_capabilities()
-      )
-    })
+    setup_server(server_name)
   end
 }
 -- apply custom settings per server defined in configs
-for server, settings in pairs(server_settings_map) do
-  handlers[server] = function()
-    lspconfig[server].setup(settings)
-  end
-end
-mason_lsp.setup({ handlers = handlers, ensure_installed = ensure_installed })
+mason_lsp.setup_handlers(handlers)
+mason_lsp.setup({ ensure_installed = ensure_installed })
 
+-- null-ls setup
+local next = next
 local sources = {}
 for linter, config in pairs(linter_settings_map) do
-  table.insert(sources, null_ls.builtins.diagnostics[linter].with(config))
+  if next(config) == nil then
+    table.insert(sources, null_ls.builtins.diagnostics[linter])
+  else
+    table.insert(sources, null_ls.builtins.diagnostics[linter].with(config))
+  end
 end
 -- formatters
 for formatter, config in pairs(formatter_settings_map) do
-  table.insert(sources, null_ls.builtins.formatting[formatter].with(config))
+  if next(config) == nil then
+    table.insert(sources, null_ls.builtins.formatting[formatter])
+  else
+    table.insert(sources, null_ls.builtins.formatting[formatter].with(config))
+  end
+end
+
+-- format on save
+local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+local on_attach = function(client, bufnr)
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ async = false })
+      end,
+    })
+  end
 end
 
 null_ls.setup({
   debug = true,
+  on_attach = on_attach,
   sources = sources
 })
+
+-- global function for statusline
+function GetDiagnosticsStatus()
+  local bufnr = vim.fn.bufnr()
+  local mapping = {
+    error = 'E:',
+    warn = 'W:',
+    info = 'I:',
+    hint = 'H:'
+  }
+  local diagnostics = {
+    error = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.ERROR }),
+    warn = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.WARN }),
+    info = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.INFO }),
+    hint = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.HINT }),
+  }
+  local status_tbl = {}
+  for key, value in pairs(diagnostics) do
+    if value > 0 then
+      table.insert(status_tbl, mapping[key]..value)
+    end
+  end
+  return table.concat(status_tbl, ' ')
+end
