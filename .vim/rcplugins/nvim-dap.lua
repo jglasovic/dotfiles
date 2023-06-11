@@ -1,4 +1,46 @@
+-- Configs ------------------------------------
+-- Note: only update this table - { <type> = <executable config or {} (empty table) to only support attach req> }
+local configs = {
+  python = {
+    -- support virutal env if exists
+    command = os.getenv('VIRTUAL_ENV') and os.getenv('VIRTUAL_ENV') .. '/bin/python' or
+        vim.fn.trim(vim.fn.system("which python")),
+    args = { '-m', 'debugpy.adapter' },
+  }
+}
+------------------------------------------------
+
 local dap = require('dap')
+-- global attach
+local attach = function(cb, config)
+  local port = (config.connect or config).port
+  local host = (config.connect or config).host or '127.0.0.1'
+  -- fix host
+  if host == 'localhost' then
+    host = '127.0.0.1'
+  end
+
+  return cb({
+    type = 'server',
+    port = assert(port, '`connect.port` is required for a python `attach` configuration'),
+    host = host,
+    options = config
+  })
+end
+
+local adapters = {}
+for type, dap_config in pairs(configs) do
+  adapters[type] = function(cb, config)
+    if config.request == 'attach' then
+      return attach(cb, config)
+    end
+    return cb(vim.tbl_extend("force", { type = "executable" }, dap_config))
+  end
+end
+-- apply adapters
+dap.adapters = adapters
+
+-- custom attach cache
 if vim.g.nvim_dap_custom_attach_cache == nil then
   vim.g.nvim_dap_custom_attach_cache = {
     port = 5678,
@@ -74,12 +116,8 @@ local attach_debugger = function(port, host, type)
     port = port,
     host = host
   }
+  print(config)
   dap.run(config)
-end
-
-local test_debugger = function()
-  local port = vim.g.test_debug_port or 5678
-  return attach_debugger(port, 'localhost')
 end
 
 local custom_attach = function()
@@ -96,6 +134,11 @@ local custom_attach = function()
   vim.g.nvim_dap_custom_attach_cache.port = port
   vim.g.nvim_dap_custom_attach_cache.host = host
   return attach_debugger(port, host)
+end
+
+local test_debugger = function()
+  local port = vim.g.test_debug_port or 5678
+  return attach_debugger(port, 'localhost')
 end
 
 -- on session init and cleanup
@@ -120,47 +163,3 @@ vim.keymap.set('n', '<leader>di', function()
 end)
 vim.keymap.set('n', '<leader>dr', function() dap.repl.toggle({}, "vsplit") end)
 vim.api.nvim_create_user_command('RunTestDebugger', test_debugger, {})
-
------- Python config --------
-local get_python_path = function()
-  local venv_path = os.getenv('VIRTUAL_ENV')
-  if venv_path then
-    return venv_path .. '/bin/python'
-  end
-  return vim.fn.trim(vim.fn.system("which python"))
-end
-
-local python = function(cb, config)
-  if config.request == 'attach' then
-    local port = (config.connect or config).port
-    local host = (config.connect or config).host or '127.0.0.1'
-    if host == 'localhost' then
-      host = '127.0.0.1'
-    end
-    cb({
-      type = 'server',
-      port = assert(port, '`connect.port` is required for a python `attach` configuration'),
-      host = host,
-      options = {
-        source_filetype = 'python',
-      }
-    })
-  else
-    local command = config.command or get_python_path()
-    cb({
-      type = 'executable',
-      command = command,
-      args = { '-m', 'debugpy.adapter' },
-      options = {
-        source_filetype = 'python',
-      }
-    })
-  end
-end
-------------------------------
-
-local adapters = {
-  python = python
-  -- TODO: add other adapters
-}
-dap.adapters = adapters

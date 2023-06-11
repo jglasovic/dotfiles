@@ -34,9 +34,10 @@ call plug#begin(g:plugged_dir_path)
   " text support
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
-  " db client
+  " DB client
   Plug 'tpope/vim-dadbod'
   Plug 'kristijanhusak/vim-dadbod-ui', {'do': 'git am ../../jump-to-fk-fix.patch'}
+  Plug 'kristijanhusak/vim-dadbod-completion'
   " RestAPI client
   Plug 'diepm/vim-rest-console'
   " code testing
@@ -55,15 +56,14 @@ call plug#begin(g:plugged_dir_path)
     " package manager
     Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
     " lsp
-    Plug 'williamboman/mason-lspconfig.nvim'
     Plug 'neovim/nvim-lspconfig'
-    " completion
-    Plug 'echasnovski/mini.completion'
-    Plug 'kristijanhusak/vim-dadbod-completion'
+    Plug 'williamboman/mason-lspconfig.nvim'
     " formatter/linter
     Plug 'jose-elias-alvarez/null-ls.nvim'
     " dap
     Plug 'mfussenegger/nvim-dap'
+    " completion
+    Plug 'echasnovski/mini.completion'
     " treesitter
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   endif

@@ -22,6 +22,7 @@ endfunction
 " transforming all test cmd to cd into the proper root for exec
 function SetupTest(cmd) abort
   let cmd = a:cmd
+  " support debugger 
   if stridx(cmd, '--debug') != -1
     let cmd = substitute(cmd, ' --debug', '', 'g')
     let [language, runner] = split(test#determine_runner(expand('%')), '#')

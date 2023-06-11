@@ -23,6 +23,7 @@ augroup END
 " searching
 set ignorecase
 set smartcase
+" set infercase
 
 " completion
 set completeopt=menu,menuone,noinsert,noselect

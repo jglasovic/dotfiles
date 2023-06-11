@@ -76,7 +76,6 @@ function! s:get_root_dir_by_patterns(dir, patterns, stop_dir) abort
 
   for pattern in a:patterns
     let test_pattern_path = a:dir . '/' . pattern
-    echom test_pattern_path
     if !empty(glob(test_pattern_path))
       return [pattern, a:dir]
     endif
@@ -126,7 +125,6 @@ function! utils#get_root_dir(...) abort
   let root_dir = ''
   for workspace in workspaces
     if len(root_dir) < len(workspace) && stridx(dir, workspace) != -1
-      echom workspace
       let root_dir = workspace
     endif
   endfor

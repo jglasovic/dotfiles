@@ -1,11 +1,12 @@
 local completion = require('mini.completion')
 
 local fallback_action = function()
+  -- sql
   if vim.fn.index({ 'sql', 'mysql', 'plsql' }, vim.bo.filetype) >= 0 then
-    local keys = vim.api.nvim_replace_termcodes('<C-g><C-g><C-x><C-o>', true, true, true)
+    local keys = vim.api.nvim_replace_termcodes('<C-x><C-o>', true, true, true)
     return vim.api.nvim_feedkeys(keys, 'n', false)
   end
-  local keys = vim.api.nvim_replace_termcodes('<C-g><C-g><C-x><C-n>', true, true, true)
+  local keys = vim.api.nvim_replace_termcodes('<C-x><C-n>', true, true, true)
   return vim.api.nvim_feedkeys(keys, 'n', false)
 end
 
@@ -31,6 +32,5 @@ end
 vim.keymap.set('i', '<CR>', cr_action, { expr = true })
 
 completion.setup({
-  fallback_action = fallback_action
+  fallback_action = fallback_action,
 })
-

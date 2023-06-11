@@ -19,7 +19,8 @@ py_3=3.9.9
 py_2=2.7.18
 py_version=$(pyenv version)
 py_versions=$(pyenv versions)
-poetry_version=1.2.1
+poetry_version=1.4.2
+
 
 if [[ "$py_versions" != *"$py_3"* ]]; then
   echo "installing py version $py_3"
