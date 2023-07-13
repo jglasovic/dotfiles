@@ -13,18 +13,28 @@ local get_lua_runtime_path = function()
   return runtime_path
 end
 
+local utils = require("null-ls.utils")
+local helpers = require("null-ls.helpers")
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
-  black = { timeout = 10000 },
-  isort = { timeout = 10000 }
+  black = {
+    timeout = 10000,
+    cwd = helpers.cache.by_bufnr(
+      function(params)
+        return utils.root_pattern("pyproject.toml")(params.bufname)
+      end)
+  },
+  -- isort = {},
+  ruff = { timeout = 10000 }
 }
 
 -- linter settings: { <linter name> : config }
 local linter_settings_map = {
-  pylint = {
-    timeout = 20000,
-    extra_args = { "--rcfile", "$ROOT/.pylintrc" }
-  },
+  ruff = { timeout = 10000 },
+  -- pylint = {
+  --   timeout = 20000,
+  --   extra_args = { "--rcfile", "$ROOT/.pylintrc" }
+  -- },
   mypy = { timeout = 10000 }
 }
 
@@ -250,7 +260,7 @@ function GetDiagnosticsStatus()
   local status_tbl = {}
   for key, value in pairs(diagnostics) do
     if value > 0 then
-      table.insert(status_tbl, mapping[key]..value)
+      table.insert(status_tbl, mapping[key] .. value)
     end
   end
   return table.concat(status_tbl, ' ')
