@@ -23,7 +23,7 @@ error() {
 
 # Show a cheatsheet from https://cht.sh
 cheat() {
-  curl "https://cht.sh/$1"
+  curl "https://cht.sh/$1" | bat
 }
 
 is_app_running() {
