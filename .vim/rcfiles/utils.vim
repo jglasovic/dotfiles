@@ -38,6 +38,34 @@ function! utils#close_buffers_by_filetype(filetypes)
   return num_closed
 endfunction
 
+function! utils#close_buffers_by_variables(dict)
+  let buffers = getbufinfo()
+  let num_closed = 0
+  for buffer in buffers
+    let bufnr = get(buffer,'bufnr',0)
+    if bufnr <= 0
+      continue
+    endif
+    let variables = get(buffer, 'variables', {})
+    for [key, value] in items(a:dict)
+      let var_value = get(variables, key, '')
+      if var_value != value
+        continue
+      endif
+
+      try
+        silent exec 'bwipeout!' buffer.name
+        let num_closed = num_closed + 1
+        break
+      catch 
+        silent echo "Error deleting bufname: ".buffer.name
+        break
+      endtry
+    endfor
+  endfor
+  return num_closed
+endfunction
+
 function! utils#close_buffers_by_name_contains(patterns, ...)
   let close_only_first = a:0 || 0
   let buffers = utils#find_buffers(a:patterns)

@@ -1,4 +1,5 @@
 setlocal bufhidden=wipe
+setlocal nopreviewwindow
 
 function! s:get_marked_or_current()
   let marked_paths = netrw#Expose("netrwmarkfilelist")
@@ -34,15 +35,16 @@ endfunction
 
 " Mappings
 "close
-nmap <buffer><Esc> :bd<CR>
+nmap <buffer> <silent><Esc> :pclose \| bd<CR>
 "refresh
 nmap <buffer> <leader>r <plug>NetrwRefresh
 "go back in history
 nmap <buffer> H u
 "go up in directory
 nmap <buffer> h -^
-"open a directory or a file
-nmap <buffer> l <CR>
+"open a directory or a file (close preview if exists)
+nmap <buffer> <silent><CR> :pclose <CR><plug>NetrwLocalBrowseCheck
+nmap <buffer> <silent>l <CR>
 "toggle the dotfiles
 nmap <buffer> . gh
 "toggles the mark on a file or directory
@@ -65,7 +67,7 @@ nmap <buffer> fm mm
 nmap <buffer> fM mtmm
 "run external commands on the marked files
 nmap <buffer> f; mx
-"remove marked or file/dir under the cursor (override default D)
+"delete marked or file/dir under the cursor (override default D)
 nmap <buffer> D :call <SID>delete_recursive()<CR>
 
 "show a list of marked files
@@ -75,7 +77,10 @@ nmap <buffer> ft :echo 'Target:' . netrw#Expose("netrwmftgt")<CR>
 
 "create a bookmark
 nmap <buffer> bb mb
-"remove the most recent bookmark
+"delete the most recent bookmark
 nmap <buffer> bd mB
 "jump to the most recent bookmark
 nmap <buffer> bj gb
+
+" fix tmux navigate left
+nmap <buffer> <silent> <C-l> :<C-U>TmuxNavigateRight<CR>

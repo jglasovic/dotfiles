@@ -1,11 +1,3 @@
-function! s:delete_all_fugitive_wins_and_buffs()
-  call s:delete_fugitive_wins()
-  let closed_buf_len = utils#close_buffers_by_name_contains(['fugitive:', 'fugitiveblame'])
-  if closed_buf_len == 0
-    echom "No fugitive buffers"
-  endif
-endfunction
-
 function! s:delete_fugitive_wins()
   for window in getwininfo()
     if window.winnr !=? winnr() && (bufname(window.bufnr) =~? 'fugitive:' || bufname(window.bufnr) =~? 'fugitiveblame')
@@ -16,6 +8,14 @@ function! s:delete_fugitive_wins()
       endtry
     endif
   endfor
+endfunction
+
+function! s:delete_all_fugitive_wins_and_buffs()
+  call s:delete_fugitive_wins()
+  let closed_buf_len = utils#close_buffers_by_name_contains(['fugitive:', 'fugitiveblame'])
+  if closed_buf_len == 0
+    echom "No fugitive buffers"
+  endif
 endfunction
 
 function! s:get_qf_with_diff_history()
@@ -64,7 +64,7 @@ function! s:view_git_history(...) abort
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
   " There's probably a better way to map this without changing the window
   11copen
-  nnoremap <buffer> <CR> <CR><BAR>:call <sid>diff_current_quickfix_entry()<CR>
+  nnoremap <buffer> <CR> <CR><BAR>:call <SID>diff_current_quickfix_entry()<CR>
   wincmd p
 endfunction
 
@@ -95,14 +95,35 @@ function! s:add_mappings() abort
   wincmd p
 endfunction
 
+function! s:toggle_git_status()
+  let closed_buf_len = utils#close_buffers_by_filetype(['fugitive'])
+  if closed_buf_len == 0
+    call execute('G')
+  endif
+endfunction
+
+function! s:toggle_git_blame()
+  let closed_buf_len = utils#close_buffers_by_filetype(['fugitiveblame'])
+  if closed_buf_len == 0
+    call execute('G blame')
+  endif
+endfunction
+
+function! s:toggle_git_diff_buffer()
+  let closed_buf_len = utils#close_buffers_by_variables({'fugitive_type':'blob'})
+  if closed_buf_len == 0
+    call execute('Gvdiffsplit!')
+  endif
+endfunction
+
 command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 
-nnoremap <silent><leader>gs :G<CR>
-nnoremap <silent><leader>gb :G blame<CR>
-nnoremap <silent><leader>gd :Gvdiffsplit!<CR>
+nnoremap <silent><leader>gs :call <SID>toggle_git_status()<CR>
+nnoremap <silent><leader>gb :call <SID>toggle_git_blame()<CR>
+nnoremap <silent><leader>gd :call <SID>toggle_git_diff_buffer()<CR>
 nnoremap <silent><leader>gc :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gD :DiffHistory<CR>
 
-nnoremap <silent>gh :diffget //2<CR>
-nnoremap <silent>gl :diffget //3<CR>
+nnoremap <silent><leader>gh :diffget //2<CR>
+nnoremap <silent><leader>gl :diffget //3<CR>
 

@@ -25,9 +25,6 @@ set ignorecase
 set smartcase
 " set infercase
 
-" completion
-set completeopt=menu,menuone,noinsert,noselect
-
 " folding
 set foldenable
 set foldmethod=indent
@@ -64,10 +61,18 @@ set wildmode=longest:full,full
 set wildmenu
 set wildignore=*.o,*~
 set wildignorecase
+set completeopt=menu,menuone,noinsert,noselect
+
+" " prevent preview win buffers to exist after leaving them
+" augroup _preview_win
+"   autocmd!
+"   autocmd! BufAdd * if &previewwindow | setlocal bufhidden=wipe | endif
+" augroup END
 
 " gutters
 set number relativenumber
-augroup relnum_focus
+augroup _relnum_focus
+  autocmd!
   autocmd! FocusLost,InsertEnter * if &number | setl norelativenumber | else | echo "Line numbers hidden" | endif
   autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echo "Line numbers hidden" | endif
 augroup END
@@ -92,7 +97,7 @@ else
 endif
 
 " create interstitial directories when saving files
-augroup CreateDirsOnSave
+augroup _create_dir_on_save
     autocmd!
     autocmd BufWritePre * if expand("<afile>")!~#'^\w\+:/' && !isdirectory(expand("%:h")) | execute "silent! !mkdir -p ".shellescape(expand('%:h'), 1) | redraw! | endif
 augroup END
@@ -100,7 +105,7 @@ augroup END
 " sync system clipboard outside vim
 " to " and 0 registers like yank does,
 " not to lose them after d,x,c,s operations
-function! SyncPlusAndZeroReg()
+function! s:sync_plus_and_zero_reg()
   let reg_def = getreg('0')
   let reg_plus = getreg('+')
   if reg_def!=#reg_plus
@@ -109,8 +114,8 @@ function! SyncPlusAndZeroReg()
   endif
 endfunction
 
-augroup SyncRegisters
+augroup _sync_reg
     autocmd!
-    autocmd FocusGained * call SyncPlusAndZeroReg()
+    autocmd FocusGained * call s:sync_plus_and_zero_reg()
 augroup END
 

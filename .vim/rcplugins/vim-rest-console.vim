@@ -30,7 +30,7 @@ function! VRCOpen(new_buffer)
   endif
   execute "e ".fnameescape(path_to_exec)
 endfunction
-" open new rest file
-nnoremap <leader>o :call VRCOpen(1)<CR>
 " toggle vrc (open dir with saved input/output files)
-nnoremap <leader>O :call VRCOpen(0)<CR>
+nnoremap <leader>o :call VRCOpen(0)<CR>
+" open new rest file
+nnoremap <leader>O :call VRCOpen(1)<CR>
