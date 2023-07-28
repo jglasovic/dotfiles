@@ -54,6 +54,8 @@ brew "php"
 brew "pkcs11-helper"
 # Object-relational database system
 brew "postgresql@14"
+# Python version management
+brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
 # Persistent key-value database, with built-in net interface
