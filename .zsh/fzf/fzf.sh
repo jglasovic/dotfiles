@@ -37,6 +37,7 @@ FD_DIR_CMD="fd -t d $FD_BASE_OPTS"
 export FZF_DEFAULT_COMMAND="$FD_FILE_CMD $FD_IGNORE_OPTS"
 export FZF_DEFAULT_OPTS=" 
   --reverse
+  --bind change:top
   --bind 'ctrl-p:toggle-preview'
   --bind 'ctrl-s:toggle-sort'
   --bind 'ctrl-y:execute-silent(echo -n {} | pbcopy)'

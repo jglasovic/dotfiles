@@ -1,3 +1,4 @@
+#!/bin/zsh
 ## Aliases
 alias vim="nvim"
 alias s="git status"

@@ -37,26 +37,9 @@ export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
 export CURL_ROOT="$BREW_PREFIX/opt/curl"
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 
-# export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BREW_PREFIX/lib"
-# export LIBRARY_PATH="$LIBRARY_PATH:$BREW_PREFIX/lib"
-export C_INCLUDE_PATH="/usr/local/opt/curl/include:$C_INCLUDE_PATH"
-export LD_LIBRARY_PATH="/usr/local/opt/curl/lib:$LD_LIBRARY_PATH"
-
-export LIBRARY_PATH="/usr/local/opt/curl/lib:$LIBRARY_PATH"
-
 export LDFLAGS="-L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
 export CPPFLAGS="-I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
-
 export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
-export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
-export PYCURL_SSL_LIBRARY=openssl
-export SODIUM_INSTALL=system
-export LIBSODIUM_MAKE_ARGS=-j8
-export HOMEBREW_FORCE_BREWED_CURL=1
-export PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
-export PYCURL_CURL_DIR=/usr/local/opt/curl/lib
-export PYCURL_SETUP_OPTIONS="--with-openssl --curl-dir=$PYCURL_CURL_DIR"
 
 ## rustup
 source "$HOME/.cargo/env"
