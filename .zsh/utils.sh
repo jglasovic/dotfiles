@@ -1,11 +1,11 @@
 #!/bin/bash
 
-check_file_exists() {
-  [ -f "$1" ]
-}
-
 print_red() {
   echo "\e[95m$1\e[0m"
+}
+
+check_file_exists() {
+  [ -f "$1" ]
 }
 
 variable_exists() {
@@ -17,13 +17,8 @@ command_exists() {
 }
 
 error() {
-  echo "$1" 1>&2
+  print_red "$1" 1>&2
   exit 1
-}
-
-# Show a cheatsheet from https://cht.sh
-cheat() {
-  curl "https://cht.sh/$1" | bat
 }
 
 is_app_running() {
@@ -42,21 +37,3 @@ set_symlink() {
   fi
 }
 
-
-ensure_installed_global_npm_package() {
-  npm list -g "$1" || npm i -g "$1"
-}
-
-git_merge_branch() {
-  if ! variable_exists $1; then
-    echo "Missing branch!"
-    return 1
-  fi
-  git checkout "$1"
-  if [ $? != 0 ]; then
-    return "$?"
-  fi
-  git pull
-  git checkout -
-  git merge "$1"
-}

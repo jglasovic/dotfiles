@@ -13,16 +13,12 @@ DEFAULT_USER="$USER"
 # TERM=xterm
 
 ## editor
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="vim"
+export VISUAL="vim"
 
 ## ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id
 
-export FZF_EXCLUDE=".git/*,node_modules/*,**/*/node_modules/*,*cache*/*,**/*/*cache*/*"
-export FZF_DEFAULT_COMMAND="rg --smart-case --files --follow --no-ignore-vcs --hidden --glob '!{$FZF_EXCLUDE}'"
-
-export NVM_DIR="$HOME/.nvm"
 export DENO_ROOT="$HOME/.deno"
 export PYENV_ROOT="$HOME/.pyenv"
 export POETRY_ROOT="$HOME/.local"
@@ -61,33 +57,22 @@ export HOMEBREW_FORCE_BREWED_CURL=1
 export PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
 export PYCURL_CURL_DIR=/usr/local/opt/curl/lib
 export PYCURL_SETUP_OPTIONS="--with-openssl --curl-dir=$PYCURL_CURL_DIR"
-## export path
 
 ## rustup
 source "$HOME/.cargo/env"
-
-export ZSH="$HOME/.oh-my-zsh"
-# oh-my-zsh
-source "$ZSH/oh-my-zsh.sh"
-
-## nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/etc/bash_completion.d/nvm" ] && \. "$NVM_DIR/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-
 ## brew
-if type brew &>/dev/null; then
-  FPATH=$BREW_PREFIX/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
-
+FPATH="$BREW_PREFIX/share/zsh/site-functions:${FPATH}"
+## omz
+export ZSH="$HOME/.oh-my-zsh"
+source "$ZSH/oh-my-zsh.sh"
 ##  pyenv
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+# fnm
+eval "$(fnm env --use-on-cd)"
 
+## export path
 export PATH="$OPENSSL_ROOT/bin":\
 "$CURL_ROOT/bin":\
 "$PHP_ROOT/bin":\
@@ -101,13 +86,12 @@ export PATH="$OPENSSL_ROOT/bin":\
 "$CORE_UTILS_PATH":\
 "$ANDROID_TOOLS_PATH":\
 "$PATH"
-# source utils first
+
+# source utils
 source "$HOME/.zsh/utils.sh"
 # source scripts
 for script in `find $HOME/.zsh/config/ -type f -maxdepth 1 -mindepth 1`; do
   source "$script"
 done
-
-# XXX: short circuit tabtab completion auto installation
-# tabtab source for serverless package
-# tabtab source for sls packageu
+# source fzf
+source "$HOME/.zsh/fzf/fzf.sh"
