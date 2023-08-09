@@ -72,12 +72,6 @@ set_symlink "$gitconfig_src" "$gitconfig_dest" "$should_overwrite_all"
 set_symlink "$gitignore_global_src" "$gitignore_global_dest" "$should_overwrite_all" 
 set_symlink "$tmux_conf_src" "$tmux_conf_dest" "$should_overwrite_all" 
 
-## setup tmux plugin manager
-if [ ! -d "$HOME/.tmux/plugins/tpm" ] || [ "$should_overwrite_all" = "1" ]; then
-    rm -rf "$HOME/.tmux/plugins/tpm"
-    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-fi
-
 ## setup github ssh
 "$SELF_PATH/setup_github_ssh.sh"
 
