@@ -118,12 +118,16 @@ endfunction
 
 command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 
-nnoremap <silent><leader>gs :call <SID>toggle_git_status()<CR>
+" same as fzf-git mappings
+nnoremap <silent> <leader>gf :GFiles?<CR>
+nnoremap <silent> <leader>gc :Commits<CR>
+"
+
 nnoremap <silent><leader>gb :call <SID>toggle_git_blame()<CR>
 nnoremap <silent><leader>gd :call <SID>toggle_git_diff_buffer()<CR>
-nnoremap <silent><leader>gc :call <SID>close_all_fugitive_and_qf()<CR>
+nnoremap <silent><leader>gg :call <SID>toggle_git_status()<CR>
+nnoremap <silent><leader>G :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gD :DiffHistory<CR>
-
 nnoremap <silent><leader>gh :diffget //2<CR>
 nnoremap <silent><leader>gl :diffget //3<CR>
 

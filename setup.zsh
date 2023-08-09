@@ -60,11 +60,4 @@ if ! check_file_exists "$HOME/.pyenv/versions/neovim3/bin/python" ; then
   pip3 install neovim
   pyenv deactivate neovim3
 fi
-# setup nvm
-# add yarn, ts-node, neovim to be installed global for all node versions
-echo "yarn\nts-node\nneovim" > "$NVM_DIR/default-packages"
-nvm use default &> /dev/null
-if [ $? != 0 ] ; then
-  nvm install --lts --default
-fi
 
