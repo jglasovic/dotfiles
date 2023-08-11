@@ -85,14 +85,22 @@ brew "zenith"
 # UNIX shell (command interpreter)
 brew "zsh"
 
-# Casks
-cask "aws-vpn-client"
-cask "brave-browser"
-cask "docker"
-cask "flixtools"
+#### Casks
+# Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Pack, ship and run any application as a lightweight container
+cask "docker"
+# Strongdm client
 cask "sdm"
+# Managed client-based VPN service to securely access AWS resources
+cask "aws-vpn-client"
+# Team communication and collaboration software
 cask "slack"
-cask "vlc"
+# Desktop client for WhatsApp
 cask "whatsapp"
+# Video communication and virtual meeting platform
 cask "zoom"
+# Multimedia player
+cask "vlc"
+# Downloads subtitles for movies
+cask "flixtools"
