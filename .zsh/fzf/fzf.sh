@@ -13,10 +13,9 @@ source "$HOME/.fzf.zsh"
 source "$SELF_DIR/fzf-git.sh"
 
 
-export FZF_TMUX=1
-alias fzf="fzf-tmux"
-
 if ! [ -z "$TMUX" ]; then
+  export FZF_TMUX=1
+  alias fzf="fzf-tmux"
   tmux_version=$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p") 
   # tmux version 3.2 and above is supporting popup win
   if [ "$(echo "$tmux_version >= 3.2" | bc)" = 1 ]; then
@@ -40,8 +39,7 @@ export FZF_DEFAULT_OPTS="
   --bind change:top
   --bind 'ctrl-p:toggle-preview'
   --bind 'ctrl-s:toggle-sort'
-  --bind 'ctrl-y:execute-silent(echo -n {} | pbcopy)'
-  --height 100%"
+  --bind 'ctrl-y:execute-silent(echo -n {} | pbcopy)'"
 
 export FZF_CTRL_T_COMMAND="$FD_FILE_CMD $FD_IGNORE_OPTS"
 export FZF_CTRL_T_OPTS="--bind 'ctrl-r:reload($FD_FILE_CMD)' --prompt $(pwd)/ --preview '$SELF_DIR/fzf-preview.sh {}'"
@@ -54,7 +52,6 @@ RG_BASE_OPTS="--column --line-number --no-heading --color=always --hidden --smar
 RG_CMD="rg $RG_BASE_OPTS $RG_IGNORE_OPTS"
 
 __fzf_rg(){
-  # TODO: add open $EDITOR on confirm - (vim file:line:col)
   fzf --ansi \
     --disabled \
     --multi \
@@ -63,8 +60,7 @@ __fzf_rg(){
     --prompt "Rg> " \
     --bind "start:reload:$RG_CMD -- ''" \
     --bind "change:reload:$RG_CMD -- {q} || true" \
-    --bind "alt-a:select-all,alt-d:deselect-all" \
-    --preview-window "+{2}-/2" \
+    --bind "enter:become($SELF_DIR/fzf-editor.sh {+})" \
     --preview "$SELF_DIR/fzf-preview.sh {}"
 }
 
@@ -79,15 +75,11 @@ zle -N fzf-rg-widget
 bindkey -rM emacs '^T'
 bindkey -rM vicmd '^T'
 bindkey -rM viins '^T' 
-bindkey -rM emacs '^R'
-bindkey -rM vicmd '^R'
-bindkey -rM viins '^R'
 bindkey -rM emacs '\ec'
 bindkey -rM vicmd '\ec'
 bindkey -rM viins '\ec'
 
 # bind my own keys (same as in vim)
 bindkey -M vicmd ' f' fzf-file-widget
-bindkey -M vicmd ' F' fzf-rg-widget
-bindkey -M vicmd ' df' fzf-cd-widget
-bindkey -M vicmd ' r' fzf-history-widget
+bindkey -M vicmd ' r' fzf-rg-widget
+bindkey -M vicmd ' F' fzf-cd-widget

@@ -1,35 +1,21 @@
 #!/bin/bash
-#
-if [ -z "$1" ]; then
-  exit 1
-fi
 
-IFS=':' read -r -a INPUT <<< "$1"
-FILE=${INPUT[0]}
-CENTER=${INPUT[1]}
+SELF_PATH=$(readlink -f "$0")
+SELF_DIR=$(dirname "$SELF_PATH")
 
-if [[ "$1" =~ ^[A-Za-z]:\\ ]]; then
-  FILE=$FILE:${INPUT[1]}
-  CENTER=${INPUT[2]}
-fi
+source "$SELF_DIR/fzf-utils.sh"
 
-if [[ -n "$CENTER" && ! "$CENTER" =~ ^[0-9] ]]; then
-  exit 1
-fi
-CENTER=${CENTER/[^0-9]*/}
-
-FILE="${FILE/#\~\//$HOME/}"
-
-if [ -z "$CENTER" ]; then
-  CENTER=0
-fi
+{
+  read -r FILE
+  read -r LINE
+} <<< "$( parse_fzf_input $1 )"
 
 if [[ -d $FILE ]]; then
   tree -C "$FILE"
   exit $?
 elif [[ -f $FILE ]]; then
   bat --style=numbers --color=always --pager=never \
-      --highlight-line=$CENTER -- "$FILE"
+      --highlight-line=$LINE -- "$FILE"
   exit $?
 else
   echo "$FILE"

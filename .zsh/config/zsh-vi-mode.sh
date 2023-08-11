@@ -1,13 +1,6 @@
-bindkey -v
+set -o vi
 
 zle_highlight+=(paste:none)
-
-# reset prompt on mode change
-function zle-keymap-select zle-line-init
-{
-    zle reset-prompt
-    zle -R
-}
 
 ### use system clipboard
 function pbpaste_to_cutbuffer() {
@@ -73,4 +66,3 @@ bindkey -M viins '^[[A' up-line-or-beginning-search
 bindkey -M viins '^[[B' down-line-or-beginning-search
 # Fix backspace: https://github.com/spaceship-prompt/spaceship-prompt/issues/91#issuecomment-327996599
 bindkey "^?" backward-delete-char
-

@@ -13,8 +13,12 @@ DEFAULT_USER="$USER"
 # TERM=xterm
 
 ## editor
-export EDITOR="vim"
-export VISUAL="vim"
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+export VISUAL=$EDITOR
 
 ## ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id
