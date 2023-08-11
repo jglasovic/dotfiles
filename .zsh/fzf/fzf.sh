@@ -61,6 +61,7 @@ __fzf_rg(){
     --bind "start:reload:$RG_CMD -- ''" \
     --bind "change:reload:$RG_CMD -- {q} || true" \
     --bind "enter:become($SELF_DIR/fzf-editor.sh {+})" \
+    --preview-window '+{2}-/2' \
     --preview "$SELF_DIR/fzf-preview.sh {}"
 }
 

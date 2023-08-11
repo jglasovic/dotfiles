@@ -2,7 +2,7 @@
 
 # Show a cheatsheet from https://cht.sh
 cheat() {
-  curl "https://cht.sh/$1" | bat
+  curl -s "https://cht.sh/$1" | bat --style=numbers --color=always
 }
 
 ensure_installed_global_npm_package() {

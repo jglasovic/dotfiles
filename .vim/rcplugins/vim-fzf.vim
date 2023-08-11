@@ -1,4 +1,3 @@
-
 if exists('$TMUX')
   let g:fzf_prefer_tmux = 1
   let g:fzf_layout = { 'tmux': $FZF_TMUX_OPTS }

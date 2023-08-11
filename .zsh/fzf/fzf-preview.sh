@@ -14,11 +14,10 @@ if [[ -d $FILE ]]; then
   tree -C "$FILE"
   exit $?
 elif [[ -f $FILE ]]; then
-  bat --style=numbers --color=always --pager=never \
+  bat --style=numbers,changes --color=always --pager=never \
       --highlight-line=$LINE -- "$FILE"
   exit $?
 else
   echo "$FILE"
   exit $?
 fi
-

@@ -82,3 +82,5 @@ for script in `find $HOME/.zsh/config/ -type f -maxdepth 1 -mindepth 1`; do
 done
 # source fzf
 source "$HOME/.zsh/fzf/fzf.sh"
+# use bat for man command output
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
