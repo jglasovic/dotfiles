@@ -22,6 +22,6 @@ TODO: add
 
 ## TODO:
  - update install script
- - add additional script for installing keepassxc, syncthing and brave-browser without `brew`
-   include software verification (checksum, digest)
+ - add additional script for installing keepassxc, syncthing and brave-browser without `brew`.
+   Include software verification (checksum, digest)
  - check alternatives for lsp/dap (vimscript)
