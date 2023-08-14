@@ -39,7 +39,11 @@ export FZF_DEFAULT_OPTS="
   --bind change:top
   --bind 'ctrl-p:toggle-preview'
   --bind 'ctrl-s:toggle-sort'
-  --bind 'ctrl-y:execute-silent(echo -n {} | pbcopy)'"
+  --bind 'ctrl-y:execute-silent(echo -n {} | pbcopy)'
+  --bind 'ctrl-f:preview-page-down'
+  --bind 'ctrl-b:preview-page-up'
+  --bind 'ctrl-u:preview-half-page-up'
+  --bind 'ctrl-d:preview-half-page-down'"
 
 export FZF_CTRL_T_COMMAND="$FD_FILE_CMD $FD_IGNORE_OPTS"
 export FZF_CTRL_T_OPTS="--bind 'ctrl-r:reload($FD_FILE_CMD)' --prompt $(pwd)/ --preview '$SELF_DIR/fzf-preview.sh {}'"
