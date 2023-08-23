@@ -11,7 +11,9 @@ hi! link netrwMarkFile Search
 function! s:open_netrw_with_cursor_position()
   let buf_name = expand('%:t')
   Ex
-  call search(buf_name, "c")
+  if buf_name != ''
+    call search(buf_name)
+  endif
 endfunction
 
 nnoremap <leader>e :call <SID>open_netrw_with_cursor_position()<CR>

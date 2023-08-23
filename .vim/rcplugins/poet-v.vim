@@ -9,6 +9,7 @@ let g:poetv_auto_activate = 0
 
 " workaround venv activation and lsp restart
 function! AsyncRestartLsp(timer_id)
+  silent exec "lua vim.diagnostic.reset()"
   silent exec "LspRestart"
 endfunction
 

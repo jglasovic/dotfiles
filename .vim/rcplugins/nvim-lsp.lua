@@ -15,6 +15,7 @@ end
 
 local utils = require("null-ls.utils")
 local helpers = require("null-ls.helpers")
+
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
   black = {
@@ -24,17 +25,12 @@ local formatter_settings_map = {
         return utils.root_pattern("pyproject.toml")(params.bufname)
       end)
   },
-  -- isort = {},
   ruff = { timeout = 10000 }
 }
 
 -- linter settings: { <linter name> : config }
 local linter_settings_map = {
   ruff = { timeout = 10000 },
-  -- pylint = {
-  --   timeout = 20000,
-  --   extra_args = { "--rcfile", "$ROOT/.pylintrc" }
-  -- },
   mypy = { timeout = 10000 }
 }
 
@@ -114,6 +110,7 @@ local list_workspaces = function()
 end
 
 local lsp_restart = function()
+  vim.diagnostic.reset()
   vim.cmd("LspRestart")
   print("LSP restarted")
 end
