@@ -65,7 +65,7 @@ endfunction
 function! GitInfo()
   let s:branch = FugitiveHead()
   if s:branch != ''
-    return ' '.s:branch
+    return '['.s:branch.']'
   end
   return ''
 endfunction

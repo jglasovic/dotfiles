@@ -1,4 +1,5 @@
 setlocal wrap
+setlocal omnifunc=vim_dadbod_completion#omni
 
 augroup close_dbout
   autocmd!

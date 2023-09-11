@@ -29,6 +29,7 @@ export POETRY_ROOT="$HOME/.local"
 
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
 BREW_PREFIX="$(brew --prefix)"
 export PGDATA="$BREW_PREFIX/var/postgres"
 export SBIN_PATH="$BREW_PREFIX/sbin"

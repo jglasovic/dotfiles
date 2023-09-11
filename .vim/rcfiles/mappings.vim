@@ -11,10 +11,6 @@ nmap <leader>wh   :topleft  vnew<CR>
 nmap <leader>wl   :botright vnew<CR>
 nmap <leader>wk   :topleft  new<CR>
 nmap <leader>wj   :botright new<CR>
-" Toggle 'set list' (toggles invisible characters)
-nmap <leader>ic :set list!<CR>
-" Toggle line numbers
-nnoremap <leader>ln :call utils#toggle_line_numbers()<CR>
 " Close buffer
 nnoremap <C-w> :bd<CR>
 " Exit vim

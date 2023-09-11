@@ -130,4 +130,7 @@ nnoremap <silent><leader>G :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gD :DiffHistory<CR>
 nnoremap <silent><leader>gh :diffget //2<CR>
 nnoremap <silent><leader>gl :diffget //3<CR>
+vnoremap <leader>gy :GBrowse!<CR>
+nnoremap <leader>gy :GBrowse!<CR>
+
 

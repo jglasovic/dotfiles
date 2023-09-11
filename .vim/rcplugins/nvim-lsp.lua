@@ -34,6 +34,17 @@ local linter_settings_map = {
   mypy = { timeout = 10000 }
 }
 
+local util = require 'lspconfig.util'
+
+local root_files = {
+  'pyproject.toml',
+  'setup.py',
+  'setup.cfg',
+  'requirements.txt',
+  'Pipfile',
+  'pyrightconfig.json',
+  '.git',
+}
 
 -- [Optional] server settings: { <server name> : config }
 local server_settings_map = {
@@ -55,6 +66,12 @@ local server_settings_map = {
         },
       },
     }
+  },
+  pyright = {
+    root_dir = function(fname)
+      local root = util.root_pattern(unpack(root_files))(fname)
+      return root
+    end,
   }
 }
 --------------------------------------------------------
@@ -121,9 +138,8 @@ vim.keymap.set('n', '<leader>N', vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>,', vim.diagnostic.setloclist)
 
-local lsp_conf_group = vim.api.nvim_create_augroup('UserLspConfig', {})
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = lsp_conf_group,
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
     local buffer = ev.buf
     local opts = { buffer = buffer }

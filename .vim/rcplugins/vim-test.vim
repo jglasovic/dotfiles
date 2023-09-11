@@ -36,7 +36,7 @@ endfunction
 
 " test runner mappings
 let g:test_runner_debugger_mapping = {
-    \ "pytest": "python -m debugpy --listen ".g:test_debug_port." --wait-for-client -m pytest --no-cov -s",
+    \ "pytest": "python -m debugpy --listen ".g:test_debug_port." --wait-for-client -m pytest --log-level=DEBUG --no-cov -vv -s",
     \ "jest": ""
     \ }
 "===========================

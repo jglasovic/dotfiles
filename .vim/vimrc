@@ -18,32 +18,35 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source $MYVIMRC
 \| endif
 
+if has('nvim')
+  " Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
+  let g:python_host_prog = "$HOME/.pyenv/versions/neovim2/bin/python"
+  let g:python3_host_prog = "$HOME/.pyenv/versions/neovim3/bin/python"
+endif
 
 call plug#begin(g:plugged_dir_path)
-  " colorscheme
+  " Colorscheme
   Plug 'joshdick/onedark.vim'
-  " tmux navigation
-  Plug 'christoomey/vim-tmux-navigator'
-  " fuzzy finder
+  " Fuzzy finder
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
-  " git
+  " Git and github support
   Plug 'tpope/vim-fugitive'
-  " github url yank
-  Plug 'pgr0ss/vim-github-url'
-  " text support
+  Plug 'tpope/vim-rhubarb'
+  " Text support
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
+  " Tmux navigation and control
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'preservim/vimux'
   " DB client
   Plug 'tpope/vim-dadbod'
   Plug 'kristijanhusak/vim-dadbod-ui', {'do': 'git am ../../jump-to-fk-fix.patch'}
   Plug 'kristijanhusak/vim-dadbod-completion'
   " RestAPI client
   Plug 'diepm/vim-rest-console'
-  " code testing
+  " Test runner
   Plug 'vim-test/vim-test'
-  " tmux control 
-  Plug 'preservim/vimux'
 
   if has('python3')
     " python virtualenvs support

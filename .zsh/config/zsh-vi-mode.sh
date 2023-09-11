@@ -1,6 +1,34 @@
 #!/bin/zsh
 
 set -o vi
+setopt TRANSIENT_RPROMPT
+
+#  VI Mode cursor style
+vim_ins_mode='-I-'
+vim_cmd_mode=''
+vim_mode="$vim_ins_mode"
+
+function set_mode {
+  RPROMPT="$vim_mode"
+  zle && zle reset-prompt
+}
+function zle-keymap-select {
+  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+  set_mode
+}
+function zle-line-init {
+  vim_mode="$vim_ins_mode"
+  set_mode
+}
+function TRAPINT() {
+  vim_mode="$vim_ins_mode"
+  set_mode
+  return $(( 128 + $1 ))
+} 
+zle -N zle-line-init
+zle -N zle-keymap-select
+set_mode
+# ----------
 
 zle_highlight+=(paste:none)
 
@@ -52,9 +80,6 @@ zle -N vi-put-before vi_put_before
 zle -N vi-delete vi_delete
 zle -N put-replace-selection put_replace_selection
 
-zle -N zle-line-init
-zle -N zle-keymap-select
-
 # keybindings
 bindkey -M vicmd 'H' beginning-of-line
 bindkey -M vicmd 'L' end-of-line
@@ -66,5 +91,9 @@ bindkey -M vicmd '^[[A' up-line-or-beginning-search
 bindkey -M vicmd '^[[B' down-line-or-beginning-search
 bindkey -M viins '^[[A' up-line-or-beginning-search
 bindkey -M viins '^[[B' down-line-or-beginning-search
+
+bindkey -M vicmd '^E' edit-command-line
+bindkey -M viins '^E' edit-command-line
+
 # Fix backspace: https://github.com/spaceship-prompt/spaceship-prompt/issues/91#issuecomment-327996599
 bindkey "^?" backward-delete-char

@@ -11,9 +11,8 @@ ssh_config_content="Host *
 if [ -f "$id_ed25519" ]; then
   echo "$id_ed25519 file exists!"
 else
-  echo "Add your github email: " 
-  read github_email
-  if [ -z "$gihub_email" ]; then
+  read -p "Add your github email: " -e github_email
+  if [ -z "$github_email" ]; then
     echo "No github email provided"
     exit 1
   fi

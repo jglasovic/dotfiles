@@ -64,10 +64,10 @@ set wildignorecase
 set completeopt=menu,menuone,noinsert,noselect
 
 " prevent preview win buffers to exist after leaving them
-augroup _preview_win
-  autocmd!
-  autocmd! BufAdd * if &previewwindow | setlocal bufhidden=wipe | endif
-augroup END
+" augroup _preview_win
+"   autocmd!
+"   autocmd! BufAdd * if &previewwindow | setlocal bufhidden=wipe | endif
+" augroup END
 
 " gutters
 set number relativenumber
@@ -88,9 +88,6 @@ if has('nvim')
   " Permanent undo - nvim undofiles are incompatible with vim undofiles
   set undodir=$HOME/.vim/vimdid
   set undofile
-  " Nvim python support for virtual envs: https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-  let g:python_host_prog = "$HOME/.pyenv/versions/neovim2/bin/python"
-  let g:python3_host_prog = "$HOME/.pyenv/versions/neovim3/bin/python"
 else
   set re=0 "fix vi highlighting
   set ttyfast

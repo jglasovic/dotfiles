@@ -1,29 +1,4 @@
 #!/bin/zsh
-#  VI Mode cursor style
-vim_ins_mode='\e[6 q'
-vim_cmd_mode='\e[2 q'
-vim_mode="$vim_ins_mode"
-
-function set_mode {
-  echo -ne "$vim_mode"
-}
-function zle-keymap-select {
-  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
-  set_mode
-}
-function zle-line-finish {
-  vim_mode="$vim_ins_mode"
-  set_mode
-}
-function TRAPINT() {
-  vim_mode="$vim_ins_mode"
-  set_mode
-  return $(( 128 + $1 ))
-} 
-zle -N zle-line-finish
-zle -N zle-keymap-select
-set_mode
-# ----------
 
 prompt_segment() {
   local fg
