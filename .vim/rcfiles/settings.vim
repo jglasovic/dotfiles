@@ -63,12 +63,6 @@ set wildignore=*.o,*~
 set wildignorecase
 set completeopt=menu,menuone,noinsert,noselect
 
-" prevent preview win buffers to exist after leaving them
-" augroup _preview_win
-"   autocmd!
-"   autocmd! BufAdd * if &previewwindow | setlocal bufhidden=wipe | endif
-" augroup END
-
 " gutters
 set number relativenumber
 augroup _relnum_focus

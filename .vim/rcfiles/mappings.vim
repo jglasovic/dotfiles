@@ -20,7 +20,10 @@ noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
 " Search hi toggle
 nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
-" yank all lines in buffer
+" Center on screen next/prev search hi
+nnoremap n nzz
+nnoremap N Nzz
+" Yank all lines in buffer
 nnoremap <leader>ya :%y<CR>
 " Jump to start and end of line using the home row keys
 map H ^
