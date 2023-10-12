@@ -4,13 +4,6 @@ map <up>    :echo "No!"<CR>
 map <down>  :echo "No!"<CR>
 map <left>  :echo "No!"<CR>
 map <right> :echo "No!"<CR>
-" Reload vim
-nnoremap <leader>v :source $MYVIMRC<CR>
-""Mappings for opening new splits
-nmap <leader>wh   :topleft  vnew<CR>
-nmap <leader>wl   :botright vnew<CR>
-nmap <leader>wk   :topleft  new<CR>
-nmap <leader>wj   :botright new<CR>
 " Close buffer
 nnoremap <C-w> :bd<CR>
 " Exit vim
@@ -18,6 +11,13 @@ nnoremap <C-q> :q<CR>
 " Write
 noremap  <C-s>      :w<CR>
 noremap! <C-s> <Esc>:w<CR>
+" Reload vim
+nnoremap <leader>v :source $MYVIMRC<CR>
+""Mappings for opening new splits
+nmap <leader>wh   :topleft  vnew<CR>
+nmap <leader>wl   :botright vnew<CR>
+nmap <leader>wk   :topleft  new<CR>
+nmap <leader>wj   :botright new<CR>
 " Search hi toggle
 nnoremap <silent><expr> <leader>h (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 " Center on screen next/prev search hi

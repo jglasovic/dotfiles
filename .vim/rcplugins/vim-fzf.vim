@@ -22,13 +22,17 @@ function! s:fzf_delete_buffers() abort
         \ }))
 endfunction
 
-
-command! -nargs=0 BDelete call <SID>fzf_delete_buffers()
-command! -nargs=0 Dirs call <SID>find_dirs()
-" Find
+command! -bang -nargs=* RG call fzf#vim#grep2($RG_CMD. " -- ", <q-args>, fzf#vim#with_preview(), <bang>0)
 nmap <silent> <leader>f :Files<CR>
 nmap <silent> <leader>r :RG<CR>
 nmap <silent> <leader>b :Buffers<CR>
-nmap <silent> <leader>B :BDelete<CR>
-nmap <silent> <leader>F :Dirs<CR>
+nmap <silent> <leader>B :call <SID>fzf_delete_buffers()<CR>
+nmap <silent> <leader>F :call <SID>find_dirs()<CR>
+nmap <silent><expr> <leader>R ':RG '.expand('<cword>').'<CR>'
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path($FD_BASE_CMD . " ". $FD_IGNORE_OPTS)
+
+
+
+
+
 

@@ -26,11 +26,12 @@ if ! [ -z "$TMUX" ]; then
 fi
 
 
-FD_IGNORE_OPTS="$IGNORE_OPTS --exclude '$EXCLUDE_CUSTOM'"
+export FD_IGNORE_OPTS="$IGNORE_OPTS --exclude '$EXCLUDE_CUSTOM'"
 FD_BASE_OPTS="--ignore-case --follow --hidden"
+export FD_BASE_CMD="fd $FD_BASE_OPTS"
 
-FD_FILE_CMD="fd -t f $FD_BASE_OPTS"
-FD_DIR_CMD="fd -t d $FD_BASE_OPTS"
+FD_FILE_CMD="$FD_BASE_CMD -t f" 
+FD_DIR_CMD="$FD_BASE_CMD -t d"
 
 
 export FZF_DEFAULT_COMMAND="$FD_FILE_CMD $FD_IGNORE_OPTS"
@@ -44,6 +45,7 @@ export FZF_DEFAULT_OPTS="
   --bind 'ctrl-b:preview-page-up'
   --bind 'ctrl-u:preview-half-page-up'
   --bind 'ctrl-d:preview-half-page-down'"
+  
 
 export FZF_CTRL_T_COMMAND="$FD_FILE_CMD $FD_IGNORE_OPTS"
 export FZF_CTRL_T_OPTS="--bind 'ctrl-r:reload($FD_FILE_CMD)' --prompt $(pwd)/ --preview '$SELF_DIR/fzf-preview.sh {}'"
@@ -53,7 +55,7 @@ export FZF_ALT_C_OPTS="--bind 'ctrl-r:reload($FD_DIR_CMD)' --prompt $(pwd)/ --pr
 
 RG_IGNORE_OPTS="$IGNORE_OPTS --glob '!{$EXCLUDE_CUSTOM}'"
 RG_BASE_OPTS="--column --line-number --no-heading --color=always --hidden --smart-case" 
-RG_CMD="rg $RG_BASE_OPTS $RG_IGNORE_OPTS"
+export RG_CMD="rg $RG_BASE_OPTS $RG_IGNORE_OPTS"
 
 __fzf_rg(){
   fzf --ansi \

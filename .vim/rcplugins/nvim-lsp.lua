@@ -16,10 +16,26 @@ end
 local utils = require("null-ls.utils")
 local helpers = require("null-ls.helpers")
 
+
+local root_files = {
+  'pyproject.toml',
+  'setup.py',
+  'setup.cfg',
+  'requirements.txt',
+  'Pipfile',
+  'pyrightconfig.json',
+}
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
   black = {
     timeout = 10000,
+    -- cwd = function(fname)
+    --   print(fname)
+    --   local root = util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or
+    --       util.path.dirname(fname)
+    --   return root
+    -- end,
+
     cwd = helpers.cache.by_bufnr(
       function(params)
         return utils.root_pattern("pyproject.toml")(params.bufname)
@@ -34,18 +50,8 @@ local linter_settings_map = {
   mypy = { timeout = 10000 }
 }
 
+
 local util = require 'lspconfig.util'
-
-local root_files = {
-  'pyproject.toml',
-  'setup.py',
-  'setup.cfg',
-  'requirements.txt',
-  'Pipfile',
-  'pyrightconfig.json',
-  '.git',
-}
-
 -- [Optional] server settings: { <server name> : config }
 local server_settings_map = {
   lua_ls = {
@@ -69,7 +75,7 @@ local server_settings_map = {
   },
   pyright = {
     root_dir = function(fname)
-      local root = util.root_pattern(unpack(root_files))(fname)
+      local root = util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
       return root
     end,
   }
@@ -138,30 +144,56 @@ vim.keymap.set('n', '<leader>N', vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>,', vim.diagnostic.setloclist)
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    local buffer = ev.buf
-    local opts = { buffer = buffer }
-    vim.bo[buffer].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', 'M', man_documentation, opts)
-    vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
-    vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>cf', format, opts)
-    -- workspace
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
-    vim.keymap.set('n', '<leader>wt', toggle_git_workspace(ev.file), opts)
-  end,
-})
+local on_attach = function(client, bufnr)
+  print(vim.inspect(vim.fn.bufname(bufnr)))
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  vim.bo[bufnr].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', 'M', man_documentation, opts)
+  vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
+  vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', '<leader>cf', format, opts)
+  -- workspace
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+  vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
+  -- vim.keymap.set('n', '<leader>wt', toggle_git_workspace(ev.file), opts)
+end
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+--   callback = function(ev)
+--     local buffer = ev.buf
+--     local opts = { buffer = buffer }
+--     vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+--     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+--     vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
+--     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+--     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+--     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+--     vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
+--     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+--     vim.keymap.set('n', 'M', man_documentation, opts)
+--     vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
+--     vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
+--     vim.keymap.set('n', '<leader>cf', format, opts)
+--     -- workspace
+--     vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+--     vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+--     vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
+--     vim.keymap.set('n', '<leader>wt', toggle_git_workspace(ev.file), opts)
+--   end,
+-- })
 
 -- Diagnostics display
 vim.diagnostic.config({
@@ -198,7 +230,7 @@ lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_c
 })
 
 local setup_server = function(server_name)
-  local config = {}
+  local config = { on_attach = on_attach }
   if server_settings_map[server_name] then
     config = vim.tbl_deep_extend("force", config, server_settings_map[server_name])
   end

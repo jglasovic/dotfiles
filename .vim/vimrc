@@ -27,7 +27,7 @@ endif
 call plug#begin(g:plugged_dir_path)
   " Colorscheme
   Plug 'joshdick/onedark.vim'
-  " Fuzzy finder
+  " Fzf
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
   " Git and github support
@@ -36,6 +36,7 @@ call plug#begin(g:plugged_dir_path)
   " Text support
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-commentary'
+  Plug 'junegunn/vim-peekaboo'
   " Tmux navigation and control
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'preservim/vimux'
@@ -61,7 +62,7 @@ call plug#begin(g:plugged_dir_path)
     " lsp
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/mason-lspconfig.nvim'
-    " formatter/linter ls
+    " formatter/linter
     Plug 'jose-elias-alvarez/null-ls.nvim'
     " dap
     Plug 'mfussenegger/nvim-dap'

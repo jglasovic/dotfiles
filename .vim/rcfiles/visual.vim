@@ -1,60 +1,3 @@
-function! s:buffer_label(bn, mod) abort
-    let bufname = fnamemodify(bufname(a:bn), a:mod)
-    if bufname == ''
-      let bufname = '[No Name]'
-    endif
-    return bufname
-endfunction
-
-" define what to exclude
-function! s:is_excluded(bn)
-  let excluded = 1
-  let excluded = excluded && buflisted(a:bn) == 0
-  let excluded = excluded || getbufvar(a:bn, '&filetype') == 'qf'
-  let excluded = excluded || getbufvar(a:bn, '&buftype') == 'terminal'
-  return excluded
-endfunction
-
-function! s:get_all_buffers()
-  let buflist = []
-  for i in range(bufnr('$'))
-    if !s:is_excluded(i+1)
-      call add(buflist, i+1)
-    endif
-  endfor
-  return buflist
-endfunction
-
-" cannot use %m%r for bufferline because it's just showing for the current one
-function! s:buff_mod(bn)
-  let mod = ''
-  if getbufvar(a:bn, '&modified') == 1
-    let mod.= '[+]'
-  end
-  if getbufvar(a:bn, '&modifiable') != 1
-    let mod .= '[-]'
-  end
-  if getbufvar(a:bn, '&readonly') == 1
-    let mod .= '[RO]'
-  end
-  return mod
-endfunction
-
-function! DisplayBuffline() abort
-  let line = ' '
-  let current_bn = bufnr("%")
-  let buflist = s:get_all_buffers()
-  for bn in buflist
-    let line .= (bn == current_bn ? '%#MatchParen#' : '%#TabLine#') " for highlighting
-    let line .= ' '
-    let line .= s:buffer_label(bn, ':t')                       " filename
-    let line .= s:buff_mod(bn)                                 " modified, readonly
-    let line .= ' '
-  endfor
-  let line .= '%#TabLineFill#'
-  return line .' ' 
-endfunction
-
 function! DiagnosticsInfo()
   if has('nvim')
     return ' '.luaeval('GetDiagnosticsStatus()').' '
@@ -81,13 +24,14 @@ function! DebugStatus()
   return '%2* '.status.' %*'
 endfunction
 
-" Setup colorscheme, statusline, tabline, cursorline
+" Setup colorscheme, statusline, cursorline
 set background=dark
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
 hi! link CursorLineNr Keyword
 hi! link User1 Cursor 
 hi! link User2 Search
+hi! link User3 MatchParen
 hi! StatusLineNC ctermfg=59 guifg=#5c6370 ctermbg=236 guibg=#2c323c
 
 if has("statusline") && !&cp
@@ -103,8 +47,7 @@ endif
 
 set showmode
 set showtabline=2
-set tabline=%!DisplayBuffline()
-
+set tabline=%3*\ %t%m%r\ %*
 " cursor / rows
 set cursorline
 set cursorlineopt=number

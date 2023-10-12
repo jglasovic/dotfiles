@@ -20,7 +20,7 @@ let g:db_ui_table_helpers = {
 \ }
 
 let g:db_ui_auto_execute_table_helpers = 1
-let g:omni_sql_default_compl_type = 'syntax'
+" let g:omni_sql_default_compl_type = 'syntax'
 
 nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
 
