@@ -5,6 +5,38 @@ local ensure_installed = {
   "pyright", "lua_ls", "jsonls", "vimls", "rust_analyzer", "intelephense", "gopls"
 }
 
+-- only exec once in setup if poetry cmd exists and pyproject.toml exist
+local get_poetry_virtualenvs_path = function()
+    local cache_key = 'poetry_virtualenvs_path'
+    if vim.g[cache_key] then
+      return vim.g[cache_key]
+    end
+    local virtualenvs_path = vim.fn.trim(vim.fn.system('poetry config -v -- virtualenvs.path'))
+    vim.api.nvim_set_var(cache_key, virtualenvs_path)
+    return virtualenvs_path
+end
+
+-- cache output for path input
+--
+local get_poetry_virtualenv = function(path)
+    local cache_key = 'poetry_virtualenv_map'
+    if not vim.g[cache_key] then
+      vim.api.nvim_set_var(cache_key, vim.empty_dict())
+    end
+
+    local cache = vim.g[cache_key]
+    if cache and cache[path] then
+      return cache[path]
+    end
+    local cmd = 'poetry -C ' .. path .. ' env info -p'
+    local virtualenv_full_path = vim.fn.trim(vim.fn.system(cmd))
+    local virtualenvs_path = get_poetry_virtualenvs_path()
+    local virtualenv = virtualenv_full_path:gsub(virtualenvs_path..'/', "")
+    cache[path] = virtualenv
+    vim.api.nvim_set_var(cache_key, cache)
+    return virtualenv
+end
+
 -- Dynamic configs
 local get_lua_runtime_path = function()
   local runtime_path = vim.split(package.path, ";")
@@ -13,45 +45,69 @@ local get_lua_runtime_path = function()
   return runtime_path
 end
 
+local null_ls = require("null-ls")
 local utils = require("null-ls.utils")
 local helpers = require("null-ls.helpers")
+local cache_key = 'cache_poetry_virtualenv_path'
 
+if not vim.g[cache_key] then
+  vim.api.nvim_set_var(cache_key, vim.empty_dict())
+end
 
-local root_files = {
-  'pyproject.toml',
-  'setup.py',
-  'setup.cfg',
-  'requirements.txt',
-  'Pipfile',
-  'pyrightconfig.json',
-}
+local get_poetry_virtual_env_bin_path = function(dir)
+  if not vim.g[cache_key][dir] then
+    local virtual_env_path = vim.fn.trim(vim.fn.system('poetry -C ' .. dir .. ' env info -p'))
+    local cache = vim.g[cache_key]
+    cache[dir] = virtual_env_path
+    vim.api.nvim_set_var(cache_key, cache)
+  end
+  local bin_path = vim.g[cache_key][dir] .. '/bin'
+  return bin_path
+end
+
+local get_poetry_bin_cmd_path = function(cmd)
+  return function(opts)
+    local buf_workspace_dir = helpers.cache.by_bufnr(function(params)
+      return utils.root_pattern(
+        "pyproject.toml"
+      )(params.bufname)
+    end)(opts)
+
+    local virtual_env_path = get_poetry_virtual_env_bin_path(buf_workspace_dir)
+    return virtual_env_path .. '/' .. cmd
+  end
+end
+
+local on_new_config = function(new_config, new_root_dir)
+  local poetry_virutalenv_bin = get_poetry_virtual_env_bin_path(new_root_dir)
+  local pythonPath = poetry_virutalenv_bin .. '/python'
+  new_config.settings.python.pythonPath = pythonPath
+end
+
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
   black = {
-    timeout = 10000,
-    -- cwd = function(fname)
-    --   print(fname)
-    --   local root = util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or
-    --       util.path.dirname(fname)
-    --   return root
-    -- end,
-
-    cwd = helpers.cache.by_bufnr(
-      function(params)
-        return utils.root_pattern("pyproject.toml")(params.bufname)
-      end)
+    dynamic_command = get_poetry_bin_cmd_path('black'),
+    timeout = 10000
   },
-  ruff = { timeout = 10000 }
+  ruff = {
+    dynamic_command = get_poetry_bin_cmd_path('ruff'),
+    timeout = 10000
+  }
 }
 
 -- linter settings: { <linter name> : config }
 local linter_settings_map = {
-  ruff = { timeout = 10000 },
-  mypy = { timeout = 10000 }
+  ruff = {
+    dynamic_command = get_poetry_bin_cmd_path('ruff'),
+    timeout = 10000
+  },
+  mypy = {
+    dynamic_command = get_poetry_bin_cmd_path('mypy'),
+    timeout = 10000
+  }
 }
 
-
-local util = require 'lspconfig.util'
 -- [Optional] server settings: { <server name> : config }
 local server_settings_map = {
   lua_ls = {
@@ -74,10 +130,7 @@ local server_settings_map = {
     }
   },
   pyright = {
-    root_dir = function(fname)
-      local root = util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
-      return root
-    end,
+    on_new_config = on_new_config
   }
 }
 --------------------------------------------------------
@@ -86,7 +139,6 @@ local server_settings_map = {
 local mason = require("mason")
 local lspconfig = require('lspconfig')
 local mason_lsp = require("mason-lspconfig")
-local null_ls = require("null-ls")
 
 -- Setup mason first if it is not setup already
 if not mason.has_setup then
@@ -102,26 +154,6 @@ local man_documentation = function()
     return vim.cmd('!' .. vim.bo.keywordprg .. ' ' .. vim.fn.expand('<cword>'))
   end
   return print('Missing man documentation!')
-end
-
-local toggle_git_workspace = function(file)
-  -- toggle git root workspace dir
-  return function()
-    local workspaces = vim.lsp.buf.list_workspace_folders()
-    local git_root_dir = lspconfig.util.find_git_ancestor(file)
-    local removed = false
-    for _, workspace in pairs(workspaces) do
-      if workspace == git_root_dir then
-        print("Removing workspace: " .. git_root_dir)
-        removed = true
-        vim.lsp.buf.remove_workspace_folder(git_root_dir)
-      end
-    end
-    if not removed then
-      print("Adding workspace: " .. git_root_dir)
-      vim.lsp.buf.add_workspace_folder(git_root_dir)
-    end
-  end
 end
 
 local format = function()
@@ -144,56 +176,29 @@ vim.keymap.set('n', '<leader>N', vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>,', vim.diagnostic.setloclist)
 
-local on_attach = function(client, bufnr)
-  print(vim.inspect(vim.fn.bufname(bufnr)))
-  -- Enable completion triggered by <c-x><c-o>
-  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  vim.bo[bufnr].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  vim.keymap.set('n', 'M', man_documentation, opts)
-  vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
-  vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', '<leader>cf', format, opts)
-  -- workspace
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
-  -- vim.keymap.set('n', '<leader>wt', toggle_git_workspace(ev.file), opts)
-end
--- vim.api.nvim_create_autocmd('LspAttach', {
---   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
---   callback = function(ev)
---     local buffer = ev.buf
---     local opts = { buffer = buffer }
---     vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
---     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
---     vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
---     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
---     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
---     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
---     vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
---     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
---     vim.keymap.set('n', 'M', man_documentation, opts)
---     vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
---     vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
---     vim.keymap.set('n', '<leader>cf', format, opts)
---     -- workspace
---     vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
---     vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
---     vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
---     vim.keymap.set('n', '<leader>wt', toggle_git_workspace(ev.file), opts)
---   end,
--- })
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local buffer = ev.buf
+    local opts = { buffer = buffer }
+    vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'M', man_documentation, opts)
+    vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', '<leader>cf', format, opts)
+    -- workspace
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<leader>wL', list_workspaces, opts)
+  end,
+})
 
 -- Diagnostics display
 vim.diagnostic.config({
@@ -230,7 +235,7 @@ lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_c
 })
 
 local setup_server = function(server_name)
-  local config = { on_attach = on_attach }
+  local config = {}
   if server_settings_map[server_name] then
     config = vim.tbl_deep_extend("force", config, server_settings_map[server_name])
   end
@@ -283,7 +288,7 @@ end
 
 null_ls.setup({
   on_attach = on_attach,
-  sources = sources
+  sources = sources,
 })
 
 -- global function for statusline
