@@ -48,11 +48,6 @@ call plug#begin(g:plugged_dir_path)
   Plug 'diepm/vim-rest-console'
   " Test runner
   Plug 'vim-test/vim-test'
-
-  if has('python3')
-    " python virtualenvs support
-    Plug 'petobens/poet-v'
-  endif
   
   if has('nvim')
     " async support
@@ -63,7 +58,7 @@ call plug#begin(g:plugged_dir_path)
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/mason-lspconfig.nvim'
     " formatter/linter
-    Plug 'jose-elias-alvarez/null-ls.nvim'
+    Plug 'nvimtools/none-ls.nvim'
     " dap
     Plug 'mfussenegger/nvim-dap'
     " completion
