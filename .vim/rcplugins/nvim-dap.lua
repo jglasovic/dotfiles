@@ -56,6 +56,7 @@ local get_vscode_launch_json = function()
     return nil
   end
   local launch_json_path = project_root_path .. '/' .. launch_json
+  print("Using: ["..launch_json_path.."]")
   return launch_json_path
 end
 

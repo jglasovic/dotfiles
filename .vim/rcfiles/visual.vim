@@ -1,6 +1,23 @@
 function! DiagnosticsInfo()
-  if has('nvim')
-    return ' '.luaeval('GetDiagnosticsStatus()').' '
+  if has('nvim') && luaeval("pcall(GetDiagnosticsStatus)")
+      return ' '.luaeval("GetDiagnosticsStatus()").' '
+  endif
+  return ''
+endfunction
+
+function! DebugStatus()
+  if has('nvim') && luaeval("pcall(require, 'dap')")
+    let status = luaeval("require 'dap'.status()")
+    if status != ''
+      return '%2* '.status.' %*'
+    endif
+  endif
+  return ''
+endfunction
+
+function! VenvName()
+  if has('nvim') && luaeval("pcall(require, 'venv-lsp')")
+      return ' '.luaeval("require 'venv-lsp'.active_virtualenv()").' '
   endif
   return ''
 endfunction
@@ -13,16 +30,6 @@ function! GitInfo()
   return ''
 endfunction
 
-function! DebugStatus()
-  if !has('nvim')
-    return ''
-  endif
-  let status = luaeval("require'dap'.status")()
-  if status == ''
-    return ''
-  endif
-  return '%2* '.status.' %*'
-endfunction
 
 " Setup colorscheme, statusline, cursorline
 set background=dark
@@ -40,8 +47,9 @@ if has("statusline") && !&cp
   set statusline+=\ %{GitInfo()}          " branch
   set statusline+=%=                      " left-right separation point
   set statusline+=\ %{%DebugStatus()%}    " debugger status
-  set statusline+=\ %{DiagnosticsInfo()}  " diagnostics
-  set statusline+=\%y\                     " filetype
+  set statusline+=\ %{DiagnosticsInfo()}         " diagnostics
+  set statusline+=\ %{VenvName()}         " diagnostics
+  set statusline+=\%y\                    " filetype
   set statusline+=%1*\ %v:%l/%L[%p%%]\%*  " current column : current line/total lines [percentage]
 endif
 

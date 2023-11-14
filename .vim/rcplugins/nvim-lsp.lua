@@ -4,39 +4,11 @@
 local ensure_installed = {
   "pyright", "lua_ls", "jsonls", "vimls", "rust_analyzer", "intelephense", "gopls"
 }
+local venv_lsp = require('venv-lsp')
+venv_lsp.init()
 
--- only exec once in setup if poetry cmd exists and pyproject.toml exist
-local get_poetry_virtualenvs_path = function()
-    local cache_key = 'poetry_virtualenvs_path'
-    if vim.g[cache_key] then
-      return vim.g[cache_key]
-    end
-    local virtualenvs_path = vim.fn.trim(vim.fn.system('poetry config -v -- virtualenvs.path'))
-    vim.api.nvim_set_var(cache_key, virtualenvs_path)
-    return virtualenvs_path
-end
-
--- cache output for path input
---
-local get_poetry_virtualenv = function(path)
-    local cache_key = 'poetry_virtualenv_map'
-    if not vim.g[cache_key] then
-      vim.api.nvim_set_var(cache_key, vim.empty_dict())
-    end
-
-    local cache = vim.g[cache_key]
-    if cache and cache[path] then
-      return cache[path]
-    end
-    local cmd = 'poetry -C ' .. path .. ' env info -p'
-    local virtualenv_full_path = vim.fn.trim(vim.fn.system(cmd))
-    local virtualenvs_path = get_poetry_virtualenvs_path()
-    local virtualenv = virtualenv_full_path:gsub(virtualenvs_path..'/', "")
-    cache[path] = virtualenv
-    vim.api.nvim_set_var(cache_key, cache)
-    return virtualenv
-end
-
+local lspconfig = require('lspconfig')
+local null_ls = require("null-ls")
 -- Dynamic configs
 local get_lua_runtime_path = function()
   local runtime_path = vim.split(package.path, ";")
@@ -45,67 +17,17 @@ local get_lua_runtime_path = function()
   return runtime_path
 end
 
-local null_ls = require("null-ls")
-local utils = require("null-ls.utils")
-local helpers = require("null-ls.helpers")
-local cache_key = 'cache_poetry_virtualenv_path'
-
-if not vim.g[cache_key] then
-  vim.api.nvim_set_var(cache_key, vim.empty_dict())
-end
-
-local get_poetry_virtual_env_bin_path = function(dir)
-  if not vim.g[cache_key][dir] then
-    local virtual_env_path = vim.fn.trim(vim.fn.system('poetry -C ' .. dir .. ' env info -p'))
-    local cache = vim.g[cache_key]
-    cache[dir] = virtual_env_path
-    vim.api.nvim_set_var(cache_key, cache)
-  end
-  local bin_path = vim.g[cache_key][dir] .. '/bin'
-  return bin_path
-end
-
-local get_poetry_bin_cmd_path = function(cmd)
-  return function(opts)
-    local buf_workspace_dir = helpers.cache.by_bufnr(function(params)
-      return utils.root_pattern(
-        "pyproject.toml"
-      )(params.bufname)
-    end)(opts)
-
-    local virtual_env_path = get_poetry_virtual_env_bin_path(buf_workspace_dir)
-    return virtual_env_path .. '/' .. cmd
-  end
-end
-
-local on_new_config = function(new_config, new_root_dir)
-  local poetry_virutalenv_bin = get_poetry_virtual_env_bin_path(new_root_dir)
-  local pythonPath = poetry_virutalenv_bin .. '/python'
-  new_config.settings.python.pythonPath = pythonPath
-end
 
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
-  black = {
-    dynamic_command = get_poetry_bin_cmd_path('black'),
-    timeout = 10000
-  },
-  ruff = {
-    dynamic_command = get_poetry_bin_cmd_path('ruff'),
-    timeout = 10000
-  }
+  black = {},
+  ruff = {}
 }
 
 -- linter settings: { <linter name> : config }
 local linter_settings_map = {
-  ruff = {
-    dynamic_command = get_poetry_bin_cmd_path('ruff'),
-    timeout = 10000
-  },
-  mypy = {
-    dynamic_command = get_poetry_bin_cmd_path('mypy'),
-    timeout = 10000
-  }
+  ruff = {},
+  mypy = {}
 }
 
 -- [Optional] server settings: { <server name> : config }
@@ -129,15 +51,11 @@ local server_settings_map = {
       },
     }
   },
-  pyright = {
-    on_new_config = on_new_config
-  }
 }
 --------------------------------------------------------
 
 -- Imports
 local mason = require("mason")
-local lspconfig = require('lspconfig')
 local mason_lsp = require("mason-lspconfig")
 
 -- Setup mason first if it is not setup already
