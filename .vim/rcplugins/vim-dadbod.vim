@@ -1,6 +1,6 @@
 function! s:custom_toggle_dbui()
   call utils#close_buffers_by_name_contains(['dbout'])
-  call utils#close_buffers_by_filetype(['sql'])
+  call utils#close_buffers_by_filetype(['sql', 'mysql'])
   DBUIToggle
   let g:db_cache = {}
 endfunction
@@ -20,7 +20,7 @@ let g:db_ui_table_helpers = {
 \ }
 
 let g:db_ui_auto_execute_table_helpers = 1
-" let g:omni_sql_default_compl_type = 'syntax'
+let g:omni_sql_default_compl_type = 'syntax'
 
 nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
 
