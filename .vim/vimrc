@@ -57,15 +57,17 @@ call plug#begin(g:plugged_dir_path)
     " lsp
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/mason-lspconfig.nvim'
-    Plug 'jglasovic/venv-lsp.nvim'
-    " formatter/linter
+    " formatter/linter support
     Plug 'nvimtools/none-ls.nvim'
+    Plug 'nvimtools/none-ls-extras.nvim'
     " dap
     Plug 'mfussenegger/nvim-dap'
     " completion
     Plug 'echasnovski/mini.completion'
     " treesitter
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    " lsp support for python venvs
+    Plug 'jglasovic/venv-lsp.nvim'
   endif
 
 call plug#end()

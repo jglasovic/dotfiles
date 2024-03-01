@@ -88,5 +88,5 @@ bindkey -rM viins '\ec'
 
 # bind my own keys (same as in vim)
 bindkey -M vicmd ' f' fzf-file-widget
-bindkey -M vicmd ' r' fzf-rg-widget
 bindkey -M vicmd ' F' fzf-cd-widget
+bindkey -M vicmd ' r' fzf-rg-widget

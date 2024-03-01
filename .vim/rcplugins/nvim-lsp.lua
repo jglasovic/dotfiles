@@ -21,13 +21,17 @@ end
 -- formatter settings: { <formatter name> : config }
 local formatter_settings_map = {
   black = {},
-  ruff = {}
+  ruff = {},
+  phpcsfixer = {},
+  prettier = {},
 }
 
 -- linter settings: { <linter name> : config }
 local linter_settings_map = {
   ruff = {},
-  mypy = {}
+  mypy = {},
+  phpcs = {},
+  phpstan = {},
 }
 
 -- [Optional] server settings: { <server name> : config }
@@ -123,7 +127,14 @@ vim.diagnostic.config({
   virtual_text = false,
   signs = true,
   severity_sort = true,
-  float = { border = "single", focusable = false },
+  float = {
+    border = "single",
+    focusable = false,
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+    source = "always",
+    prefix = " ",
+    scope = "cursor",
+  },
 })
 -- Show diagnostics in a pop-up window on hover
 local lsp_diagnostics_popup_handler = function()
@@ -133,15 +144,13 @@ local lsp_diagnostics_popup_handler = function()
   -- but only once for the current cursor location (unless moved afterwards).
   if not (current_cursor[1] == last_popup_cursor[1] and current_cursor[2] == last_popup_cursor[2]) then
     vim.w.lsp_diagnostics_last_cursor = current_cursor
-    vim.diagnostic.open_float(0, { scope = "cursor" })
+    vim.diagnostic.open_float()
   end
 end
 
-local reset_popup_group = vim.api.nvim_create_augroup('LspResetPopup', { clear = true })
-
 vim.api.nvim_create_autocmd('CursorHold', {
-  callback = lsp_diagnostics_popup_handler,
-  group = reset_popup_group
+  group = vim.api.nvim_create_augroup('LspResetPopup', { clear = true }),
+  callback = lsp_diagnostics_popup_handler
 })
 
 -- LSP config
@@ -170,22 +179,30 @@ local handlers = {
 mason_lsp.setup_handlers(handlers)
 mason_lsp.setup({ ensure_installed = ensure_installed })
 
+local get_source = function(type, name)
+  local none_ls_source = 'none-ls.' .. type .. '.' .. name
+  local success_lsp_config, _ = pcall(require, none_ls_source)
+  if success_lsp_config then
+    return require(none_ls_source)
+  end
+  if null_ls.builtins[type] and null_ls.builtins[type][name] then
+    return null_ls.builtins[type][name]
+  end
+end
+
 -- null-ls setup
-local next = next
-local sources = {}
+local sources    = {}
 for linter, config in pairs(linter_settings_map) do
-  if next(config) == nil then
-    table.insert(sources, null_ls.builtins.diagnostics[linter])
-  else
-    table.insert(sources, null_ls.builtins.diagnostics[linter].with(config))
+  local source = get_source('diagnostics', linter)
+  if source then
+    table.insert(sources, source.with(config))
   end
 end
 -- formatters
 for formatter, config in pairs(formatter_settings_map) do
-  if next(config) == nil then
-    table.insert(sources, null_ls.builtins.formatting[formatter])
-  else
-    table.insert(sources, null_ls.builtins.formatting[formatter].with(config))
+  local source = get_source('formatting', formatter)
+  if source then
+    table.insert(sources, source.with(config))
   end
 end
 
