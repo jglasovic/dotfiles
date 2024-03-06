@@ -1,12 +1,7 @@
 -- Configs ------------------------------------
 -- Note: only update this table - { <type> = <executable config or {} (empty table) to only support attach req> }
 local configs = {
-  python = {
-    -- support virutal env if exists
-    command = os.getenv('VIRTUAL_ENV') and os.getenv('VIRTUAL_ENV') .. '/bin/python' or
-        vim.fn.trim(vim.fn.system("which python")),
-    args = { '-m', 'debugpy.adapter' },
-  }
+  python = {}
 }
 ------------------------------------------------
 
@@ -117,7 +112,6 @@ local attach_debugger = function(port, host, type)
     port = port,
     host = host
   }
-  print(config)
   dap.run(config)
 end
 

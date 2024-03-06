@@ -31,8 +31,3 @@ nmap <silent> <leader>F :call <SID>find_dirs()<CR>
 nmap <silent><expr> <leader>R ':RG '.expand('<cword>').'<CR>'
 inoremap <expr> <c-x><c-f> fzf#vim#complete#path($FD_BASE_CMD . " ". $FD_IGNORE_OPTS)
 
-
-
-
-
-
