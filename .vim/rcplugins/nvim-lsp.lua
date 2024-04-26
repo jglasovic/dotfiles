@@ -32,6 +32,7 @@ local linter_settings_map = {
   mypy = {},
   phpcs = {},
   phpstan = {},
+  eslint = {}
 }
 
 -- [Optional] server settings: { <server name> : config }
@@ -79,7 +80,7 @@ local man_documentation = function()
 end
 
 local format = function()
-  vim.lsp.buf.format { async = true }
+  vim.lsp.buf.format({ async = true })
 end
 
 local list_workspaces = function()

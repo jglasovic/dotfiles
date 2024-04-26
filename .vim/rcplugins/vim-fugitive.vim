@@ -56,6 +56,27 @@ function! s:get_compare_str(args)
   return a:args[0].'..'.a:args[1]
 endfunction
 
+function! s:get_compare_str2(args)
+  if len(a:args) == 0
+    return ['! !^@', '!']
+  endif
+
+  if len(a:args) == 1
+    let branch = a:args[0]
+    let current_branch = FugitiveHead()
+    if current_branch == branch
+      echom "Already on ".branch." branch, comparing previous commit history"
+      return ['! !^@', '!']
+    endif
+    return [branch.'...', branch]
+  endif
+
+  if len(a:args) > 2
+    echom "Cannot use more than two commits or branches to compare. Comparing first two!"
+  endif
+
+  return [a:args[0].'..'.a:args[1], a:args[0]]
+endfunction
 " bellow is modified script: https://github.com/tpope/vim-fugitive/issues/132#issuecomment-649516204
 function! s:view_git_history(...) abort
   let diff = s:get_compare_str(a:000)
@@ -79,7 +100,7 @@ function! s:diff_current_quickfix_entry() abort
   if qf != {}
     let diff = get(qf.context.items[qf.idx - 1], 'diff', [])
     for i in reverse(range(len(diff)))
-      exe (i ? 'leftabove' : 'rightbelow') 'vert diffsplit' fnameescape(diff[i].filename)
+      exe (i ? 'rightbelow' : 'leftabove') 'vert diffsplit' fnameescape(diff[i].filename)
       call s:add_mappings()
     endfor
   endif
@@ -118,6 +139,24 @@ endfunction
 
 command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 
+function! s:open_diff(from)
+  exe "Gedit"
+  exe "aboveleft Gvdiff ".a:from.":%"
+endfunction
+
+function! s:aaa(...)
+  let [diff, from] = s:get_compare_str2(a:000)
+  echom diff
+  echom diff
+  exe "Git difftool --name-status ".diff
+  call s:open_diff(from)
+  copen
+  nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><CR><BAR>:call <SID>open_diff()<CR>
+endfunction
+
+
+command! DiffH call s:aaa()
+
 " same as fzf-git mappings
 nnoremap <silent> <leader>gf :GFiles?<CR>
 nnoremap <silent> <leader>gc :Commits<CR>
@@ -125,8 +164,8 @@ nnoremap <silent> <leader>gc :Commits<CR>
 nnoremap <silent><leader>gb :call <SID>toggle_git_blame()<CR>
 nnoremap <silent><leader>gd :call <SID>toggle_git_diff_buffer()<CR>
 nnoremap <silent><leader>gg :call <SID>toggle_git_status()<CR>
-nnoremap <silent><leader>G :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gD :DiffHistory<CR>
+nnoremap <silent><leader>G :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gh :diffget //2<CR>
 nnoremap <silent><leader>gl :diffget //3<CR>
 nnoremap <silent><leader>gy v:GBrowse!<CR>

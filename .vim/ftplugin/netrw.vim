@@ -24,7 +24,7 @@ function! s:delete_recursive()
     echo "Canceled!"
   elseif l:choice == 1
     try
-      silent! execute "!rm -r " . join(paths, " ")
+      silent! execute "!rm -r " . shellescape(join(paths, " "))
       echo "Deleted!"
       normal mu
     catch
