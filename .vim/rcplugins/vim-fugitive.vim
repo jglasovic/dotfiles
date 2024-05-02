@@ -36,7 +36,7 @@ endfunction
 
 function! s:get_compare_str(args)
   if len(a:args) == 0
-    return '! !^@'
+    return '!'
   endif
 
   if len(a:args) == 1
@@ -44,7 +44,7 @@ function! s:get_compare_str(args)
     let current_branch = FugitiveHead()
     if current_branch == branch
       echom "Already on ".branch." branch, comparing previous commit history"
-      return '! !^@'
+      return '!'
     endif
     return branch.'...'
   endif
@@ -57,8 +57,10 @@ function! s:get_compare_str(args)
 endfunction
 
 function! s:get_compare_str2(args)
+
+  let current_branch = FugitiveHead()
   if len(a:args) == 0
-    return ['! !^@', '!']
+    return ['!', '!']
   endif
 
   if len(a:args) == 1
@@ -66,7 +68,7 @@ function! s:get_compare_str2(args)
     let current_branch = FugitiveHead()
     if current_branch == branch
       echom "Already on ".branch." branch, comparing previous commit history"
-      return ['! !^@', '!']
+    return ['! !^@', '!']
     endif
     return [branch.'...', branch]
   endif
@@ -76,11 +78,29 @@ function! s:get_compare_str2(args)
   endif
 
   return [a:args[0].'..'.a:args[1], a:args[0]]
+  " if len(a:args) == 0
+  "   return ['!','!^@']
+  " endif
+  " if len(a:args) == 1
+  "   let branch = a:args[0]
+  "   let current_branch = FugitiveHead()
+  "   if current_branch == branch
+  "     echo "Already on ".branch." branch, comparing previous commit history"
+  "     return ['!','!^@']
+  "   endif
+  "   return [branch, '']
+  " endif
+  " if len(a:args) > 2
+  "   echo "Cannot use more than two commits or branches to compare. Comparing first two!"
+  " endif
+  " return [a:args[0], a:args[1]]
 endfunction
 " bellow is modified script: https://github.com/tpope/vim-fugitive/issues/132#issuecomment-649516204
 function! s:view_git_history(...) abort
   let diff = s:get_compare_str(a:000)
-  exe "Git difftool --name-only ".diff
+  echom diff
+  let cmd = "Git difftool --name-only ".diff
+  exe cmd
   call s:diff_current_quickfix_entry()
   " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
   " There's probably a better way to map this without changing the window
@@ -99,16 +119,15 @@ function! s:diff_current_quickfix_entry() abort
   let qf = s:get_qf_with_diff_history()
   if qf != {}
     let diff = get(qf.context.items[qf.idx - 1], 'diff', [])
+    echom diff
     for i in reverse(range(len(diff)))
       exe (i ? 'rightbelow' : 'leftabove') 'vert diffsplit' fnameescape(diff[i].filename)
       call s:add_mappings()
     endfor
   endif
-
 endfunction
 
 function! s:add_mappings() abort
-
   nnoremap <buffer>]q :cnext <BAR> :call <sid>diff_current_quickfix_entry()<CR>
   nnoremap <buffer>[q :cprevious <BAR> :call <sid>diff_current_quickfix_entry()<CR>
   " Reset quickfix height. Sometimes it messes up after selecting another item
@@ -137,7 +156,6 @@ function! s:toggle_git_diff_buffer()
   endif
 endfunction
 
-command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 
 function! s:open_diff(from)
   exe "Gedit"
@@ -146,17 +164,55 @@ endfunction
 
 function! s:aaa(...)
   let [diff, from] = s:get_compare_str2(a:000)
-  echom diff
-  echom diff
   exe "Git difftool --name-status ".diff
   call s:open_diff(from)
   copen
-  nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><CR><BAR>:call <SID>open_diff()<CR>
+  let g:diff_from = from
+  nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><CR><BAR>:call <SID>open_diff(g:diff_from)<CR>
 endfunction
 
+" action functions
+function! PRCheckoutAndReview(line) abort
+  let pr_number = matchstr(a:line, '#\zs\d\+')
+  if pr_number == ""
+    throw "Missing PR number!"
+  endif
+  try
+    let $ACTIVE_PR_NUMBER=pr_number
+    echom "Fetching PR: ".pr_number
+    let cmd = "gh pr view ".pr_number. " --json state,mergeCommit,baseRefName,headRefName | jq -r '.baseRefName,.headRefName,.state,.mergeCommit.oid'"
+    let output = systemlist(cmd)
+    if v:shell_error 
+      throw "Cannot find PR for #".pr_number
+    endif
+    let [baseRefName,headRefName,state,mergeCommit] = map(output, 'trim(v:val)')
+    silent exec "Git fetch ". baseRefName
+    echo "Finished fetching changes for base branch: ".baseRefName
+    if state == "MERGED" && mergeCommit != "null"
+      return s:view_git_history(mergeCommit."^", mergeCommit) "DiffHistory ".mergeCommit."^ ".mergeCommit
+    endif
+    silent exec "Git fetch origin pull/".pr_number."/head:".headRefName
+    echo "Finished fetching changes for branch: ".headRefName
+    let [merge_base_commit_sha] = systemlist("git merge-base ".baseRefName." ".headRefName)
+    if v:shell_error 
+      throw "Cannot find merge-base commit sha for ".baseRefName. " and ".headRefName
+    endif
+    return s:view_git_history(merge_base_commit_sha, headRefName) " exec "DiffHistory ".merge_base_commit_sha." ".headRefName
+  catch
+    unlet $ACTIVE_PR_NUMBER
+  endtry
+endfunction
 
-command! DiffH call s:aaa()
+function! s:find_prs() abort
+  call fzf#run(fzf#wrap({
+        \ 'source': $FZF_GH_PRS_LIST, 
+        \ 'options': $FZF_GH_PRS_LIST_OPTIONS,
+        \ 'sink':funcref('PRCheckoutAndReview') 
+        \ }))
+endfunction
 
+command! -nargs=* DiffH call s:aaa(<f-args>)
+command! -nargs=* DiffHistory call s:view_git_history(<f-args>)
 " same as fzf-git mappings
 nnoremap <silent> <leader>gf :GFiles?<CR>
 nnoremap <silent> <leader>gc :Commits<CR>
@@ -164,9 +220,10 @@ nnoremap <silent> <leader>gc :Commits<CR>
 nnoremap <silent><leader>gb :call <SID>toggle_git_blame()<CR>
 nnoremap <silent><leader>gd :call <SID>toggle_git_diff_buffer()<CR>
 nnoremap <silent><leader>gg :call <SID>toggle_git_status()<CR>
-nnoremap <silent><leader>gD :DiffHistory<CR>
+nnoremap <silent><leader>gD :DiffH<CR>
 nnoremap <silent><leader>G :call <SID>close_all_fugitive_and_qf()<CR>
 nnoremap <silent><leader>gh :diffget //2<CR>
 nnoremap <silent><leader>gl :diffget //3<CR>
 nnoremap <silent><leader>gy v:GBrowse!<CR>
 vnoremap <silent><leader>gy :GBrowse!<CR>
+nmap <silent> <leader>gp :call <SID>find_prs()<CR>

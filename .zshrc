@@ -85,3 +85,5 @@ done
 source "$HOME/.zsh/fzf/fzf.sh"
 # use bat for man command output
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# disabling pyenv appending venv in prompt, handling that below
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1

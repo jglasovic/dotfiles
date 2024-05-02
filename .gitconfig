@@ -18,7 +18,7 @@
   trustExitCode = false
   keepBackup = false
 [difftool "fugitive"]
-  cmd = vim -f -c "Gvdiffsplit!" \"$REMOTE\"
+  cmd = vim -f -c "Gvdiffsplit!" "$REMOTE"
 [merge]
   tool = fugitive
   conflictstyle = merge
@@ -27,7 +27,7 @@
   trustExitCode = false
   keepBackup = false
 [mergetool "fugitive"]
-  cmd = vim -f -c "Gvdiffsplit!" \"$MERGED\"
+  cmd = vim -f -c "Gvdiffsplit!" "$MERGED"
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f

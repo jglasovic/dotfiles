@@ -26,18 +26,12 @@ prompt_git() {
     return
   fi
 
-  local ref dirty mode repo_path
+  if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]]; then
+    local ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
 
-   if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]]; then
-    repo_path=$(git rev-parse --git-dir 2>/dev/null)
-    dirty=$(parse_git_dirty)
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
-    if [[ -n $dirty ]]; then
-      prompt_segment yellow
-    else
-      prompt_segment 39
-    fi
-
+    # check mode
+    local repo_path=$(git rev-parse --git-dir 2>/dev/null)
+    local mode
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
       mode=" <B>"
     elif [[ -e "${repo_path}/MERGE_HEAD" ]]; then
@@ -45,20 +39,30 @@ prompt_git() {
     elif [[ -e "${repo_path}/rebase" || -e "${repo_path}/rebase-apply" || -e "${repo_path}/rebase-merge" || -e "${repo_path}/../.dotest" ]]; then
       mode=" >R>"
     fi
+    # Check changes
+    ###############################################################################
+    # ! git diff-index --cached --quiet HEAD      # fastest staged-changes test   #
+    # ! git diff-files --quiet                    # fastest unstaged-changes test #
+    # ! git diff-index --quiet          HEAD      # fastest any-changes test      #
+    # stdbuf -oL git ls-files -o | grep -qs .     # fastest untracked-files test  #
+    # git rev-parse -q --verify refs/stash >&-    # fastest any-stash test        #
+    ###############################################################################
+    local dirty=""
+    if ! git diff-index --cached --quiet HEAD; then
+      dirty="$dirty*"
+    fi
+    if ! git diff-files --quiet; then 
+      dirty="$dirty±"
+    fi
+    if [[ ! $dirty ]]; then
+      prompt_segment 39
+    else
+      prompt_segment yellow
+      dirty=" $dirty"
+    fi
 
-
-    setopt promptsubst
-    autoload -Uz vcs_info
-
-    zstyle ':vcs_info:*' enable git
-    zstyle ':vcs_info:*' get-revision true
-    zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr '*'
-    zstyle ':vcs_info:*' unstagedstr '± '
-    zstyle ':vcs_info:*' formats ' %u%c'
-    zstyle ':vcs_info:*' actionformats ' %u%c'
-    vcs_info
-    echo -n "(${${ref:gs/%/%%}/refs\/heads\//}${vcs_info_msg_0_%% }${mode})"
+    echo -n "(${${ref:gs/%/%%}/refs\/heads\//}${dirty}${mode})"
+    prompt_segment default
   fi
 }
 
@@ -69,10 +73,9 @@ prompt_dir() {
 
 prompt_virtualenv() {
   if [ "$VIRTUAL_ENV" != "" ]; then
-    prompt_segment blue "(${VIRTUAL_ENV:t:gs/%/%%})"
+    prompt_segment cyan "(${VIRTUAL_ENV:t:gs/%/%%})"
   fi
 }
-
 prompt_status() {
   local -a symbols
 
@@ -86,7 +89,7 @@ prompt_status() {
 prompt_aws() {
   [[ -z "$AWS_PROFILE" || "$SHOW_AWS_PROMPT" = false ]] && return
   case "$AWS_PROFILE" in
-    *-prod|*_prod|*production*) prompt_segment red  "(AWS: ${AWS_PROFILE:gs/%/%%})" ;;
+    *prod*) prompt_segment red  "(AWS: ${AWS_PROFILE:gs/%/%%})" ;;
     *) prompt_segment yellow "(AWS: ${AWS_PROFILE:gs/%/%%})" ;;
   esac
 }

@@ -8,17 +8,18 @@ _fzf_git_check() {
 
 export FZF_GH_PRS_LIST='GH_FORCE_TTY=100% gh pr list --limit 100'
 
-transform="transform:[[ ! {fzf:prompt} =~ open ]] && \
-  echo \"change-prompt(PR open> )+reload($FZF_GH_PRS_LIST)\" || \
-  echo \"change-prompt(PR closed> )+reload($FZF_GH_PRS_LIST -s closed)\""
+toggle_open_close_pr="[[ ! {fzf:prompt} =~ open ]] && \
+  echo \"change-prompt(PR (open) > )+reload($FZF_GH_PRS_LIST)\" || \
+  echo \"change-prompt(PR (closed) > )+reload($FZF_GH_PRS_LIST -s closed)\""
 
 export FZF_GH_PRS_LIST_OPTIONS="--ansi \
-  --prompt 'PR open>' \
+  --prompt 'PR (open) > ' \
   --preview-window down,border-top,50% \
   --color='header:italic:underline,label:blue' \
   --preview 'GH_FORCE_TTY=100% gh pr view {1}' \
   --header-lines 3 \
-  --bind='ctrl-t:$transform'"
+  --bind='ctrl-r:transform:$toggle_open_close_pr' \
+  --bind='ctrl-o:execute-silent(gh pr view {1} -w)'"
 
 _gh_checkout_pr() {
   awk '{print $1}' \

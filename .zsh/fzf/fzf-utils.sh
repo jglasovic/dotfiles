@@ -37,14 +37,9 @@ parse_fzf_input(){
     COLUMN=${INPUT[3]}
   fi
 
-  if [[ -n "$CENTER" && ! "$CENTER" =~ ^[0-9] ]]; then
-    exit 1
-  fi
-
   FILE="${FILE/#\~\//$HOME/}"
   LINE=${LINE/[^0-9]*/}
   COLUMN=${COLUMN/[^0-9]*/}
-
 
   if [ -z "$LINE" ]; then
     LINE=0
