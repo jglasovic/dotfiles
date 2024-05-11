@@ -175,3 +175,70 @@ function! utils#test_command_time(com, ...)
   endfor
   echo 'Average time: '.string(time / numberOfTimes)
 endfunction
+
+function! utils#with_cache(callback, cache_key, input)
+  if !has_key(g:, 'custom_cache')
+    let g:custom_cache = {}
+  endif
+  if !has_key(g:custom_cache, a:cache_key)
+    let g:custom_cache[a:cache_key] = {} 
+  endif
+
+  let value = get(g:custom_cache[a:cache_key], a:input)
+
+  if value
+    return value
+  endif
+
+  let value = call(a:callback, [a:input])
+  let g:custom_cache[a:cache_key][a:input] = value
+  return value
+endfunction
+
+if !has('nvim')
+  finish
+endif
+
+lua << EOF
+local uv = vim.loop
+
+function ExecuteShellCommandAsync(command, args, callback)
+  local stdout = uv.new_pipe()
+  local stderr = uv.new_pipe()
+  local handle
+  local stdout_output = {}
+  local stderr_output = {}
+
+  handle = uv.spawn(command, {
+    args = args,
+    stdio = { nil, stdout, stderr }
+  }, function(code, signal)
+    stdout:read_stop()
+    stderr:read_stop()
+    stdout:close()
+    stderr:close()
+    handle:close()
+
+    if callback then
+      callback(code, signal, table.concat(stdout_output), table.concat(stderr_output))
+    end
+  end)
+
+  uv.read_start(stdout, function(err, data)
+    assert(not err, err)
+    if data then
+      table.insert(stdout_output, data)
+    end
+  end)
+
+  uv.read_start(stderr, function(err, data)
+    assert(not err, err)
+    if data then
+      table.insert(stderr_output, data)
+    end
+  end)
+
+  return handle
+end
+
+EOF

@@ -22,12 +22,9 @@ prompt_context() {
 
 prompt_git() {
   (( $+commands[git] )) || return
-  if [[ "$(git config --get oh-my-zsh.hide-status 2>/dev/null)" = 1 ]]; then
-    return
-  fi
-
+  local ref
   if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]]; then
-    local ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
 
     # check mode
     local repo_path=$(git rev-parse --git-dir 2>/dev/null)
@@ -48,10 +45,12 @@ prompt_git() {
     # git rev-parse -q --verify refs/stash >&-    # fastest any-stash test        #
     ###############################################################################
     local dirty=""
-    if ! git diff-index --cached --quiet HEAD; then
+    if ! git diff-index --cached --quiet HEAD 2>/dev/null; then
+
+      
       dirty="$dirty*"
     fi
-    if ! git diff-files --quiet; then 
+    if ! git diff-files --quiet 2>/dev/null; then 
       dirty="$dirty±"
     fi
     if [[ ! $dirty ]]; then
