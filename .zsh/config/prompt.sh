@@ -9,7 +9,7 @@ prompt_segment() {
 
 
 prompt_end() {
-  prompt_segment "2" " %B$%b"
+  prompt_segment 2 " %B$%b"
   echo -n "%{%k%}"
   echo -n "%{%f%}"
 }
@@ -46,8 +46,6 @@ prompt_git() {
     ###############################################################################
     local dirty=""
     if ! git diff-index --cached --quiet HEAD 2>/dev/null; then
-
-      
       dirty="$dirty*"
     fi
     if ! git diff-files --quiet 2>/dev/null; then 

@@ -80,7 +80,7 @@ local man_documentation = function()
 end
 
 local format = function()
-  vim.lsp.buf.format({ async = true })
+  vim.lsp.buf.format({ timeout_ms = 10000, async = true })
 end
 
 local list_workspaces = function()
@@ -216,7 +216,7 @@ local on_attach = function(client, bufnr)
       group = augroup,
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format({ async = false })
+        vim.lsp.buf.format({ timeout_ms = 10000, async = false })
       end,
     })
   end

@@ -52,7 +52,11 @@ endfunction
 
 function! GitDiffTool(...) abort
   call s:close_all_fugitive_and_qf()
-  let compare_str = join(a:000, ' ')
+  let compare_args = copy(a:000)
+  if len(compare_args) == 1
+    call add(compare_args, ' ')
+  endif
+  let compare_str = join(compare_args, '...')
   let cmd = 'Git difftool --name-status '.compare_str
   exec cmd
   call s:diff_current_quickfix_entry()

@@ -32,25 +32,12 @@ lua << EOF
     return ' '..venv_name..' '
   end
 
-  function CheckGhPRNumber(branch)
-    if branch == vim.g.gh_previous_branch then
-      return
+  function GhPRNumber(branch)
+    local success, pr_number = pcall(GetGhPrNumber, branch) 
+    if not success or pr_number == '' then
+      return ''
     end
-    if vim.g.trigger_gh_pr_check then
-      return
-    end
-    vim.g.trigger_gh_pr_check = true
-    local handler = ExecuteShellCommandAsync('gh', {'pr', 'view', '--json=number'}, 
-      function(code, signal, stdout_output, stderr_output)
-        if code == 0 then
-          vim.g.gh_pr_number = stdout_output:match("%d+")
-        else
-          vim.g.gh_pr_number = ''
-        end
-        vim.g.trigger_gh_pr_check = false
-        vim.g.gh_previous_branch = branch
-      end
-    )
+    return '[#'..pr_number..']'
   end
 EOF
 endif
@@ -59,14 +46,12 @@ function! GitInfo()
   let branch = FugitiveHead()
   let values = []
   if branch != ''
-    if has('nvim')
-      call v:lua.CheckGhPRNumber(branch)
-    endif
     call add(values, '['.branch.']')
   endif
-  let gh_pr_number = get(g:, 'gh_pr_number', '')
-  if gh_pr_number != ''
-    call add(values, '[#'.gh_pr_number.']')
+
+  if has('nvim')
+    let pr_number = v:lua.GhPRNumber(branch)
+    call add(values, pr_number)
   endif
   return join(values, '')
 endfunction
