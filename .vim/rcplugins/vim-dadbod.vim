@@ -1,3 +1,8 @@
+let g:db_ui_execute_on_save = 0
+let g:db_ui_auto_execute_table_helpers = 1
+let g:omni_sql_default_compl_type = 'syntax'
+
+
 function! s:custom_toggle_dbui()
   call utils#close_buffers_by_name_contains(['dbout'])
   call utils#close_buffers_by_filetype(['sql', 'mysql'])
@@ -20,20 +25,16 @@ let g:db_ui_table_helpers = {
 \ }
 
 
-function s:custom_settings()
+function SqlCustomSettings()
   setlocal wrap 
   setlocal omnifunc=vim_dadbod_completion#omni 
   setlocal commentstring=--\ %s
-  autocmd BufWritePre <buffer> call utils#close_buffers_by_name_contains(['dbout'])
 endfunction
 
 augroup sql_settings
   autocmd!
-  autocmd FileType sql,mysql call s:custom_settings() 
+  autocmd FileType sql,mysql call SqlCustomSettings() 
 augroup END
-
-let g:db_ui_auto_execute_table_helpers = 1
-let g:omni_sql_default_compl_type = 'syntax'
 
 nmap <leader>db :call <SID>custom_toggle_dbui()<CR>
 

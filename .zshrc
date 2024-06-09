@@ -36,7 +36,8 @@ export SBIN_PATH="$BREW_PREFIX/sbin"
 export CORE_UTILS_PATH="$BREW_PREFIX/opt/coreutils/libexec/gnubin"
 export POSTGRES_ROOT="$BREW_PREFIX/opt/postgresql@15"
 export MYSQL_ROOT="$BREW_PREFIX/mysql"
-export PHP_ROOT="$BREW_PREFIX/Cellar/php/8.1.2"
+export PHP_ROOT="$BREW_PREFIX/opt/php@7.4"
+# /opt/homebrew/opt/php@7.4/bin
 export OPENSSL_ROOT="$BREW_PREFIX/opt/openssl@3"
 export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
 export CURL_ROOT="$BREW_PREFIX/opt/curl"
@@ -59,11 +60,11 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 # fnm
 eval "$(fnm env --use-on-cd)"
-
 ## export path
 export PATH="$OPENSSL_ROOT/bin":\
 "$CURL_ROOT/bin":\
 "$PHP_ROOT/bin":\
+"$PHP_ROOT/sbin":\
 "$PYENV_ROOT/bin":\
 "$POETRY_ROOT/bin":\
 "$DENO_ROOT/bin":\
@@ -87,3 +88,5 @@ source "$HOME/.zsh/fzf/fzf.sh"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # disabling pyenv appending venv in prompt, handling that below
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+# fix for python keyring
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
