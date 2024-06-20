@@ -4,9 +4,11 @@
 local ensure_installed = {
   "pyright", "lua_ls", "jsonls", "vimls", "rust_analyzer", "intelephense", "gopls"
 }
+local border = 'single'
 local venv_lsp = require('venv-lsp')
 venv_lsp.init()
 
+vim.lsp.set_log_level('DEBUG');
 local lspconfig = require('lspconfig')
 local null_ls = require("null-ls")
 -- Dynamic configs
@@ -64,9 +66,9 @@ local mason = require("mason")
 local mason_lsp = require("mason-lspconfig")
 
 -- Setup mason first if it is not setup already
-if not mason.has_setup then
-  mason.setup()
-end
+-- if not mason.has_setup then
+  mason.setup({ ui = { border = border } })
+-- end
 
 -- Mappings
 local man_documentation = function()
@@ -105,7 +107,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local buffer = ev.buf
     local opts = { buffer = buffer }
     vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -126,17 +128,28 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Diagnostics display
 vim.diagnostic.config({
   virtual_text = false,
-  signs = true,
   severity_sort = true,
   float = {
-    border = "single",
+    border = border,
     focusable = false,
     close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-    source = "always",
+    source = true,
     prefix = " ",
     scope = "cursor",
   },
 })
+
+-- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = border,
+})
+
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.signature_help,
+  { border = border }
+)
+require('lspconfig.ui.windows').default_options.border = border
+
 -- Show diagnostics in a pop-up window on hover
 local lsp_diagnostics_popup_handler = function()
   local current_cursor = vim.api.nvim_win_get_cursor(0)
@@ -153,6 +166,16 @@ vim.api.nvim_create_autocmd('CursorHold', {
   group = vim.api.nvim_create_augroup('LspResetPopup', { clear = true }),
   callback = lsp_diagnostics_popup_handler
 })
+
+
+for _, diag in ipairs({ "Error", "Warn", "Info", "Hint" }) do
+  vim.fn.sign_define("DiagnosticSign" .. diag, {
+    text = "",
+    texthl = "DiagnosticSign" .. diag,
+    linehl = "",
+    numhl = "DiagnosticSign" .. diag,
+  })
+end
 
 -- LSP config
 -- mason setup installed servers
@@ -192,10 +215,14 @@ local get_source = function(type, name)
 end
 
 -- null-ls setup
-local sources    = {}
+local sources = {}
 for linter, config in pairs(linter_settings_map) do
   local source = get_source('diagnostics', linter)
   if source then
+    config['condition'] = function(_)
+      local check = vim.fn.executable(linter) == 1
+      return check
+    end
     table.insert(sources, source.with(config))
   end
 end
@@ -203,6 +230,10 @@ end
 for formatter, config in pairs(formatter_settings_map) do
   local source = get_source('formatting', formatter)
   if source then
+    config['condition'] = function(_)
+      local check = vim.fn.executable(formatter) == 1
+      return check
+    end
     table.insert(sources, source.with(config))
   end
 end
@@ -225,28 +256,5 @@ end
 null_ls.setup({
   on_attach = on_attach,
   sources = sources,
+  border = border
 })
-
--- global function for statusline
-function GetDiagnosticsStatus()
-  local bufnr = vim.fn.bufnr()
-  local mapping = {
-    error = 'E:',
-    warn = 'W:',
-    info = 'I:',
-    hint = 'H:'
-  }
-  local diagnostics = {
-    error = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.ERROR }),
-    warn = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.WARN }),
-    info = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.INFO }),
-    hint = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.HINT }),
-  }
-  local status_tbl = {}
-  for key, value in pairs(diagnostics) do
-    if value > 0 then
-      table.insert(status_tbl, mapping[key] .. value)
-    end
-  end
-  return table.concat(status_tbl, ' ')
-end

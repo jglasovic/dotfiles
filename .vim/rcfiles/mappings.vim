@@ -1,4 +1,11 @@
 let mapleader=" "
+
+" remove default nvim mappings
+if !empty(maparg('<C-w>d', 'n'))
+  unmap <C-w>d
+  unmap <C-w><C-d>
+endif
+
 " No arrow keys
 map <up>    :echo "No!"<CR>
 map <down>  :echo "No!"<CR>
@@ -50,3 +57,5 @@ inoremap <M-j> <Esc>:m .+1<CR>==gi
 inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j>      :m '>+1<CR>gv=gv
 vnoremap <M-k>      :m '<-2<CR>gv=gv
+
+nnoremap <expr> <M-o> ":call system(\"open_url " . shellescape(getline('.')) ."\")\n"

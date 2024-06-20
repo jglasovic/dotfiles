@@ -58,6 +58,7 @@ endfunction
 
 " Setup colorscheme, statusline, cursorline
 set background=dark
+set notermguicolors
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
 hi! link CursorLineNr Keyword
@@ -65,6 +66,7 @@ hi! link User1 Cursor
 hi! link User2 Search
 hi! link User3 MatchParen
 hi! StatusLineNC ctermfg=59 guifg=#5c6370 ctermbg=236 guibg=#2c323c
+hi! link LspInfoBorder NormalFloat
 
 if has("statusline") && !&cp
   set laststatus=2                        " always show the status bar

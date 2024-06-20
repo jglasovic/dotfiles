@@ -30,13 +30,16 @@ call plug#begin(g:plugged_dir_path)
   " Fzf
   Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
   Plug 'junegunn/fzf.vim'
+  " Text support
+  Plug 'junegunn/vim-peekaboo'
+  Plug 'tpope/vim-surround'
+  if !has('nvim')
+    " nvim already has commentstring support
+    Plug 'tpope/vim-commentary'
+  endif
   " Git and github support
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-rhubarb'
-  " Text support
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-commentary'
-  Plug 'junegunn/vim-peekaboo'
   " Tmux navigation and control
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'preservim/vimux'

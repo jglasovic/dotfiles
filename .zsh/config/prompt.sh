@@ -10,7 +10,6 @@ prompt_segment() {
 
 prompt_end() {
   prompt_segment 2 " %B$%b"
-  echo -n "%{%k%}"
   echo -n "%{%f%}"
 }
 
