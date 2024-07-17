@@ -39,6 +39,7 @@ export POSTGRES_ROOT="$BREW_PREFIX/opt/postgresql@15"
 export MYSQL_ROOT="$BREW_PREFIX/mysql"
 export PHP_ROOT="$BREW_PREFIX/opt/php@7.4"
 export RUBY_ROOT="$BREW_PREFIX/opt/ruby"
+# /opt/homebrew/opt/php@7.4/bin
 export OPENSSL_ROOT="$BREW_PREFIX/opt/openssl@3"
 export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
 export CURL_ROOT="$BREW_PREFIX/opt/curl"
@@ -49,7 +50,7 @@ export LDFLAGS="-L$LLVM_ROOT/lib -L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/
 export CPPFLAGS="-I$LLVM_ROOT/include -I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
 export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
 
-## rustup
+# ## rustup
 source "$HOME/.cargo/env"
 ## brew
 FPATH="$BREW_PREFIX/share/zsh/site-functions:${FPATH}"
