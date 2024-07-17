@@ -4,7 +4,8 @@
 ## Reset PATH
 PATH=$(env -i bash --login --norc -c 'echo $PATH')
 
-LC_ALL="en_US.UTF-8"
+# export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 ENABLE_CORRECTION="true"
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000
@@ -37,14 +38,15 @@ export CORE_UTILS_PATH="$BREW_PREFIX/opt/coreutils/libexec/gnubin"
 export POSTGRES_ROOT="$BREW_PREFIX/opt/postgresql@15"
 export MYSQL_ROOT="$BREW_PREFIX/mysql"
 export PHP_ROOT="$BREW_PREFIX/opt/php@7.4"
-# /opt/homebrew/opt/php@7.4/bin
+export RUBY_ROOT="$BREW_PREFIX/opt/ruby"
 export OPENSSL_ROOT="$BREW_PREFIX/opt/openssl@3"
 export GPG_ROOT="$BREW_PREFIX/opt/gnupg@2.2"
 export CURL_ROOT="$BREW_PREFIX/opt/curl"
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/build-tools/34.0.0:$ANDROID_HOME/platform-tools"
+export LLVM_ROOT="$BREW_PREFIX/opt/llvm"
 
-export LDFLAGS="-L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
-export CPPFLAGS="-I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
+export LDFLAGS="-L$LLVM_ROOT/lib -L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
+export CPPFLAGS="-I$LLVM_ROOT/include -I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
 export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
 
 ## rustup
@@ -62,6 +64,9 @@ eval "$(pyenv virtualenv-init -)"
 eval "$(fnm env --use-on-cd)"
 ## export path
 export PATH="$OPENSSL_ROOT/bin":\
+"$RUBY_ROOT/bin":\
+"$(gem environment gemdir)/bin":\
+"$LLVM_ROOT/bin":\
 "$CURL_ROOT/bin":\
 "$PHP_ROOT/bin":\
 "$PHP_ROOT/sbin":\

@@ -19,18 +19,22 @@ function! s:delete_recursive()
   echo msg_paths
   echohl None
   let l:choice = confirm("Delete with `rm -r`?", "&yes\n&no", 0)
-
-  if l:choice == 0 || l:choice == 2
-    echo "Canceled!"
-  elseif l:choice == 1
-    try
-      silent! execute "!rm -r " . join(shellescape(paths), " ")
+  if l:choice == 1 
+    let formated_paths = map(paths, 'shellescape(v:val)')
+    let cmd ="rm -r " . join(formated_paths, " ") 
+    let output = system(cmd)
+    if v:shell_error
+      echohl ErrorMsg 
+      echom "Cannot delete: " . msg_paths
+      echom output
+      echohl None
+    else
       echo "Deleted!"
-      normal mu
-    catch
-      echo "Cannot delete: " . msg_paths
-    endtry
+    endif
+  else
+    echo "Canceled!"
   endif
+  normal mu
 endfunction
 
 " Mappings
@@ -68,7 +72,7 @@ nmap <buffer> fM mtmm
 "run external commands on the marked files
 nmap <buffer> f; mx
 "delete marked or file/dir under the cursor (override default D)
-nmap <buffer> D :call <SID>delete_recursive()<CR>
+nmap <buffer> D :call <SID>delete_recursive()<CR><plug>NetrwRefresh
 
 "show a list of marked files
 nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>

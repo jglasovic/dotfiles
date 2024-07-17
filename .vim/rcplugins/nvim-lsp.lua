@@ -2,7 +2,7 @@
 -- Note: every server manually installed thru the mason will automaticly be configured
 -- even if it is missing from `ensure_installed` table
 local ensure_installed = {
-  "pyright", "lua_ls", "jsonls", "vimls", "rust_analyzer", "intelephense", "gopls"
+  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls"
 }
 local border = 'single'
 local venv_lsp = require('venv-lsp')
@@ -11,6 +11,7 @@ venv_lsp.init()
 vim.lsp.set_log_level('DEBUG');
 local lspconfig = require('lspconfig')
 local null_ls = require("null-ls")
+lspconfig.rust_analyzer.setup({})
 -- Dynamic configs
 local get_lua_runtime_path = function()
   local runtime_path = vim.split(package.path, ";")
@@ -67,7 +68,7 @@ local mason_lsp = require("mason-lspconfig")
 
 -- Setup mason first if it is not setup already
 -- if not mason.has_setup then
-  mason.setup({ ui = { border = border } })
+mason.setup({ ui = { border = border } })
 -- end
 
 -- Mappings
@@ -219,10 +220,6 @@ local sources = {}
 for linter, config in pairs(linter_settings_map) do
   local source = get_source('diagnostics', linter)
   if source then
-    config['condition'] = function(_)
-      local check = vim.fn.executable(linter) == 1
-      return check
-    end
     table.insert(sources, source.with(config))
   end
 end
@@ -230,10 +227,6 @@ end
 for formatter, config in pairs(formatter_settings_map) do
   local source = get_source('formatting', formatter)
   if source then
-    config['condition'] = function(_)
-      local check = vim.fn.executable(formatter) == 1
-      return check
-    end
     table.insert(sources, source.with(config))
   end
 end
@@ -256,5 +249,6 @@ end
 null_ls.setup({
   on_attach = on_attach,
   sources = sources,
-  border = border
+  border = border,
+  debug = true
 })
