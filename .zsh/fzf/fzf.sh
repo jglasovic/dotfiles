@@ -7,34 +7,10 @@ EXCLUDE_CUSTOM=".git"
 SELF_PATH=$(readlink -f "$0")
 SELF_DIR=$(dirname "$SELF_PATH")
 
-source "$HOME/.fzf.zsh"
-
-if ! [ -z "$TMUX" ]; then
-  export FZF_TMUX=1
-  tmux_version=$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p") 
-  # tmux version 3.2 and above is supporting popup win
-  if [ "$(echo "$tmux_version >= 3.2" | bc)" = 1 ]; then
-    # Use tmux popup window
-    export FZF_TMUX_OPTS='-p 80%,60%'
-    alias fzf="fzf-tmux $FZF_TMUX_OPTS"
-  else
-    alias fzf="fzf-tmux"
-  fi
-fi
-
-source "$SELF_DIR/fzf-gh.sh"
-source "$SELF_DIR/fzf-git.sh"
 source "$SELF_DIR/fzf-utils.sh"
-
-FD_BASE_OPTS="--ignore-case --follow --hidden --exclude '$EXCLUDE_CUSTOM'"
-FD_FILE_CMD="fd $FD_BASE_OPTS -t f" 
-FD_DIR_CMD="fd $FD_BASE_OPTS -t d"
-
-export FZF_DEFAULT_COMMAND="$FD_FILE_CMD"
-
 export FZF_COLORS=$(_get_fzf_colors)
-
 export FZF_DEFAULT_OPTS=" 
+  --tmux 80%,60%
   --reverse
   --bind change:top
   --bind 'ctrl-p:toggle-preview'
@@ -45,6 +21,16 @@ export FZF_DEFAULT_OPTS="
   --bind 'ctrl-u:preview-half-page-up'
   --bind 'ctrl-d:preview-half-page-down'
   $FZF_COLORS"
+
+source "$HOME/.fzf.zsh"
+source "$SELF_DIR/fzf-gh.sh"
+source "$SELF_DIR/fzf-git.sh"
+
+FD_BASE_OPTS="--ignore-case --follow --hidden --exclude '$EXCLUDE_CUSTOM'"
+FD_FILE_CMD="fd $FD_BASE_OPTS -t f" 
+FD_DIR_CMD="fd $FD_BASE_OPTS -t d"
+
+export FZF_DEFAULT_COMMAND="$FD_FILE_CMD"
 
 # TODO: fix not working for both
 toggle_vsc_ignore="transform:[[ {fzf:prompt} =~ \(--no-ignore\) ]] && \

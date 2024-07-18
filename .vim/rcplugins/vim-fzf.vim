@@ -1,8 +1,4 @@
-if exists('$TMUX')
-  let g:fzf_prefer_tmux = 1
-  let g:fzf_layout = { 'tmux': $FZF_TMUX_OPTS }
-endif
-
+let g:fzf_layout = { 'tmux': '80%,60%' }
 
 let g:fzf_vim = {
   \ 'files_options': $FD_CMD_OPTS,

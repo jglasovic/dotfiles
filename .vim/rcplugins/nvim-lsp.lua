@@ -2,7 +2,7 @@
 -- Note: every server manually installed thru the mason will automaticly be configured
 -- even if it is missing from `ensure_installed` table
 local ensure_installed = {
-  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls"
+  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls", "regal"
 }
 local border = 'single'
 local venv_lsp = require('venv-lsp')
@@ -10,6 +10,7 @@ venv_lsp.init()
 
 vim.lsp.set_log_level('DEBUG');
 local lspconfig = require('lspconfig')
+local util = require('lspconfig.util')
 local null_ls = require("null-ls")
 lspconfig.rust_analyzer.setup({})
 -- Dynamic configs
@@ -59,6 +60,11 @@ local server_settings_map = {
       },
     }
   },
+  regal = {
+    root_dir = function(fname)
+      return util.find_git_ancestor(fname)
+    end,
+  }
 }
 --------------------------------------------------------
 
@@ -203,6 +209,7 @@ local handlers = {
 -- apply custom settings per server defined in configs
 mason_lsp.setup_handlers(handlers)
 mason_lsp.setup({ ensure_installed = ensure_installed })
+setup_server('regal')
 
 local get_source = function(type, name)
   local none_ls_source = 'none-ls.' .. type .. '.' .. name

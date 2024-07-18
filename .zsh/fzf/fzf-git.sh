@@ -109,7 +109,7 @@ if [[ $- =~ i ]]; then
   # Redefine this function to change the options
   _fzf_git_fzf() {
     fzf -- \
-      --layout=reverse --multi --height=50% --min-height=20 --border \
+      --layout=reverse --multi --border \
       --border-label-pos=2 \
       --color='header:italic:underline,label:blue' \
       --preview-window='right,50%,border-left' \
