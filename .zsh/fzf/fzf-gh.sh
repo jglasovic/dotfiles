@@ -12,7 +12,7 @@ export FZF_GH_PRS_LIST_OPTIONS="--ansi \
   --color='header:italic,label:blue' \
   --preview 'GH_FORCE_TTY=100% gh pr view {1}' \
   --header-lines 4 \
-  --bind='ctrl-t:execute(echo -n \"checkout=true \")+accept' \
+  --bind='ctrl-t:become(echo -n \"checkout=true \" && echo {})' \
   --bind='ctrl-r:transform:$toggle_open_close_pr' \
   --bind='ctrl-o:execute-silent(gh pr view {1} -w)'"
 
@@ -30,7 +30,7 @@ _fzf_gh_prs() {
   local selected=$(FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} ${FZF_GH_PRS_LIST_OPTIONS-}" \
   FZF_DEFAULT_COMMAND="$FZF_GH_PRS_LIST" \
   fzf < "$TTY")
-  [ -n "$selected" ] && $EDITOR "+call PRDiff('$selected')"
+  [ -n "$selected" ] && $EDITOR "+call FZFGhPRWrapper('$selected')"
 }
 
 
