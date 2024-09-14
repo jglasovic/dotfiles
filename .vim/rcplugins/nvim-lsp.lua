@@ -2,17 +2,17 @@
 -- Note: every server manually installed thru the mason will automaticly be configured
 -- even if it is missing from `ensure_installed` table
 local ensure_installed = {
-  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls", "regal"
+  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls"
 }
 local border = 'single'
 local venv_lsp = require('venv-lsp')
 venv_lsp.init()
 
-vim.lsp.set_log_level('DEBUG');
+-- vim.lsp.set_log_level('DEBUG');
 local lspconfig = require('lspconfig')
 local util = require('lspconfig.util')
 local null_ls = require("null-ls")
-lspconfig.rust_analyzer.setup({})
+
 -- Dynamic configs
 local get_lua_runtime_path = function()
   local runtime_path = vim.split(package.path, ";")
@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'gr', function() vim.lsp.buf.references({ includeDeclaration = false }) end, opts)
     vim.keymap.set('n', 'M', man_documentation, opts)
     vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
@@ -186,6 +186,7 @@ end
 
 -- LSP config
 -- mason setup installed servers
+
 local global_capabilities = vim.lsp.protocol.make_client_capabilities()
 global_capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
@@ -209,7 +210,9 @@ local handlers = {
 -- apply custom settings per server defined in configs
 mason_lsp.setup_handlers(handlers)
 mason_lsp.setup({ ensure_installed = ensure_installed })
+-- manual setup
 setup_server('regal')
+setup_server('rust_analyzer')
 
 local get_source = function(type, name)
   local none_ls_source = 'none-ls.' .. type .. '.' .. name
@@ -247,7 +250,7 @@ local on_attach = function(client, bufnr)
       group = augroup,
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format({ timeout_ms = 10000, async = false })
+        vim.lsp.buf.format({ async = false })
       end,
     })
   end
@@ -257,5 +260,4 @@ null_ls.setup({
   on_attach = on_attach,
   sources = sources,
   border = border,
-  debug = true
 })

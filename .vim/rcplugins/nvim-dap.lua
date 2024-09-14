@@ -1,7 +1,7 @@
 -- Configs ------------------------------------
 -- Note: only update this table - { <type> = <executable config or {} (empty table) to only support attach req> }
 local configs = {
-  python = {}
+  python = {},
 }
 ------------------------------------------------
 
@@ -17,7 +17,7 @@ local attach = function(cb, config)
 
   return cb({
     type = 'server',
-    port = assert(port, '`connect.port` is required for a python `attach` configuration'),
+    port = assert(port, '`connect.port` is required for `attach` configuration'),
     host = host,
     options = config
   })
@@ -29,7 +29,7 @@ for type, dap_config in pairs(configs) do
     if config.request == 'attach' then
       return attach(cb, config)
     end
-    return cb(vim.tbl_extend("force", { type = "executable" }, dap_config))
+    return cb(vim.tbl_extend("force", { type = "executable" }, config, dap_config))
   end
 end
 -- apply adapters
@@ -51,7 +51,7 @@ local get_vscode_launch_json = function()
     return nil
   end
   local launch_json_path = project_root_path .. '/' .. launch_json
-  print("Using: ["..launch_json_path.."]")
+  print("Using: [" .. launch_json_path .. "]")
   return launch_json_path
 end
 
@@ -90,11 +90,11 @@ local toggle_list_breakpoints = function()
   if is_bp_list_opened() then
     return vim.api.nvim_command("cclose")
   end
-  return dap.list_breakpoints(1)
+  return dap.list_breakpoints(true)
 end
 
 local custom_session_init = function()
-  dap.set_exception_breakpoints({ "uncaughted", "uncaught" })
+  dap.set_exception_breakpoints("default")
 end
 
 local custom_session_cleanup = function()
@@ -104,13 +104,14 @@ local custom_session_cleanup = function()
   end
 end
 
-local attach_debugger = function(port, host, type)
+local attach_debugger = function(port, host, name, type)
   local config = {
-    name = vim.fn.expand('%:t'),
+    name = name,
     request = 'attach',
     type = type or vim.bo.filetype,
     port = port,
-    host = host
+    host = host,
+    max_retries = 40 -- 10 seconds
   }
   dap.run(config)
 end
@@ -128,12 +129,15 @@ local custom_attach = function()
   end
   vim.g.nvim_dap_custom_attach_cache.port = port
   vim.g.nvim_dap_custom_attach_cache.host = host
-  return attach_debugger(port, host)
+  local name = vim.fn.expand('%:t')
+  return attach_debugger(port, host, name)
 end
 
 local test_debugger = function()
+  local host = "localhost"
   local port = vim.g.test_debug_port or 5678
-  return attach_debugger(port, 'localhost')
+  local name = vim.fn.expand('%:t')
+  return attach_debugger(port, host, name)
 end
 
 -- on session init and cleanup
@@ -146,10 +150,10 @@ dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
 -- keymaps - there are more but I mostly just use REPL
 vim.keymap.set('n', '<leader>dd', custom_continue)
 vim.keymap.set('n', '<leader>da', custom_attach)
-vim.keymap.set('n', '<leader>dc', custom_close)
+vim.keymap.set('n', '<leader>dx', custom_close)
 vim.keymap.set('n', '<leader>dh', dap.toggle_breakpoint)
 vim.keymap.set('n', '<leader>dA', toggle_list_breakpoints)
-vim.keymap.set('n', '<leader>dx', dap.clear_breakpoints)
+vim.keymap.set('n', '<leader>dc', dap.clear_breakpoints)
 vim.keymap.set('n', '<leader>dE', function() dap.set_exception_breakpoints({ "all" }) end)
 vim.keymap.set('n', '<leader>d?', function() require "dap.ui.widgets".hover() end)
 vim.keymap.set('n', '<leader>di', function()
@@ -157,4 +161,15 @@ vim.keymap.set('n', '<leader>di', function()
   widgets.centered_float(widgets.scopes)
 end)
 vim.keymap.set('n', '<leader>dr', function() dap.repl.toggle({}, "vsplit") end)
+
+local dap_repl_group = vim.api.nvim_create_augroup("DapReplGroup", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = dap_repl_group,
+  pattern = "dap-repl",
+  callback = function()
+    require('dap.ext.autocompl').attach()
+  end,
+  desc = "Enable DAP autocompletion for dap-repl filetype",
+})
+
 vim.api.nvim_create_user_command('RunTestDebugger', test_debugger, {})

@@ -33,6 +33,7 @@ call plug#begin(g:plugged_dir_path)
   " Text support
   Plug 'junegunn/vim-peekaboo'
   Plug 'tpope/vim-surround'
+  Plug 'michaeljsmith/vim-indent-object'
   if !has('nvim')
     " nvim already has commentstring support
     Plug 'tpope/vim-commentary'

@@ -34,8 +34,12 @@ function! s:reset_qf() abort
   wincmd p
 endfunction
 
-function! s:diff_current_quickfix_entry() abort
+function! s:diff_current_quickfix_entry(...) abort
+  let editable = a:0 == 0 ? 0 : a:1
   cc
+  if editable
+    exec "Gedit"
+  endif
   call s:reset_qf()
   let qf = s:get_qf_with_diff_history()
   if qf == {}
@@ -43,7 +47,8 @@ function! s:diff_current_quickfix_entry() abort
   endif
   let diff = get(qf.context.items[qf.idx - 1], 'diff', [])
   for i in reverse(range(len(diff)))
-    exec (i ? 'rightbelow' : 'leftabove') 'vert diffsplit' fnameescape(diff[i].filename)
+    let diffcmd = (i ? 'rightbelow' : 'leftabove'). ' vert diffsplit '.fnameescape(diff[i].filename)
+    exec diffcmd
     wincmd p
     call s:reset_qf()
   endfor
@@ -53,15 +58,21 @@ endfunction
 function! GitDiffTool(...) abort
   call s:close_all_fugitive_and_qf()
   let compare_args = copy(a:000)
+  let modifiable = 0
   if len(compare_args) == 1
     call add(compare_args, ' ')
+    let modifiable = 1
   endif
   let compare_str = join(compare_args, '...')
   let cmd = 'Git difftool --name-status '.compare_str
   exec cmd
-  call s:diff_current_quickfix_entry()
+  call s:diff_current_quickfix_entry(modifiable)
   11copen
-  nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><BAR><CR><BAR>:call <SID>diff_current_quickfix_entry()<CR>
+  if modifiable
+    nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><BAR><CR><BAR>:call <SID>diff_current_quickfix_entry(1)<CR>
+  else
+    nnoremap <buffer> <CR> :call <SID>delete_fugitive_wins()<CR><BAR><CR><BAR>:call <SID>diff_current_quickfix_entry()<CR>
+  endif
   wincmd p
 endfunction
 

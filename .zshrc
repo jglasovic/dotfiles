@@ -64,9 +64,8 @@ eval "$(pyenv virtualenv-init -)"
 # fnm
 eval "$(fnm env --use-on-cd)"
 ## export path
-export PATH="$OPENSSL_ROOT/bin":\
+PATH="$OPENSSL_ROOT/bin":\
 "$RUBY_ROOT/bin":\
-"$(gem environment gemdir)/bin":\
 "$LLVM_ROOT/bin":\
 "$CURL_ROOT/bin":\
 "$PHP_ROOT/bin":\
@@ -81,6 +80,8 @@ export PATH="$OPENSSL_ROOT/bin":\
 "$CORE_UTILS_PATH":\
 "$ANDROID_TOOLS_PATH":\
 "$PATH"
+
+export PATH="$(gem environment gemdir)/bin":"$HOME/work/indigo/dev-tools/bin":$PATH
 
 # source utils
 source "$HOME/.zsh/utils.sh"

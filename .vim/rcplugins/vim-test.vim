@@ -31,7 +31,7 @@ function SetupTest(cmd) abort
     endif
     let cmd = substitute(cmd, runner, g:test_runner_debugger_mapping[runner], 'g')
   endif
-  return "cd ".shellescape(g:test#project_root)." ; ".cmd." ; cd -"
+  return "cd ".shellescape(g:test#project_root)." ; ".$TEST_PREFIX_CMD. " ".cmd." ; cd -"
 endfunction
 
 " test runner mappings
