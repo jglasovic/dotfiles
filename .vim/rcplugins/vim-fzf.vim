@@ -1,4 +1,5 @@
-let g:fzf_layout = { 'tmux': '80%,60%' }
+let g:fzf_prefer_tmux = 1
+let g:fzf_layout = { 'tmux': '80%,60%', 'window': { 'width': 0.8, 'height': 0.6 } }
 
 let g:fzf_vim = {
   \ 'files_options': $FD_CMD_OPTS,
@@ -33,7 +34,7 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {}, <bang>0)
 
 " mappings
-inoremap <expr> <c-x><c-f> fzf#vim#complete#path($FD_BASE_CMD . " ". $FD_IGNORE_OPTS)
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path($FZF_DEFAULT_COMMAND)
 nmap <silent> <leader>f :Files<CR>
 nmap <silent> <leader>r :RG<CR>
 nmap <silent><expr> <leader>R ':RG '.expand('<cword>').'<CR>'

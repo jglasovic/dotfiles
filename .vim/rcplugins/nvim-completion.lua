@@ -45,7 +45,7 @@ local esc_action = function()
 end
 
 vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
-vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<Tab>"]], { expr = true })
 vim.keymap.set('i', '<CR>', cr_action, { expr = true })
 vim.keymap.set('i', '<ESC>', esc_action, { expr = true })
 

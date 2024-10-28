@@ -16,9 +16,10 @@ local linter_settings_map = {
 }
 
 local get_source = function(type, name)
-  local ls_source = '-ls.' .. type .. '.' .. name
-  for _, source_prefix in ipairs({ "none", "null" }) do
-    local success_lsp_config, source = pcall(require, source_prefix .. ls_source)
+  local ls_source = type .. '.' .. name
+  for _, source_prefix in ipairs({ "none-ls.", "null-ls.builtins." }) do
+    local path = source_prefix .. ls_source
+    local success_lsp_config, source = pcall(require, path)
     if success_lsp_config then
       return source
     end
@@ -42,23 +43,7 @@ local build_sources = function()
   return sources
 end
 
--- format on save
-local on_attach = function(client, bufnr)
-  local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
-  if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format({ async = false })
-      end,
-    })
-  end
-end
-
 require("null-ls").setup({
-  on_attach = on_attach,
   sources = build_sources(),
   border = "single",
   -- debug = true

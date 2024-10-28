@@ -9,7 +9,7 @@ prompt_segment() {
 
 
 prompt_end() {
-  prompt_segment 2 " %B$%b"
+  prompt_segment 2 " %B%#%b"
   echo -n "%{%f%}"
 }
 
@@ -76,7 +76,7 @@ prompt_status() {
   local -a symbols
 
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘ $RETVAL"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
+  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}su"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
   [[ -n "$symbols" ]] && prompt_segment default "$symbols"

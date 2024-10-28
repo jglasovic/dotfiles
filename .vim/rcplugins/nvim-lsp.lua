@@ -6,12 +6,14 @@ local util = require('lspconfig.util')
 -- vim.lsp.set_log_level('DEBUG');
 --
 local ensure_installed_manson = {
-  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls"
+  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls", "ts_ls", "denols"
 }
 
 local manually_instaled = {
   'regal', 'rust_analyzer'
 }
+
+local format_timeout_ms = 5000
 
 -- Dynamic configs
 -- [Optional] server settings: { <server name> : config }
@@ -44,6 +46,13 @@ local server_settings_map = {
     root_dir = function(fname)
       return util.find_git_ancestor(fname)
     end,
+  },
+  denols = {
+    root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+  },
+  ts_ls = {
+    root_dir = util.root_pattern("package.json"),
+    single_file_support = false
   }
 }
 --------------------------------------------------------
@@ -59,10 +68,6 @@ local man_documentation = function()
   return print('Missing man documentation!')
 end
 
-local format = function()
-  vim.lsp.buf.format({ timeout_ms = 10000, async = true })
-end
-
 local list_workspaces = function()
   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 end
@@ -70,7 +75,7 @@ end
 local lsp_restart = function()
   vim.diagnostic.reset()
   vim.cmd("LspRestart")
-  print("LSP restarted")
+  vim.notify("LSP restarted")
 end
 
 vim.keymap.set('n', '<leader>lr', lsp_restart)
@@ -80,12 +85,24 @@ vim.keymap.set('n', '<leader>n', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>,', vim.diagnostic.setloclist)
 
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    local buffer = ev.buf
-    local opts = { buffer = buffer }
+  group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
+  callback = function(args)
+    local buffer = args.buf
+    local client_id = args.data.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+
+    if client and client.supports_method("textDocument/formatting") then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = buffer,
+        callback = function()
+          vim.lsp.buf.format { timeout_ms = format_timeout_ms, async = false, id = client_id }
+        end,
+      })
+    end
+
     vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-    -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+
+    local opts = { buffer = buffer }
     vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -95,7 +112,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'M', man_documentation, opts)
     vim.keymap.set('n', '<leader>cr', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<leader>.', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>cf', format, opts)
+    vim.keymap.set('n', '<leader>cf', function()
+      vim.lsp.buf.format({ timeout_ms = format_timeout_ms, async = true })
+    end
+    , opts)
     -- workspace
     vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)

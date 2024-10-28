@@ -46,7 +46,7 @@ function! GitInfo()
   let branch = FugitiveHead()
   let values = []
   if branch != ''
-    call add(values, '['.branch.']')
+    "call add(values, '['.branch.']')
   endif
 
   if has('nvim')
@@ -61,6 +61,7 @@ set background=dark
 set notermguicolors
 let g:onedark_color_overrides = { "background": { "gui": "NONE", "cterm": "NONE", "cterm16": "NONE" }}
 colorscheme onedark
+
 hi! link CursorLineNr Keyword
 hi! link User1 Cursor 
 hi! link User2 Search

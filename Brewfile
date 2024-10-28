@@ -23,7 +23,7 @@ brew "coreutils"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # Modern replacement for 'ls'
-brew "exa"
+brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Play, record, convert, and stream audio and video

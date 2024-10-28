@@ -24,7 +24,6 @@ export VISUAL=$EDITOR
 ## ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id
 
-export DENO_ROOT="$HOME/.deno"
 export PYENV_ROOT="$HOME/.pyenv"
 export POETRY_ROOT="$HOME/.local"
 
@@ -72,7 +71,6 @@ PATH="$OPENSSL_ROOT/bin":\
 "$PHP_ROOT/sbin":\
 "$PYENV_ROOT/bin":\
 "$POETRY_ROOT/bin":\
-"$DENO_ROOT/bin":\
 "$POSTGRES_ROOT/bin":\
 "$MYSQL_ROOT/bin":\
 "$GPG_ROOT/bin":\
@@ -97,3 +95,5 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # fix for python keyring
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+
+. "/Users/jurepc/.deno/env"
