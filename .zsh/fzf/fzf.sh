@@ -43,7 +43,7 @@ echo \"change-prompt((-d)\$FZF_PROMPT)+reload(eval \"\${FZF_DEFAULT_COMMAND%%\" 
 export FD_CMD_OPTS="--bind='start:transform-prompt:echo \$(sed \"s/\(.\)[^/]*\//\1\//g\" <<< \"\${PWD//\$HOME/~}\")/' \
 --preview '$SELF_DIR/fzf-preview.sh {}' \
 --bind='ctrl-r:$toggle_vsc_ignore' \
---bind='ctrl-e:$toggle_files_dirs'"
+--bind='ctrl-o:$toggle_files_dirs'"
 
 export FZF_CTRL_T_COMMAND="$FD_FILE_CMD"
 export FZF_CTRL_T_OPTS="$FD_CMD_OPTS"

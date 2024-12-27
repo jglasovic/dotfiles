@@ -12,7 +12,11 @@ local linter_settings_map = {
   mypy = {},
   phpcs = {},
   phpstan = {},
-  eslint = {}
+  eslint = {
+    filter = function(diagnostic)
+      return diagnostic.code ~= "prettier/prettier"
+    end,
+  }
 }
 
 local get_source = function(type, name)
@@ -46,5 +50,5 @@ end
 require("null-ls").setup({
   sources = build_sources(),
   border = "single",
-  -- debug = true
+  debug = true
 })

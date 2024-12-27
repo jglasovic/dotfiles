@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export FZF_GH_PRS_LIST='GH_FORCE_TTY=100% gh pr list --limit 100'
+export FZF_GH_PRS_LIST='GH_FORCE_TTY=90% gh pr list --limit 100'
 
 local toggle_open_close_pr="[[ ! {fzf:prompt} =~ open ]] && \
   echo \"change-prompt(PR (open) > )+reload($FZF_GH_PRS_LIST)\" || \

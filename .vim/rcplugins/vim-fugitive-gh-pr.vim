@@ -121,11 +121,16 @@ function! FZFGhPRWrapper(str_value)
 endfunction
 
 function! FZFGhPRs() abort
-  call fzf#run(fzf#wrap({
-        \ 'source': $FZF_GH_PRS_LIST, 
+  try
+    let prev_default_command = $FZF_DEFAULT_COMMAND
+    let $FZF_DEFAULT_COMMAND = $FZF_GH_PRS_LIST
+    call fzf#run(fzf#wrap({
         \ 'options': $FZF_GH_PRS_LIST_OPTIONS,
         \ 'sink':funcref('FZFGhPRWrapper') 
         \ }))
+  finally
+    let $FZF_DEFAULT_COMMAND = prev_default_command
+  endtry
 endfunction
 
 " open pr in web browser

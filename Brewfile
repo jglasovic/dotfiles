@@ -4,6 +4,7 @@ tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "lucagrulla/tap"
@@ -88,8 +89,6 @@ brew "zsh"
 #### Casks
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Pack, ship and run any application as a lightweight container
-cask "docker"
 # Strongdm client
 cask "sdm"
 # Managed client-based VPN service to securely access AWS resources

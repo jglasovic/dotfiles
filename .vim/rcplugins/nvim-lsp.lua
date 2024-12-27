@@ -6,7 +6,7 @@ local util = require('lspconfig.util')
 -- vim.lsp.set_log_level('DEBUG');
 --
 local ensure_installed_manson = {
-  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls", "ts_ls", "denols"
+  "pyright", "lua_ls", "jsonls", "vimls", "intelephense", "gopls", "ts_ls"
 }
 
 local manually_instaled = {
