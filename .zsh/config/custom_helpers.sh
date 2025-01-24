@@ -22,3 +22,16 @@ git_merge_branch() {
   git checkout -
   git merge "$1"
 }
+
+# copilot chat 
+cchat() { 
+  $EDITOR "+CopilotChatOpen" "+on"
+}
+
+copilot-chat-widget() { 
+  cchat
+  zle reset-prompt
+}
+
+zle -N copilot-chat-widget
+bindkey -M vicmd ' cc' copilot-chat-widget

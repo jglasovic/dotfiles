@@ -72,6 +72,9 @@ call plug#begin(g:plugged_dir_path)
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     " lsp support for python venvs
     Plug 'jglasovic/venv-lsp.nvim'
+    " AI support
+    Plug 'github/copilot.vim'
+    Plug 'CopilotC-Nvim/CopilotChat.nvim'
   endif
 
 call plug#end()
