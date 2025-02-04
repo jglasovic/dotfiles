@@ -13,13 +13,14 @@ local keys = {
   ['ctrl-e']    = replace_termcodes('<C-e>'),
   ['ctrl-x-o']  = replace_termcodes('<C-x><C-o>'),
   ['ctrl-x-n']  = replace_termcodes('<C-x><C-n>'),
+  ['ctrl-x-u']  = replace_termcodes('<C-x><C-u>'),
 }
 
 local fallback_action = function()
   -- sql
   if vim.fn.index({ 'sql', 'mysql', 'plsql' }, vim.bo.filetype) >= 0 then
-    -- use omnifunc
-    return vim.api.nvim_feedkeys(keys['ctrl-x-o'], 'n', false)
+    -- use completefunc
+    return vim.api.nvim_feedkeys(keys['ctrl-x-u'], 'n', false)
   end
   return vim.api.nvim_feedkeys(keys['ctrl-x-n'], 'n', false)
 end

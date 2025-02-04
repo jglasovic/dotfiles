@@ -62,8 +62,11 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 # fnm
 eval "$(fnm env --use-on-cd)"
+
+GOBIN="$(go env GOPATH)/bin"
 ## export path
 PATH="$OPENSSL_ROOT/bin":\
+"$GOBIN":\
 "$RUBY_ROOT/bin":\
 "$LLVM_ROOT/bin":\
 "$CURL_ROOT/bin":\
@@ -97,3 +100,20 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
 . "/Users/jurepc/.deno/env"
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/jurepc/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/jurepc/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/jurepc/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/jurepc/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

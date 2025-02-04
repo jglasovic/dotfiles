@@ -103,7 +103,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
 
     local opts = { buffer = buffer }
-    vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
+    -- vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
@@ -180,6 +180,7 @@ mason.setup({ ui = { border = border } })
 -- LSP config
 -- mason setup installed servers
 local global_capabilities = vim.lsp.protocol.make_client_capabilities()
+-- global_capabilities.completionProvider.triggerCharacters = { '.' }
 global_capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
   capabilities = global_capabilities,

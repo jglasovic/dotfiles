@@ -66,6 +66,7 @@ call plug#begin(g:plugged_dir_path)
     Plug 'nvimtools/none-ls-extras.nvim'
     " dap
     Plug 'mfussenegger/nvim-dap'
+    Plug 'mxsdev/nvim-dap-vscode-js'
     " completion
     Plug 'echasnovski/mini.completion'
     " treesitter

@@ -29,6 +29,21 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, spec, a:fullscreen)
 endfunction
 
+
+function! PickProcessID()
+    let selected = fzf#run(fzf#wrap({
+    \ 'source': 'ps -ef',
+    \ 'options':['--header-lines=1', '--wrap'],
+    \ 'sink': {selected -> selected }
+    \ }))
+    if len(selected) == 0
+      return
+    endif
+    let pid = split(trim(selected[0]))[1]
+    return pid
+endfunction
+
+command! PickProcess call PickProcessID()
 " commands override
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {}, <bang>0)

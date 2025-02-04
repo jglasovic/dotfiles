@@ -5,6 +5,12 @@ local configs = {
 }
 ------------------------------------------------
 
+
+local function pick_process(opts)
+  local pid = vim.fn['PickProcessID']()
+  return pid or require("dap").ABORT
+end
+
 local dap = require('dap')
 -- global attach
 local attach = function(cb, config)
