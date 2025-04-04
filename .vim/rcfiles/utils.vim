@@ -194,3 +194,17 @@ function! utils#with_cache(callback, cache_key, input)
   let g:custom_cache[a:cache_key][a:input] = value
   return value
 endfunction
+
+
+function! utils#open_url(value)
+  let formated = shellescape(a:value)
+  let output = system('open_url '.formated)
+  if v:shell_error 
+    echom output
+  endif
+endfunction
+
+function! utils#open_url_from_cursor()
+  let current_line = getline('.')
+  return utils#open_url(current_line)
+endfunction

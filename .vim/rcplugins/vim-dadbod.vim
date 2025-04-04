@@ -28,6 +28,7 @@ let g:db_ui_table_helpers = {
 function SqlCustomSettings()
   setlocal wrap 
   setlocal completefunc=vim_dadbod_completion#omni 
+  setlocal omnifunc=vim_dadbod_completion#omni 
   setlocal commentstring=--\ %s
 endfunction
 

@@ -100,7 +100,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+
+    if not vim.tbl_contains({ 'sql', 'mysql' }, vim.bo.filetype) then
+      vim.bo[buffer].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+    end
 
     local opts = { buffer = buffer }
     -- vim.keymap.set('n', '<leader>S', vim.lsp.buf.signature_help, opts)

@@ -136,6 +136,14 @@ endfunction
 " open pr in web browser
 function! GhPrWeb()
   let pr_number = get(g:, 'gh_pr_number', '')
+  let commit = expand('<cword>')
+  if commit != ''
+    let output = systemlist("gh pr list --search '".commit."' --state all --json number --jq '.[0].number'")
+    if !v:shell_error
+      let pr_number = output[0]
+    endif
+  endif
+
   if pr_number == ''
     echo "Missing PR number"
   endif

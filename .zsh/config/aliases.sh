@@ -2,6 +2,7 @@
 
 ## Aliases
 alias vim="nvim"
+alias nvm="fnm"
 alias s="git status"
 alias cat="bat"
 alias ls='eza --sort=type'

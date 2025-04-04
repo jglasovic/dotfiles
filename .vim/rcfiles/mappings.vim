@@ -58,4 +58,4 @@ inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j>      :m '>+1<CR>gv=gv
 vnoremap <M-k>      :m '<-2<CR>gv=gv
 
-nnoremap <expr> <M-o> ":call system(\"open_url " . shellescape(getline('.')) ."\")\n"
+nnoremap <M-o>      :call utils#open_url_from_cursor()<CR>

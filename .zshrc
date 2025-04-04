@@ -45,9 +45,9 @@ export CURL_ROOT="$BREW_PREFIX/opt/curl"
 export ANDROID_TOOLS_PATH="$ANDROID_HOME/build-tools/34.0.0:$ANDROID_HOME/platform-tools"
 export LLVM_ROOT="$BREW_PREFIX/opt/llvm"
 
-export LDFLAGS="-L$LLVM_ROOT/lib -L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib"
-export CPPFLAGS="-I$LLVM_ROOT/include -I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include"
-export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig"
+export LDFLAGS="-L$LLVM_ROOT/lib -L$BREW_PREFIX/opt/zlib/lib -L$BREW_PREFIX/opt/bzip2/lib -L$BREW_PREFIX/opt/openssl@3/lib -L$BREW_PREFIX/opt/curl/lib -L/opt/homebrew/opt/mysql@8.4/lib"
+export CPPFLAGS="-I$LLVM_ROOT/include -I$BREW_PREFIX/opt/zlib/include -I$BREW_PREFIX/opt/bzip2/include -I$BREW_PREFIX/opt/openssl@3/include -I$BREW_PREFIX/opt/curl/include -I/opt/homebrew/opt/mysql@8.4/include"
+export PKG_CONFIG_PATH="$BREW_PREFIX/opt/openssl@3/lib/pkgconfig:$BREW_PREFIX/opt/curl/lib/pkgconfig:/opt/homebrew/opt/mysql@8.4/lib/pkgconfig"
 
 # ## rustup
 source "$HOME/.cargo/env"
@@ -66,7 +66,6 @@ eval "$(fnm env --use-on-cd)"
 GOBIN="$(go env GOPATH)/bin"
 ## export path
 PATH="$OPENSSL_ROOT/bin":\
-"$GOBIN":\
 "$RUBY_ROOT/bin":\
 "$LLVM_ROOT/bin":\
 "$CURL_ROOT/bin":\
@@ -83,6 +82,8 @@ PATH="$OPENSSL_ROOT/bin":\
 "$PATH"
 
 export PATH="$(gem environment gemdir)/bin":"$HOME/work/indigo/dev-tools/bin":$PATH
+
+export PATH="/opt/homebrew/opt/mysql@8.4/bin:$PATH"
 
 # source utils
 source "$HOME/.zsh/utils.sh"

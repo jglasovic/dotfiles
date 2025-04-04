@@ -4,6 +4,7 @@ local formatter_settings_map = {
   ruff = {},
   phpcsfixer = {},
   prettier = {},
+  sqlfluff = { extra_args = { "--dialect", "postgres" } }
 }
 
 -- linter settings: { <linter name> : config }
@@ -16,7 +17,8 @@ local linter_settings_map = {
     filter = function(diagnostic)
       return diagnostic.code ~= "prettier/prettier"
     end,
-  }
+  },
+  sqlfluff = { extra_args = { "--dialect", "postgres" } }
 }
 
 local get_source = function(type, name)
@@ -50,5 +52,5 @@ end
 require("null-ls").setup({
   sources = build_sources(),
   border = "single",
-  debug = true
+  -- debug = true
 })
