@@ -71,12 +71,6 @@ augroup _relnum_focus
   autocmd! FocusGained,InsertLeave * if &number | setl relativenumber | else | echo "Line numbers hidden" | endif
 augroup END
 
-if executable('rg')
-  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-  set grepformat=%f:%l:%c:%m,%f:%l:%m
-endif
-
-
 if has('nvim')
   set signcolumn=yes:1
   " Permanent undo - nvim undofiles are incompatible with vim undofiles
@@ -85,6 +79,12 @@ if has('nvim')
 else
   set re=0 "fix vi highlighting
   set ttyfast
+endif
+
+" rg
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
 " create interstitial directories when saving files

@@ -25,6 +25,7 @@ export FZF_DEFAULT_OPTS="
 source "$HOME/.fzf.zsh"
 source "$SELF_DIR/fzf-gh.sh"
 source "$SELF_DIR/fzf-git.sh"
+source "$SELF_DIR/fzf-docker.sh"
 
 FD_BASE_OPTS="--ignore-case --follow --hidden --exclude '$EXCLUDE_CUSTOM'"
 FD_FILE_CMD="fd $FD_BASE_OPTS -t f" 

@@ -1,42 +1,6 @@
 setlocal bufhidden=wipe
 setlocal nopreviewwindow
 
-function! s:get_marked_or_current()
-  let marked_paths = netrw#Expose("netrwmarkfilelist")
-  if type(marked_paths) == v:t_list && len(marked_paths) > 0
-    return marked_paths
-  endif
-  let path = glob(b:netrw_curdir . '/' . expand('<cfile>'))
-  return [path]
-endfunction
-
-" delete has some issues in netrw, using custom function
-" if marked files, ask to delete them, else ask to delete file under cursor
-function! s:delete_recursive()
-  let paths = s:get_marked_or_current()
-  let msg_paths = join(paths, "\n")
-  echohl ErrorMsg 
-  echo msg_paths
-  echohl None
-  let l:choice = confirm("Delete with `rm -r`?", "&yes\n&no", 0)
-  if l:choice == 1 
-    let formated_paths = map(paths, 'shellescape(v:val)')
-    let cmd ="rm -r " . join(formated_paths, " ") 
-    let output = system(cmd)
-    if v:shell_error
-      echohl ErrorMsg 
-      echom "Cannot delete: " . msg_paths
-      echom output
-      echohl None
-    else
-      echo "Deleted!"
-    endif
-  else
-    echo "Canceled!"
-  endif
-  normal mu
-endfunction
-
 " Mappings
 "close
 nmap <buffer> <silent><Esc> :pclose \| bd<CR>
@@ -71,9 +35,6 @@ nmap <buffer> fm mm
 nmap <buffer> fM mtmm
 "run external commands on the marked files
 nmap <buffer> f; mx
-"delete marked or file/dir under the cursor (override default D)
-nmap <buffer> D :call <SID>delete_recursive()<CR><plug>NetrwRefresh
-
 "show a list of marked files
 nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\n")<CR>
 "Show the target directory

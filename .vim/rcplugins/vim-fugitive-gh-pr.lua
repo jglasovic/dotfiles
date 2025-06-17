@@ -2,8 +2,7 @@ if not vim.fn.executable('gh') then
   return
 end
 
--- could use plenary.nvim but decided to go with custom coroutines in lua
-local uv = vim.loop
+local uv = (vim.uv or vim.loop)
 
 local execute_command = function(command)
   local co = coroutine.running()

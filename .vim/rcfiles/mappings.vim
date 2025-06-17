@@ -32,6 +32,9 @@ nnoremap n nzz
 nnoremap N Nzz
 " Yank all lines in buffer
 nnoremap <leader>ya :%y<CR>
+" Yank buffer's file path
+nnoremap <leader>yp :let @+ = expand('%:p')<CR>
+
 " Jump to start and end of line using the home row keys
 map H ^
 map L $

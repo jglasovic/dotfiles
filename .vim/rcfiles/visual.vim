@@ -70,17 +70,17 @@ hi! StatusLineNC ctermfg=59 guifg=#5c6370 ctermbg=236 guibg=#2c323c
 hi! link LspInfoBorder NormalFloat
 
 if has("statusline") && !&cp
-  set laststatus=2                        " always show the status bar
-  set statusline=%1*\ %t%m%r\ %*          " filename, modified, readonly
-  set statusline+=\ %{GitInfo()}          " branch
-  set statusline+=%=                      " left-right separation point
+  set laststatus=2                                " always show the status bar
+  set statusline=%1*\ %t%m%r\ %*                  " filename, modified, readonly
+  set statusline+=\ %{GitInfo()}                  " branch
+  set statusline+=%=                              " left-right separation point
   if has('nvim')
     set statusline+=\ %{%v:lua.DebugStatus()%}    " debugger status
     set statusline+=\ %{v:lua.DiagnosticsInfo()}  " diagnostics
     set statusline+=\ %{v:lua.VenvName()}         " diagnostics
   endif
-  set statusline+=\%y\                    " filetype
-  set statusline+=%1*\ %v:%l/%L[%p%%]\%*  " current column : current line/total lines [percentage]
+  set statusline+=\%y\                            " filetype
+  set statusline+=%1*\ %v:%l/%L[%p%%]\ \ %*       " current column : current line/total lines [percentage]
 endif
 
 set showmode

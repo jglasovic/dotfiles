@@ -58,9 +58,8 @@ call plug#begin(g:plugged_dir_path)
     Plug 'nvim-lua/plenary.nvim'
     " package manager
     Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
-    " lsp
+    " lsp configs
     Plug 'neovim/nvim-lspconfig'
-    Plug 'williamboman/mason-lspconfig.nvim'
     " formatter/linter support
     Plug 'nvimtools/none-ls.nvim'
     Plug 'nvimtools/none-ls-extras.nvim'
@@ -73,7 +72,6 @@ call plug#begin(g:plugged_dir_path)
     " lsp support for python venvs
     Plug 'jglasovic/venv-lsp.nvim'
     " AI support
-    "Plug 'github/copilot.vim'
     Plug 'CopilotC-Nvim/CopilotChat.nvim'
   endif
 

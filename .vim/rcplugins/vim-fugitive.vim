@@ -28,5 +28,6 @@ nnoremap <silent><leader>gb :call <SID>toggle_git_blame()<CR>
 nnoremap <silent><leader>gd :call <SID>toggle_git_diff_buffer()<CR>
 nnoremap <silent><leader>gh :diffget //2<CR>
 nnoremap <silent><leader>gl :diffget //3<CR>
+nnoremap <silent><leader>gY :GBrowse!<CR>
 nnoremap <silent><leader>gy v:GBrowse!<CR>
 vnoremap <silent><leader>gy :GBrowse!<CR>

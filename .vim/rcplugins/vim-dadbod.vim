@@ -1,5 +1,6 @@
 let g:db_ui_execute_on_save = 0
 let g:db_ui_auto_execute_table_helpers = 1
+let g:db_ui_use_nvim_notify = 1
 let g:omni_sql_default_compl_type = 'syntax'
 
 
