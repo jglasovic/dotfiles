@@ -1,5 +1,4 @@
-local auto_enable_lsp = {
-  'pyright',
+local auto_enable_language_servers = {
   'lua_ls',
   'jsonls',
   'vimls',
@@ -8,12 +7,13 @@ local auto_enable_lsp = {
   "ts_ls",
   'regal',
   'rust_analyzer',
+  'pyright',
   -- 'pyrefly'
+  -- 'basepyright'
 }
 
--- setup configs for python lsps
-local venv_lsp = require('venv-lsp')
-venv_lsp.init()
+-- auto venv detection for python language servers
+require('venv-lsp').setup()
 
 vim.lsp.config('regal', {
   root_markers = { '.git' },
@@ -27,5 +27,6 @@ vim.lsp.config('ts_ls', {
   root_markers = { "package.json" },
   single_file_support = false
 })
+
 -- enable
-vim.lsp.enable(auto_enable_lsp)
+vim.lsp.enable(auto_enable_language_servers)
