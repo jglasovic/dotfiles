@@ -1,27 +1,25 @@
 # Jure's dotfiles
 
-TODO: add
+This repository contains my configuration files (dotfiles) for ZSH, Vim, and TMUX, as well as scripts for setting up a development environment on macOS (Darwin).
 
 ## Installation:
 
-TODO: add
+To install these dotfiles, clone the repository and run the install script:
+
+```sh
+git clone https://github.com/jglasovic/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./install.sh
+```
 
 ## ZSH:
 
-TODO: update zsh doc
-Documentation for my `zsh` configuration can be found [here](https://github.com/jglasovic/dotfiles/blob/master/.zsh/README.md)
-
+Documentation for my `zsh` configuration is available in [.zsh/README.md](.zsh/README.md).
 
 ## VIM:
-TODO: update vim doc
-Documentation for my `vim` configuration can be found [here](https://github.com/jglasovic/dotfiles/blob/master/.vim/README.md)
 
-## TMUX:
-
-TODO: add
+Documentation for my `vim` configuration is available in [.vim/README.md](.vim/README.md).
 
 ## TODO:
- - update install script
  - add additional script for installing keepassxc, syncthing and brave-browser without `brew`.
    Include software verification (checksum, digest)
- - check alternatives for lsp/dap (vimscript)
