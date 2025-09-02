@@ -5,7 +5,7 @@ mason.setup({ ui = { border = "single" } })
 vim.keymap.set("n", "<leader>m", "<CMD>Mason<CR>", { silent = true })
 
 local require_installed = {
-	"basedpyright",
+	-- "basedpyright",
 	"gopls",
 	"intelephense",
 	"js-debug-adapter",
@@ -20,6 +20,7 @@ local require_installed = {
 	"sqlfluff",
 	"typescript-language-server",
 	"vim-language-server",
+	"vue-language-server",
 }
 
 for _, package_name in ipairs(require_installed) do

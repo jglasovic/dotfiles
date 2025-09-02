@@ -10,5 +10,6 @@ alias ll='eza --sort=type -al'
 alias gu="git_merge_branch"
 alias zshconf="vim $HOME/.zshrc"
 alias so=". $HOME/.zshrc"
+alias nvm="fnm"
 # https://github.com/pyenv/pyenv#homebrew-in-macos
 alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew'

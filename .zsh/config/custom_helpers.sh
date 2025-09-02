@@ -33,5 +33,18 @@ copilot-chat-widget() {
   zle reset-prompt
 }
 
+open_url() {
+  if [ -z "$1" ]; then
+    echo "Missing string argument"
+    return 1
+  fi
+  local url=$(echo "$1" | grep -oE 'https?://[^ ]+' | sed -e 's/[[:punct:]]*$//')
+  if [ -z "$url" ]; then
+    echo "No URL found in a provided string."
+    return 1
+  fi
+  open "$url"
+}
+
 zle -N copilot-chat-widget
 bindkey -M vicmd ' cc' copilot-chat-widget

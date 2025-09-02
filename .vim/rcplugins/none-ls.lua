@@ -3,7 +3,7 @@ local formatter_settings_map = {
 	black = {},
 	ruff = {},
 	phpcsfixer = {},
-	prettier = {},
+	-- prettier = {},
 	sqlfluff = { extra_args = { "--dialect", "postgres" } },
 	stylua = {},
 }
@@ -14,11 +14,11 @@ local linter_settings_map = {
 	mypy = {},
 	phpcs = {},
 	phpstan = {},
-	eslint = {
-		filter = function(diagnostic)
-			return diagnostic.code ~= "prettier/prettier"
-		end,
-	},
+	-- eslint = {
+	-- 	filter = function(diagnostic)
+	-- 		return diagnostic.code ~= "prettier/prettier"
+	-- 	end,
+	-- },
 	sqlfluff = { extra_args = { "--dialect", "postgres" } },
 }
 

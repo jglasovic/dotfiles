@@ -1,31 +1,42 @@
 local auto_enable_language_servers = {
-	"lua_ls",
-	"jsonls",
-	"vimls",
-	"intelephense",
-	"gopls",
-	"ts_ls",
-	"regal",
-	"rust_analyzer",
-	"pyright",
-	-- 'pyrefly'
-	-- 'basepyright'
+  "bashls",
+  "lua_ls",
+  "jsonls",
+  "vimls",
+  "intelephense",
+  "gopls",
+  "ts_ls",
+  "regal",
+  "rust_analyzer",
+  "pyright",
+  "vue_ls",
+  -- 'pyrefly'
+  -- 'basepyright'
 }
 
 -- auto venv detection for python language servers
 require("venv-lsp").setup()
 
 vim.lsp.config("regal", {
-	root_markers = { ".git" },
+  root_markers = { ".git" },
 })
 
 vim.lsp.config("denols", {
-	root_markers = { "deno.json", "deno.jsonc" },
+  root_markers = { "deno.json", "deno.jsonc" },
 })
-
 vim.lsp.config("ts_ls", {
-	root_markers = { "package.json" },
-	single_file_support = false,
+  filetypes = { unpack(vim.lsp.config.ts_ls.filetypes), "vue" },
+  init_options = {
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        location = vim.fn.stdpath("data")
+            .. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+        languages = { "vue" },
+        configNamespace = "typescript",
+      },
+    },
+  },
 })
 
 -- enable
